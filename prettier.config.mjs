@@ -1,0 +1,43 @@
+<<<<<<< HEAD
+export default {
+  arrowParens: 'always',
+  bracketSpacing: true,
+  bracketSameLine: false,
+  endOfLine: 'lf',
+  htmlWhitespaceSensitivity: 'ignore',
+  insertPragma: false,
+  jsxSingleQuote: false,
+  printWidth: 140,
+  proseWrap: 'never',
+  quoteProps: 'as-needed',
+  rangeStart: 0,
+  requirePragma: false,
+  semi: false,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  useTabs: false,
+  vueIndentScriptAndStyle: false,
+}
+=======
+export default {
+  arrowParens: 'always',
+  bracketSpacing: true,
+  bracketSameLine: false,
+  endOfLine: 'lf',
+  htmlWhitespaceSensitivity: 'ignore',
+  insertPragma: false,
+  jsxSingleQuote: false,
+  printWidth: 140,
+  proseWrap: 'never',
+  quoteProps: 'as-needed',
+  rangeStart: 0,
+  requirePragma: false,
+  semi: false,
+  singleQuote: true,
+  tabWidth: 2,
+  trailingComma: 'es5',
+  useTabs: false,
+  vueIndentScriptAndStyle: false,
+}
+>>>>>>> c9b2a8adc967d14a9f2577414c8fcccde1704016
