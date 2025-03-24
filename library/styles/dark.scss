@@ -1,5 +1,5 @@
-@import './variables';
-@import 'element-plus/theme-chalk/dark/css-vars.css';
+@use './variables' as *;
+@use 'element-plus/theme-chalk/dark/css-vars.css' as *;
 
 html.dark > body,
 html.dark > body[class*='vab-theme-'] {

@@ -105,7 +105,7 @@ const dialogStyle = computed(() => {
 </template>
 
 <style lang="scss">
-@import '../../../styles/variables.scss';
+@use '../../../styles/variables.scss' as *;
 .com-dialog {
   .#{$elNamespace}-overlay-dialog {
     display: flex;

@@ -123,7 +123,7 @@ const toggleClick = () => {
 </template>
 
 <style lang="scss" scoped>
-@import '../../../styles/variables.scss';
+@use '../../../styles/variables.scss' as *;
 $prefix-cls: #{$namespace}-descriptions;
 
 .#{$prefix-cls}-header {

@@ -2,18 +2,18 @@
  * @description 全局样式
  */
 
-@import 'normalize.css';
-@import 'element-plus/theme-chalk/src/display';
-@import 'element-plus/theme-chalk/src/index';
-@import './dark';
-@import './plain';
-@import './technology';
-@import 'vsv-icon/dist/style.css';
-@import './var';
-
-//vxeTable样式不需要可删除
-@import './vxeTableVar';
-@import 'vxe-table/lib/style.css';
+ @use 'normalize.css';
+ @use 'element-plus/theme-chalk/src/display';
+ @use 'element-plus/theme-chalk/src/index';
+ @use './dark' as *;
+ @use './plain' as *;
+ @use './technology' as *;
+ @use 'vsv-icon/dist/style.css' as *;
+ @use './var' as *;
+ 
+ //vxeTable样式不需要可删除
+ @use './vxeTableVar' as *;
+ @use 'vxe-table/lib/style.css' as *;
 
 @mixin base-scrollbar {
   &::-webkit-scrollbar {
@@ -844,6 +844,8 @@ html {
 
     /* 旋转动画 */
     .rotate {
+      animation: rotate 1s linear infinite;
+
       @keyframes rotate {
         0% {
           transform: rotate(0);
@@ -852,8 +854,6 @@ html {
           transform: rotate(360deg);
         }
       }
-
-      animation: rotate 1s linear infinite;
     }
   }
 }

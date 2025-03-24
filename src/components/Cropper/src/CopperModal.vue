@@ -161,7 +161,7 @@ function closeModal() {
 defineExpose({ openModal, closeModal })
 </script>
 <style lang="scss">
-@import '../../../styles/variables.scss';
+@use '../../../styles/variables.scss' as *;
 $prefix-cls: #{$namespace}-cropper-am;
 
 .#{$prefix-cls} {
