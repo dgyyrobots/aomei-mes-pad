@@ -11,9 +11,13 @@ const { default_headers } = config
 
 export const tenantPromise = (() => {
   const website = location.host
-  let tenant = service.get(`/system/tenant/get-by-website?website=${website}`)
-  tenant = tenant && tenant.id ? tenant : {id: 1, name: '惠智造', icon: icon, systemLogo: logo}
+  // let tenant = service.get(`/system/tenant/get-by-website?website=${website}`)
+  let tenant = service.get(`/system/tenant/get-tenant-by-domain-name?domainName=${website}`)
+  //tenant = tenant && tenant.id ? tenant : {id: 1, name: '惠智造', icon: icon, systemLogo: logo}
+  tenant = tenant && tenant.id ? tenant : {id: 158, name: '江苏澳美', icon: icon, systemLogo: logo}
+  console.log("获取的租户信息: ", tenant);
   setTenantId(tenant.id)
+
   return tenant
 })()
 
