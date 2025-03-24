@@ -38,36 +38,43 @@ export interface TaskVO {
 
 // 查询生产任务分页
 export const getTaskPage = async (params) => {
-  return await request.get({ url: `/protask/pro-task/page`, params })
+  //return await request.get({ url: `/protask/pro-task/page`, params })
+  return await request.get({ url: `/mes/pro/task/page`, params })
 }
 
 // 查询生产任务详情
 export const getTask = async (id: number) => {
-  return await request.get({ url: `/protask/pro-task/get?id=` + id })
+  //return await request.get({ url: `/protask/pro-task/get?id=` + id })
+  return await request.get({ url: `/mes/pro/task/get?id=` + id })
 }
 
 // 新增生产任务
 export const createTask = async (data: TaskVO) => {
-  return await request.post({ url: `/protask/pro-task/create`, data })
+  //return await request.post({ url: `/protask/pro-task/create`, data })
+  return await request.post({ url: `/mes/pro/task/create`, data })
 }
 // 获取甘特图数据
 export const getListGanttTaskList = async (data: TaskVO) => {
-  return await request.get({ url: `protask/pro-task/listGanttTaskList` })
+  //return await request.get({ url: `protask/pro-task/listGanttTaskList` })
+  return await request.get({ url: `/mes/pro/task/listGanttTaskList` })
 }
 
 // 修改生产任务
 export const updateTask = async (data: TaskVO) => {
-  return await request.put({ url: `/protask/pro-task/update`, data })
+  //return await request.put({ url: `/protask/pro-task/update`, data })
+  return await request.put({ url: `/mes/pro/task/update`, data })
 }
 
 // 删除生产任务
 export const deleteTask = async (id: number) => {
-  return await request.delete({ url: `/protask/pro-task/delete?id=` + id })
+  //return await request.delete({ url: `/protask/pro-task/delete?id=` + id })
+  return await request.delete({ url: `/mes/pro/task/delete?id=` + id })
 }
 
 // 导出生产任务 Excel
 export const exportTask = async (params) => {
-  return await request.download({ url: `/protask/pro-task/export-excel`, params })
+  //return await request.download({ url: `/protask/pro-task/export-excel`, params })
+  return await request.download({ url: `/mes/pro/task/export-excel`, params })
 }
 
 // ==================== 子表（生产任务投料） ====================

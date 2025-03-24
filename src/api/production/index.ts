@@ -37,31 +37,38 @@ export interface FeedbackVO {
 
 // 查询生产任务分页
 export const getTaskPage = async (params: any) => {
-    return await request.get({ url: `/protask/pro-task/page`, params })
+    //return await request.get({ url: `/protask/pro-task/page`, params })
+  return await request.get({ url: `/mes/pro/task/page`, params })
 }
 
 // 查询生产任务详情
 export const getTask = async (id: number) => {
-    return await request.get({ url: `/protask/pro-task/get?id=` + id })
-  }
+    //return await request.get({ url: `/protask/pro-task/get?id=` + id })
+  return await request.get({ url: `/mes/pro/task/get?id=` + id })
+}
 // 修改生产任务状态
 export const updateTask = async (data:any) => {
-    return await request.put({ url: `protask/pro-task/change`, data })
-  }
+    //return await request.put({ url: `protask/pro-task/change`, data })
+  return await request.put({ url: `/mes/pro/task/change`, data })
+}
 
   // 新增生产报工记录
 export const createFeedback = async (data: FeedbackVO) => {
     return await request.post({ url: `/mes/pro/feedback/create`, data })
-  }
+}
 
 // 获得产品BOM分页
 export const getMdProductBomPage = async (params) => {
-  return await request.get({ url: `/md/com-com-md-item/product-bom/page`, params })
+  //return await request.get({ url: `/md/com-com-md-item/product-bom/page`, params })
+  return await request.get({ url: `/mes/md-product-bom/page`, params })
 }
+
 // 获得产品SOP分页
 export const getMdProductSopPage = async (params) => {
-  return await request.get({ url: `/md/com-com-md-item/product-sop/page`, params })
+  //return await request.get({ url: `/md/com-com-md-item/product-sop/page`, params })
+  return await request.get({ url: `/mes/md-product-sop/page`, params })
 }
+
 // 查询生产领料单头分页
 export const getIssueHeaderPage = async (params) => {
   return await request.get({ url: `/wms/issue-header/page`, params })
@@ -74,6 +81,7 @@ export const getIssueLinePage = async (params) => {
 export const getFeedbackPage = async (params) => {
   return await request.get({ url: `/mes/pro/feedback/page`, params })
 }
+
 // 查询过程检验分页
 export const getIpqcPage = async (params) => {
   return await request.get({ url: `/ipqc/page`, params })
@@ -92,5 +100,6 @@ export const getProductProduceLinePage = async (params) => {
 }
 // 查询生产工单详情
 export const getWorkorder = async (id: number) => {
-  return await request.get({ url: `/proworkorder/workorder/get?id=` + id })
+  //return await request.get({ url: `/proworkorder/workorder/get?id=` + id })
+  return await request.get({ url: `/mes/pro/workorder/get?id=` + id })
 }
