@@ -1,109 +1,120 @@
 <template>
-  <div style="display: flex">
-    <div style="width: 300px; border: 1px solid #ebeef5" class="left">
-      <!-- :default-active="$route.meta.type || $route.name"
-        @select="handleSelect"
-        router -->
-      <el-menu default-active="fq">
+  <div class="report-container">
+    <!-- 顶部菜单 -->
+    <el-menu default-active="fq"  mode="horizontal" class="menu-list">
         <el-menu-item index="fq">
-          <img src="" alt="" style="width: 20px; height: 20px; margin-left: 12px; margin-right: 12px" />
+          <el-icon><Document /></el-icon>
           <span>统一报工</span>
         </el-menu-item>
-        <!-- <el-menu-item index="fqlist" :route="{ name: 'fqlist', query: { type: '课程管理' } }">
-          <img src="" alt="" style="width: 20px; height: 20px; margin-left: 12px; margin-right: 12px" />
-          <span>单独报工</span>
-        </el-menu-item>
-        <el-menu-item index="jslist" :route="{ name: 'jslist', query: { type: '课程管理' } }">
-          <img src="" alt="" style="width: 20px; height: 20px; margin-left: 12px; margin-right: 12px" />
-          <span>班组名单</span>
-        </el-menu-item>
-        <el-menu-item index="jy">
-          <img src="" alt="" style="width: 20px; height: 20px; margin-left: 12px; margin-right: 12px" />
-          <span>报工记录</span>
-        </el-menu-item> -->
       </el-menu>
-    </div>
-    <div class="work-order-container auto-height-container">
-      <vab-query-form>
-        <vab-query-form-left-panel>
-          <!-- <el-button :icon="Delete" type="danger" @click="handleDelete"
-          >删除</el-button
-        > -->
-          <el-button :icon="Plus" type="primary" plain>新增</el-button>
-        </vab-query-form-left-panel>
-        <vab-query-form-right-panel>
-          <el-form inline :model="queryForm" @submit.prevent>
-            <el-form-item label="工单标题">
-              <el-input v-model="queryForm.title" clearable placeholder="请输入工单标题" />
-            </el-form-item>
-            <el-form-item>
-              <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData" plain>查询</el-button>
-            </el-form-item>
-          </el-form>
-        </vab-query-form-right-panel>
-      </vab-query-form>
+    
+    <!-- 内容区 -->
+    <div class="content-area">
+      <!-- 查询表单 -->
+      <div class="query-form-wrapper">
+        <vab-query-form class="query-form">
+          <vab-query-form-left-panel>
+            <el-button :icon="Plus" type="primary" plain>新增</el-button>
+          </vab-query-form-left-panel>
+          <vab-query-form-right-panel>
+            <el-form inline :model="queryForm" @submit.prevent class="form-inline">
+              <el-form-item label="工单标题">
+                <el-input v-model="queryForm.title" clearable placeholder="请输入工单标题" />
+              </el-form-item>
+              <el-form-item>
+                <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData" plain>查询</el-button>
+              </el-form-item>
+            </el-form>
+          </vab-query-form-right-panel>
+        </vab-query-form>
+      </div>
 
-      <!-- @selection-change="setSelectRows" -->
-      <el-table ref="tableRef" v-loading="listLoading" border :data="list" @selection-change='selectionChange' >
-        <el-table-column type="selection" width="38" />
-        <el-table-column align="center" label="序号" width="55">
-          <template #default="{ $index }">
-            {{ $index + 1 }}
+      <!-- 表格区域 -->
+      <div class="table-wrapper">
+        <el-table 
+          ref="tableRef" 
+          v-loading="listLoading" 
+          border 
+          :data="list" 
+          @selection-change='selectionChange'
+          class="data-table"
+          :max-height="tableHeight"
+        >
+          <el-table-column type="selection" width="38" />
+          <el-table-column align="center" label="序号" width="65">
+            <template #default="{ $index }">
+              {{ $index + 1 }}
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="工单号" min-width="120" prop="workorderCode" show-overflow-tooltip />
+          <el-table-column align="center" label="标题" min-width="120" prop="workorderName" show-overflow-tooltip />
+          <el-table-column align="center" label="产品名称" min-width="120" prop="productName" show-overflow-tooltip />
+          <el-table-column align="center" label="工单状态" min-width="90">
+            <template #default="scope">
+              <dict-tag :type="'mes_order_status'" :value="scope.row.status" />
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作" width="80" fixed="right">
+            <template #default="{ row }">
+              <el-button text type="danger" @click="handleDelete(row)">删除</el-button>
+            </template>
+          </el-table-column>
+          <template #empty>
+            <el-empty class="vab-data-empty" description="暂无数据" />
           </template>
-        </el-table-column>
-        <el-table-column align="center" label="工单号" min-width="200" prop="workorderCode" show-overflow-tooltip />
-        <el-table-column align="center" label="标题" min-width="200" prop="workorderName" show-overflow-tooltip />
-        <el-table-column align="center" label="产品名称" min-width="200" prop="productName" show-overflow-tooltip />
-        <!-- <el-table-column align="center" label="进度" min-width="180">
-        <template #default="{ row }">
-          <el-progress
-            :percentage="parseInt(row.progress)"
-            :status="row.progress == '100' ? 'success' : ''"
-          />
-        </template>
-      </el-table-column> -->
-        <!-- <el-table-column align="center" label="提交者" prop="submit" /> -->
-        <!-- <el-table-column
-        align="center"
-        label="受理人员"
-        min-width="90"
-        prop="accept"
-        show-overflow-tooltip
-      /> -->
-        <el-table-column align="center" label="工单状态" min-width="90">
-          <template #default="scope">
-            <dict-tag :type="'mes_order_status'" :value="scope.row.status" />
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="操作" width="80">
-          <template #default="{ row }">
-            <el-button text type="danger" @click="handleDelete(row)">删除</el-button>
-          </template>
-        </el-table-column>
-        <template #empty>
-          <el-empty class="vab-data-empty" description="暂无数据" />
-        </template>
-      </el-table>
-      <vab-pagination
-        :current-page="queryForm.pageNo"
-        :page-size="queryForm.pageSize"
-        :total="total"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-      />
+        </el-table>
+      </div>
+      
+      <!-- 分页区域 -->
+      <div class="pagination-wrapper">
+        <vab-pagination
+          :current-page="queryForm.pageNo"
+          :page-size="queryForm.pageSize"
+          :total="total"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { DICT_TYPE } from '/@/utils/dict'
-import { Delete, Search, Plus } from '@element-plus/icons-vue'
+import { Delete, Search, Plus, Document } from '@element-plus/icons-vue'
 import type { TableInstance } from 'element-plus'
 import { deleteWorkorder, getWorkorderPage } from '/@/api/workOrder'
+import { computed, ref, reactive, onBeforeMount, onMounted, onUnmounted } from 'vue'
 
 defineOptions({
   name: 'WorkOrder',
 })
+
+// 响应式布局相关
+const windowWidth = ref(window.innerWidth)
+const windowHeight = ref(window.innerHeight)
+const isMenuCollapsed = ref(windowWidth.value <= 820)
+const tableHeight = computed(() => windowHeight.value - 280)
+
+// 监听窗口大小变化
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+  windowHeight.value = window.innerHeight
+  isMenuCollapsed.value = windowWidth.value <= 820
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// 切换菜单展开/收起
+const toggleMenu = () => {
+  isMenuCollapsed.value = !isMenuCollapsed.value
+}
 
 const tableRef = ref<TableInstance>()
 const list = ref<any>([])
@@ -121,11 +132,15 @@ onActivated(() => {
 
 const fetchData = async () => {
   listLoading.value = true
-  const data = await getWorkorderPage(queryForm)
-  console.log(data)
-  list.value = data.list
-  total.value = data.total
-  listLoading.value = false
+  try {
+    const data = await getWorkorderPage(queryForm)
+    list.value = data.list
+    total.value = data.total
+  } catch (error) {
+    console.error('获取数据失败', error)
+  } finally {
+    listLoading.value = false
+  }
 }
 
 const handleSizeChange = (value: number) => {
@@ -147,6 +162,7 @@ const queryData = () => {
 const setSelectRows = (value: string) => {
   selectRows.value = value
 }
+
 import { ElMessageBox } from 'element-plus'
 const handleDelete = async (row: any) => {
   if (row.id) {
@@ -164,45 +180,115 @@ const handleDelete = async (row: any) => {
 onBeforeMount(() => {
   fetchData()
 })
+
 const selectionChange=(v:any)=>{
   console.log(v)
 }
 </script>
-<style scoped>
-.work-order-container {
-  flex: 1;
-  box-sizing: border-box;
-  border: 1px solid #ebeef5;
-  padding: 50px;
-  /* margin-left: 400px; */
-  background-color: #fff;
-}
-.left {
-  box-shadow: 0px 2px 8px 0px #0000001a;
-  :deep(.is-active) {
-    background-color: #f5f9fe;
-    color: #8ab3ff !important;
+
+<style lang="scss" scoped>
+.report-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
   }
-  :deep(.is-active::after) {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 100%;
-    background-color: red;
-    position: absolute;
-    left: 0;
-    background-color: #3f91fd;
+
+  .menu-list {
+    width: 100%;
   }
-  :deep(.el-menu-item) {
-    height: 66px;
-    font-family: PingFang SC;
-    font-size: 20px;
-    font-weight: 400;
-    color: #000;
+  
+  .content-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px;
+    background-color: #f5f7fa;
+    
+    .query-form-wrapper {
+      margin-bottom: 16px;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      
+      .query-form {
+        padding: 16px;
+      }
+      
+      .form-inline {
+        display: flex;
+        flex-wrap: wrap;
+        
+        :deep(.el-form-item) {
+          margin-bottom: 0;
+        }
+      }
+    }
+    
+    .table-wrapper {
+      flex: 1;
+      overflow: hidden;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      
+      .data-table {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    
+    .pagination-wrapper {
+      padding: 8px 0;
+      background-color: #fff;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      padding-bottom: 16px;
+    }
   }
-  :deep(.el-menu) {
-    border-right: none;
-    text-align: center;
+
+
+// 平板适配样式
+@media screen and (max-width: 820px) {
+  .report-container {
+    .content-area {
+      padding: 8px;
+      
+      .query-form-wrapper {
+        .query-form {
+          padding: 12px;
+        }
+        
+        .form-inline {
+          :deep(.el-form-item) {
+            margin-right: 8px;
+          }
+          
+          :deep(.el-input) {
+            width: 140px;
+          }
+        }
+      }
+      
+      .table-wrapper {
+        .data-table {
+          :deep(.el-table__header) th {
+            padding: 8px 0;
+            font-size: 14px;
+          }
+          
+          :deep(.el-table__body) td {
+            padding: 8px;
+            font-size: 14px;
+          }
+        }
+      }
+    }
   }
 }
 </style>
