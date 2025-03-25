@@ -20,18 +20,16 @@
       </el-tabs>
       <vab-breadcrumb v-else class="hidden-xs-only hidden-md-and-down" />
     </div> -->
-    <el-col :span="2" class="user-info">
+    <div class="user-info">
       <img :src="user?.avatar" alt="" />
-    </el-col>
-    <el-col :span="16" class="left">
-      <el-menu mode="horizontal" :router="true" class="nav-menu">
+    </div>
+    <el-menu mode="horizontal" :router="true" class="nav-menu">
         <el-menu-item index="/production">生产</el-menu-item>
         <el-menu-item index="/report">报工</el-menu-item>
         <el-menu-item index="/quality">质检</el-menu-item>
         <el-menu-item index="/equipment">设备</el-menu-item>
         <el-menu-item index="/quotationRecord">报警记录</el-menu-item>
       </el-menu>
-    </el-col>
     <div class="right-panel">
       <Message></Message>
       <vab-right-tools />
@@ -111,27 +109,18 @@ const handleTabClick = () => {
     }
   }
 
-  .left {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-
-    .nav-menu {
+  .nav-menu {
       border: none;
       background: transparent;
-      
       :deep(.el-menu-item) {
         height: var(--el-nav-height);
         line-height: var(--el-nav-height);
-        padding: 0 20px;
-        margin-right: 30px;
+        padding: 0 16px;
+        margin-right: 4px;
         font-size: 18px;
         color: var(--el-text-color-primary);
         
-        &:hover {
-          color: var(--el-color-primary);
-        }
+
         
         &.is-active {
           color: var(--el-color-primary) !important;
@@ -140,9 +129,7 @@ const handleTabClick = () => {
           background: transparent!important;
         }
       }
-    }
-  }
-
+   }
   .right-panel {
     display: flex;
     align-items: center;
@@ -159,23 +146,6 @@ const handleTabClick = () => {
       &:hover {
         color: var(--el-color-primary);
       }
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 0 10px;
-
-    .nav-menu :deep(.el-menu-item) {
-      padding: 0 10px;
-      margin-right: 15px;
-      font-size: 16px;
-    }
-  }
-
-  @media (max-width: 450px) {
-    .right-panel :deep(.el-badge),
-    .right-panel :deep(.ri-refresh-line) {
-      display: none;
     }
   }
 }

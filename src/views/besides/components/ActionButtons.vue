@@ -37,6 +37,7 @@
     white-space: nowrap;
     overflow-x: auto;
     max-width: 90vw;
+    z-index: 999;
   
     .button-group {
       display: flex;
