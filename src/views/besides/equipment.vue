@@ -4,19 +4,22 @@
       <vab-query-form-left-panel>
         <el-form inline :model="queryForm" @submit.prevent>
           <el-form-item label="名称">
-            <el-input v-model.trim="queryForm.taskName" clearable placeholder="请输入名称" />
+            <el-input v-model.trim="queryForm.taskName" style="width:180px;margin-right: 12px" clearable placeholder="请输入名称" />
           </el-form-item>
           <el-form-item label="周期">
             <el-date-picker v-model="queryForm.date" end-placeholder="结束日期" start-placeholder="开始日期" type="daterange" />
           </el-form-item>
           <el-form-item>
             <el-button :icon="Search" type="primary" @click="queryData">查询</el-button>
+
+            <el-button :icon="Plus" type="primary" @click="handleAdd" round></el-button>
+            <el-button :icon="Download" type="primary" @click="handleExport" round></el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-left-panel>
       <vab-query-form-right-panel>
-        <el-button :icon="Plus" type="primary" @click="handleAdd">新增</el-button>
-        <el-button :icon="Download" type="primary" @click="handleExport">导出</el-button>
+        <!-- <el-button :icon="Plus" type="primary" @click="handleAdd">新增</el-button>
+        <el-button :icon="Download" type="primary" @click="handleExport">导出</el-button> -->
       </vab-query-form-right-panel>
     </vab-query-form>
     <el-row :gutter="20">
