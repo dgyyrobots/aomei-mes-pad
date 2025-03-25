@@ -91,7 +91,7 @@
     </div>
   </div>
   <div class="fixed">
-    <div class="vd96d00" @click="but(4)">任务领取</div>
+    <!-- <div class="vd96d00" @click="but(4)">任务领取</div>
     <div class="v006dd9">来料检验</div>
     <div class="vff0000" @click="but(5)">上料扫码</div>
     <div class="v660066">投料记录</div>
@@ -100,8 +100,12 @@
     <div class="v2626ff">转移单</div>
     <div class="vd96d00" @click="but(6)">产出</div>
     <div class="vd90000" @click="but(7)">检验记录</div>
-    <div class="v008c23" @click="but(2)">报工</div>
+    <div class="v008c23" @click="but(2)">报工</div> -->
   </div>
+  <action-buttons 
+      :status="formData?.status"
+      @action="but"
+    />
   <Dialog v-if="bg.open" v-model="bg.open" width="80%" title="生产报工">
     <el-form ref="form" :model="bg.form" :rules="rules">
       <el-form-item prop="quantityFeedback" label="报工总数量">
@@ -149,6 +153,7 @@ import * as ProductionApi from '/@/api/production/index'
 import { DICT_TYPE, getDictLabel, getDictObj, getStrDictOptions } from '/@/utils/dict'
 import { formatDate } from '/@/utils/formatTime'
 import ProductProduceLineForm from './list/ProductProduceLineForm.vue'
+import ActionButtons from './components/ActionButtons.vue'
 // 模拟数据
 const formData = ref({
   id: undefined,
