@@ -1,9 +1,11 @@
 <template>
 
-  
-    <el-button style="float: right;" @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
+  <div class="content">
+    <div class="top">
+      <el-button  @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
+    </div>
     <!-- 列表 -->
-    <ContentWrap>
+  
       <el-table v-loading="loading" :data="list">
         <el-table-column label="编号" align="center" prop="id" />
         <el-table-column label="用户类型" align="center" prop="userType">
@@ -74,10 +76,12 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
       />
-    </ContentWrap>
+ 
   
     <!-- 表单弹窗：详情 -->
     <NotifyMessageDetail ref="detailRef" />
+  </div>  
+
   </template>
   <script lang="ts" setup>
   import { DICT_TYPE, getIntDictOptions } from '@/utils/dict'
@@ -92,7 +96,7 @@
   const list = ref([]) // 列表的数据
   const queryParams = reactive({
     pageNo: 1,
-    pageSize: 10,
+    pageSize: 20,
     userType: undefined,
     userId: undefined,
     templateCode: undefined,
@@ -137,4 +141,20 @@
     getList()
   })
   </script>
-  
+  <style lang="scss" scoped>
+  .content {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    .top {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+  }
+</style>
