@@ -1,6 +1,4 @@
 <template>
-
-
   <!-- 列表 -->
   <ContentWrap>
     <el-table
@@ -8,50 +6,127 @@
       :data="list"
       :stripe="true"
       highlight-current-row
+      class="bom-table"
+      :max-height="tableHeight"
+      border
     >
-      <el-table-column label="产品物料ID" align="center" prop="id" />
-      <el-table-column label="物料编码" align="center" prop="bomItemCode" />
-      <el-table-column label="物料名称" align="center" prop="bomItemName" />
-      <el-table-column label="规格型号" align="center" prop="bomItemSpec" />
-      <el-table-column label="单位" align="center" prop="unitOfMeasure" width="150" />
+      <!-- 移动端视图下隐藏ID列 -->
+      <el-table-column label="产品物料ID" align="center" prop="id" v-if="!isMobile" />
+      
+      <!-- 核心列始终显示 -->
+      <el-table-column label="物料编码" align="center" prop="bomItemCode" min-width="120" show-overflow-tooltip />
+      <el-table-column label="物料名称" align="center" prop="bomItemName" min-width="120" show-overflow-tooltip />
+      <el-table-column label="规格型号" align="center" prop="bomItemSpec" min-width="100" show-overflow-tooltip />
+      <el-table-column label="单位" align="center" prop="unitOfMeasure" width="80" />
 
-      <el-table-column label="产品物料标识-物料/产品" align="center" prop="itemOrProduct" />
-      <!-- <el-table-column label="所属分类" align="center" prop="itemTypeName" /> -->
-      <!-- <el-table-column label="最低库存量" align="center" prop="minStock" /> -->
-      <!-- <el-table-column label="最大库存量" align="center" prop="maxStock" /> -->
-      <el-table-column label="是否来料验证" align="center"  >
-        <template #default="scope">
-          否
-        </template>
+      <!-- 移动端视图下隐藏次要列 -->
+      <el-table-column 
+        label="物料/产品" 
+        align="center" 
+        prop="itemOrProduct" 
+        v-if="!isMobile"
+        width="120"
+        show-overflow-tooltip
+      />
+      
+      <el-table-column 
+        label="来料验证" 
+        align="center" 
+        width="90"
+        v-if="!isMobile"
+      >
+        <template #default>否</template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" >
+      
+      <el-table-column 
+        label="备注" 
+        align="center" 
+        prop="remark" 
+        v-if="!isMobile"
+        min-width="120"
+        show-overflow-tooltip
+      >
         <template #default="scope">
           <div v-html="scope.row.remark"></div>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="仓库编码" align="center" prop="warehouseCode" /> -->
-      <!-- <el-table-column label="仓库名称" align="center" prop="warehouseName" /> -->
-      <!-- <el-table-column label="库区编码" align="center" prop="locationCode" /> -->
-      <!-- <el-table-column label="库区名称" align="center" prop="locationName" /> -->
-      <!-- <el-table-column label="库位编码" align="center" prop="areaCode" /> -->
-      <!-- <el-table-column label="库位名称" align="center" prop="areaName" /> -->
+      
       <el-table-column
         label="创建时间"
         align="center"
         prop="createTime"
         :formatter="dateFormatter"
-        width="180px"
+        width="150"
+        v-if="!isMobile"
       />
+      
+      <!-- 移动端视图下添加操作列 -->
+      <el-table-column 
+        label="操作" 
+        align="center" 
+        width="80" 
+        v-if="isMobile"
+        fixed="right"
+      >
+        <template #default="scope">
+          <el-button type="primary" link @click="showDetail(scope.row)">
+            详情
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </ContentWrap>
+  
+  <!-- 详情弹窗 -->
+  <el-dialog
+    v-model="detailVisible"
+    title="BOM详情"
+    width="90%"
+    :destroy-on-close="true"
+    class="bom-detail-dialog"
+  >
+    <div class="bom-detail">
+      <div class="detail-item">
+        <span class="label">物料编码：</span>
+        <span>{{ currentDetail.bomItemCode }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">物料名称：</span>
+        <span>{{ currentDetail.bomItemName }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">规格型号：</span>
+        <span>{{ currentDetail.bomItemSpec }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">单位：</span>
+        <span>{{ currentDetail.unitOfMeasure }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">物料/产品：</span>
+        <span>{{ currentDetail.itemOrProduct }}</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">来料验证：</span>
+        <span>否</span>
+      </div>
+      <div class="detail-item">
+        <span class="label">备注：</span>
+        <div v-html="currentDetail.remark || '无'" class="detail-content"></div>
+      </div>
+      <div class="detail-item">
+        <span class="label">创建时间：</span>
+        <span>{{ dateFormatter({row: currentDetail}) }}</span>
+      </div>
+    </div>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { dateFormatter } from '@/utils/formatTime'
 import * as ProductionApi from '/@/api/production/index'
-// import ItemForm from './ItemForm.vue'
-// import MdProductSopList from './components/MdProductSopList.vue'
-// import Tree from "./Tree.vue";
+import { computed, onMounted, onUnmounted } from 'vue'
+
 defineOptions({ name: 'MdItem' })
 
 const message = useMessage() // 消息弹窗
@@ -73,8 +148,38 @@ const queryParams = reactive({
   locationCode: undefined,
   locationName: undefined,
   areaCode: undefined,
-  createTime: []
+  createTime: [],
+  itemId: undefined
 })
+
+// 响应式布局相关
+const windowWidth = ref(window.innerWidth)
+const isMobile = computed(() => windowWidth.value <= 820)
+const tableHeight = computed(() => 'calc(100vh - 240px)')
+
+// 详情弹窗相关
+const detailVisible = ref(false)
+const currentDetail = ref({})
+
+// 监听窗口大小变化
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// 显示详情弹窗
+const showDetail = (row) => {
+  currentDetail.value = row
+  detailVisible.value = true
+}
+
 const queryFormRef = ref() // 搜索的表单
 const exportLoading = ref(false) // 导出的加载中
 
@@ -90,19 +195,9 @@ const getList = async () => {
   }
 }
 
-
-
-
-
-
-
-
-
 const props = defineProps<{
   itemId: undefined // 物料产品ID（主表的关联字段）
 }>()
-// 新增物料
-//产品物料选择
 
 watch(
   () => props.itemId,
@@ -115,16 +210,77 @@ watch(
   },
   { immediate: true }
 )
+
 /** 搜索按钮操作 */
 const handleQuery = () => {
   queryParams.pageNo = 1
   getList()
 }
-
-
-
-/** 初始化 **/
-onMounted(() => {
-  // getList()
-})
 </script>
+
+<style lang="scss" scoped>
+.bom-table {
+  width: 100%;
+  
+  :deep(.el-table__body) {
+    width: 100%;
+  }
+}
+
+.bom-detail {
+  padding: 16px;
+  
+  .detail-item {
+    margin-bottom: 16px;
+    display: flex;
+    
+    .label {
+      font-weight: bold;
+      color: var(--el-text-color-secondary);
+      width: 100px;
+      flex-shrink: 0;
+    }
+    
+    .detail-content {
+      background: var(--el-fill-color-light);
+      padding: 12px;
+      border-radius: 4px;
+      margin-top: 8px;
+      text-align: left;
+      width: 100%;
+    }
+  }
+}
+
+// 平板适配样式
+@media screen and (max-width: 820px) {
+  .bom-table {
+    font-size: 14px;
+    
+    :deep(.el-table__header) th {
+      padding: 8px 0;
+    }
+    
+    :deep(.el-table__body) td {
+      padding: 8px;
+    }
+  }
+  
+  .bom-detail-dialog {
+    :deep(.el-dialog__body) {
+      padding: 12px;
+    }
+  }
+  
+  .bom-detail {
+    .detail-item {
+      flex-direction: column;
+      
+      .label {
+        margin-bottom: 4px;
+        width: 100%;
+      }
+    }
+  }
+}
+</style>
