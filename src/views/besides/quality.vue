@@ -1,10 +1,6 @@
 <template>
-    <div style="display: flex">
-      <div style="width: 300px; border: 1px solid #ebeef5" class="left">
-        <!-- :default-active="$route.meta.type || $route.name"
-          @select="handleSelect"
-          router -->
-        <el-menu :default-active="route.name" router>
+    <div class="content">
+      <el-menu :default-active="route.name" router  mode="horizontal" :ellipsis="false">
           <el-menu-item index="iqc">
             <img src="" alt="" style="width: 20px; height: 20px; margin-left: 12px; margin-right: 12px" />
             <span>来料检验</span>
@@ -26,8 +22,7 @@
             <span>报工记录</span>
           </el-menu-item> -->
         </el-menu>
-      </div>
-      <div class="work-order-container auto-height-container">
+      <div >
         <!-- <iqc></iqc> -->
         <router-view></router-view>
       </div>
@@ -77,41 +72,7 @@
   })
   </script>
   <style scoped>
-  .work-order-container {
-    width: calc(100% - 300px);
-    box-sizing: border-box;
-    border: 1px solid #ebeef5;
-    padding: 50px;
-    /* margin-left: 400px; */
-    background-color: #fff;
-  }
-  .left {
-    box-shadow: 0px 2px 8px 0px #0000001a;
-    :deep(.is-active) {
-      background-color: #f5f9fe;
-      color: #8ab3ff !important;
-    }
-    :deep(.is-active::after) {
-      content: '';
-      display: block;
-      width: 4px;
-      height: 100%;
-      background-color: red;
-      position: absolute;
-      left: 0;
-      background-color: #3f91fd;
-    }
-    :deep(.el-menu-item) {
-      height: 66px;
-      font-family: PingFang SC;
-      font-size: 20px;
-      font-weight: 400;
-      color: #000;
-    }
-    :deep(.el-menu) {
-      border-right: none;
-      text-align: center;
-    }
-  }
+
+ 
   </style>
   
