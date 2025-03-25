@@ -3,33 +3,72 @@
 <template>
   <div class="contnt" style="padding-bottom: 120px;">
     <ContentWrap class="left" v-loading="dataListLoading">
-      <div class="numTitle">
-        <div :class="flag == 3 ? 'active' : ''" @click="activeChange(3)">待领取0个</div>
-        <div :class="flag == 0 ? 'active' : ''" @click="activeChange(0)">未完工{{ Ntotal }}个</div>
-        <div :class="flag == 2 ? 'active' : ''" @click="activeChange(2)">已完工{{ total - Ntotal }}个</div>
-        <div :class="flag == 1 ? 'active' : ''" @click="activeChange(1)">全部{{ total }}个</div>
-
+      <div class="tab-nav">
+        <div 
+          v-for="(item, index) in tabItems" 
+          :key="index"
+          :class="['tab-item', flag == item.value ? 'active' : '']"
+          @click="activeChange(item.value)"
+        >
+          {{ item.label }}
+        </div>
       </div>
-      <div style="display: flex;overflow-x: scroll;">
-        <el-col :lg="6" :md="6" :sm="6" :xl="6" :xs="6" v-for="item in dataList" :key="item.id"
-          @click="getDetail(item.id)">
-          <vab-colorful-card :body-style="{ height: '100%' }" :style="item.id == detailId ? style1 : style2">
-            <div :class="`parting-line ${false ? 'parting-line-danger' : 'parting-line-primary'}`"></div>
-            <span :class="`pending-title ${false ? 'pending-title-danger' : 'pending-title-primary'}`">
-              <!-- pending-title-danger -->
-              产出物料：
-              <span>{{ item.itemName }}-{{ item.itemCode }}</span>
-            </span>
-            <el-progress :percentage="50" style="red" />
-            <div><span class="pending-tips">任务状态： <el-tag size="small">已领取</el-tag></span></div>
-            <div> <span class="pending-tips">任务进度： <el-tag size="small">{{ getDictLabel('mes_pro_task_status',
-              item.status) }}</el-tag></span></div>
-            <div> <span class="pending-tips">生产进度：{{ item.quantityProduced }}/{{ item.quantity }}</span></div>
-            <div> <span class="pending-tips">生产工单编号：{{ item.workorderCode }}</span></div>
-            <div> <span class="pending-tips">需求日期：{{ formatDate(item.requestDate) }}</span></div>
-          </vab-colorful-card>
-        </el-col>
-      </div>
+      <div class="task-list-container" v-if="dataList.length">
+        <el-row :gutter="16">
+          <el-col 
+            :span="12"
+            v-for="item in dataList" 
+            :key="item.id"
+            @click="getDetail(item.id)"
+          >
+            <vab-colorful-card 
+              class="task-card"
+              :class="{ 'is-selected': item.id == detailId }"
+              :body-style="cardStyle" 
+              :style="item.id == detailId ? style1 : style2"
+            >
+              <div class="task-card__header">
+                <div :class="['status-line', item.status === 'FINISHED' ? 'is-finished' : '']"></div>
+                <div class="material-info">
+                  <div class="label">产出物料</div>
+                  <div class="value">{{ item.itemName }}-{{ item.itemCode }}</div>
+                </div>
+              </div>
+              
+              <el-progress 
+                :percentage="Math.round((item.quantityProduced / item.quantity) * 100)"
+                :status="item.status === 'FINISHED' ? 'success' : 'primary'"
+                class="task-progress"
+              />
+              
+              <div class="task-info">
+                <div class="info-item">
+                  <span class="label">任务状态</span>
+                  <el-tag size="small" :type="item.status === 'FINISHED' ? 'success' : 'primary'">
+                    {{ item.status === 'FINISHED' ? '已完成' : '已领取' }}
+                  </el-tag>
+                </div>
+                <div class="info-item">
+                  <span class="label">任务进度</span>
+                  <el-tag size="small">{{ getDictLabel('mes_pro_task_status', item.status) }}</el-tag>
+                </div>
+                <div class="info-item">
+                  <span class="label">生产进度</span>
+                  <span class="value highlight">{{ item.quantityProduced }}/{{ item.quantity }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">工单编号</span>
+                  <span class="value">{{ item.workorderCode }}</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">需求日期</span>
+                  <span class="value">{{ formatDate(item.requestDate) }}</span>
+                </div>
+              </div>
+            </vab-colorful-card>
+          </el-col>
+        </el-row>
+     </div>
       <!-- <div class="ec" v-for="item in dataList" :key="item.id" @click="getDetail(item.id)">
         <div>产出物料：<text>{{ item.itemName }}-{{ item.itemCode }}</text></div>
         <div>
@@ -90,18 +129,7 @@
       </el-tabs>
     </div>
   </div>
-  <div class="fixed">
-    <!-- <div class="vd96d00" @click="but(4)">任务领取</div>
-    <div class="v006dd9">来料检验</div>
-    <div class="vff0000" @click="but(5)">上料扫码</div>
-    <div class="v660066">投料记录</div>
-    <div class="vff4d4d" @click="but(1)" v-if="formData?.status != 'STARTED'">{{ '开工' }}</div>
-    <div class="vff4d4d" @click="but(3)" v-else>{{ '完工' }}</div>
-    <div class="v2626ff">转移单</div>
-    <div class="vd96d00" @click="but(6)">产出</div>
-    <div class="vd90000" @click="but(7)">检验记录</div>
-    <div class="v008c23" @click="but(2)">报工</div> -->
-  </div>
+
   <action-buttons 
       :status="formData?.status"
       @action="but"
@@ -195,10 +223,24 @@ const dataList: any = ref([])
 const total = ref(0)
 const Ntotal = ref(0)
 const flag = ref(1)
+
+
+const tabItems = [
+  { label: `待领取0个`, value: 3 },
+  { label: `未完工${Ntotal.value}个`, value: 0 },
+  { label: `已完工${total.value - Ntotal.value}个`, value: 2 },
+  { label: `全部${total.value}个`, value: 1 }
+]
 onMounted(async () => {
   getList()
 })
 const dataListLoading = ref(false)
+// 标签页配置
+
+const cardStyle = {
+  height: '100%',
+  padding: '16px',
+}
 // 获取列表
 const getList = async () => {
   dataListLoading.value = true
@@ -373,66 +415,130 @@ const style1 = {
 <!-- eslint-disable linebreak-style -->
 <!-- eslint-disable prettier/prettier -->
 <style lang="scss" scoped>
-.fixed {
-  position: fixed;
-  bottom: 0px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
 
-  >div {
-    cursor: pointer;
-    width: 100px;
-    height: 50px;
-    background-color: red;
-    font-size: 20px;
-    margin: 10px;
-    text-align: center;
-    color: #fff;
-    line-height: 50px;
-    border-radius: 10px;
+.task-list-container {
+  padding: 16px;
+  height: 40vh;
+  overflow-y: auto;
+  
+  .el-row {
+    margin: -8px;
   }
-
-  >div.vd96d00 {
-    background-color: #d96d00;
-  }
-
-  >div.v006dd9 {
-    background-color: #006dd9;
-  }
-
-  >div.vff0000 {
-    background-color: #ff0000;
-  }
-
-  >div.v660066 {
-    background-color: #660066;
-  }
-
-  >div.vff4d4d {
-    height: 80px;
-    line-height: 80px;
-    width: 80px;
-    background-color: #ff4d4d;
-  }
-
-  >div.v2626ff {
-    background-color: #2626ff;
-  }
-
-  >div.vd90000 {
-    background-color: #d90000;
-  }
-
-  >div.v008c23 {
-    background-color: #008c23;
+  
+  .el-col {
+    padding: 8px;
   }
 }
+
+.task-card {
+  cursor: pointer;
+  transition: all 0.3s;
+  height: 280px;
+  
+  &.is-selected {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    
+    .status-line {
+      width: 4px;
+      height: 32px;
+      background: var(--el-color-primary);
+      border-radius: 2px;
+      margin-right: 12px;
+      
+      &.is-finished {
+        background: var(--el-color-success);
+      }
+    }
+    
+    .material-info {
+      flex: 1;
+      .label {
+        font-size: 14px;
+        color: var(--el-text-color-secondary);
+        margin-bottom: 4px;
+      }
+      .value {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--el-text-color-primary);
+      }
+    }
+  }
+  
+  .task-progress {
+    margin: 16px 0;
+  }
+  
+  .task-info {
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      
+      .label {
+        width: 80px;
+        color: var(--el-text-color-secondary);
+        font-size: 14px;
+      }
+      
+      .value {
+        flex: 1;
+        color: var(--el-text-color-primary);
+        
+        &.highlight {
+          color: var(--el-color-primary);
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+// 适配平板
+@media screen and (max-width: 820px) {
+  .task-list-container {
+    padding: 12px;
+    
+    .el-col {
+      width: 100%;
+    }
+  }
+  
+  .task-card {
+    height: 240px;
+    
+    &__header {
+      .material-info {
+        .value {
+          font-size: 14px;
+        }
+      }
+    }
+    
+    .task-info {
+      .info-item {
+        margin-bottom: 6px;
+        
+        .label {
+          width: 70px;
+          font-size: 13px;
+        }
+        
+        .value {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
 
 .contnt {
   display: flex;
@@ -450,28 +556,43 @@ const style1 = {
       color: var(--el-text-color-regular);
     }
 
-    .numTitle {
-      display: flex;
-      justify-content: center;
-      margin-bottom: var(--el-margin);
-
-      >div {
-        cursor: pointer;
-        padding: 10px 20px;
-        font-weight: 600;
-      }
-
-      >div:first-child {
-        // margin-right: 30px;
-      }
-
-      >div.active {
-        background-color: val(--el-color-primary-light-9);
-        // #eff3ff
-        box-sizing: border-box;
-        border-left: 3px solid #1d62e0;
+  .tab-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--el-margin);
+  border-bottom: 1px solid var(--el-border-color-light);
+  padding: 0 20px;
+  
+  .tab-item {
+    position: relative;
+    cursor: pointer;
+    padding: 12px 24px;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--el-text-color-regular);
+    transition: all 0.3s;
+    
+    &:hover {
+      color: var(--el-color-primary);
+    }
+    
+    &.active {
+      color: var(--el-color-primary);
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 20%;
+        width: 60%;
+        height: 2px;
+        background-color: var(--el-color-primary);
+        border-radius: 2px;
+        transition: all 0.3s;
       }
     }
+  }
+}
 
     .ec {
       cursor: pointer;
