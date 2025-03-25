@@ -24,12 +24,14 @@
       <img :src="user?.avatar" alt="" />
     </div>
     <el-menu mode="horizontal" :router="true" class="nav-menu">
-        <el-menu-item index="/production">生产</el-menu-item>
-        <el-menu-item index="/report">报工</el-menu-item>
-        <el-menu-item index="/quality">质检</el-menu-item>
-        <el-menu-item index="/equipment">设备</el-menu-item>
-        <el-menu-item index="/quotationRecord">报警记录</el-menu-item>
-      </el-menu>
+      <el-menu-item index="/production">生产</el-menu-item>
+      <el-menu-item index="/report">报工</el-menu-item>
+      <el-menu-item index="/quality">质检</el-menu-item>
+      <el-menu-item index="/equipment">设备</el-menu-item>
+      <el-menu-item index="/quotationRecord" class="alarm-menu-item">
+        <span class="menu-text">报警</span>
+      </el-menu-item>
+    </el-menu>
     <div class="right-panel">
       <Message></Message>
       <vab-right-tools />
@@ -110,26 +112,49 @@ const handleTabClick = () => {
   }
 
   .nav-menu {
-      border: none;
-      background: transparent;
-      :deep(.el-menu-item) {
-        height: var(--el-nav-height);
-        line-height: var(--el-nav-height);
-        padding: 0 16px;
-        margin-right: 4px;
-        font-size: 18px;
-        color: var(--el-text-color-primary);
-        
-
-        
-        &.is-active {
-          color: var(--el-color-primary) !important;
-          border-bottom: 3px solid var(--el-color-primary);
-          font-weight: bold;
-          background: transparent!important;
-        }
+    border: none;
+    background: transparent;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    
+    :deep(.el-menu-item) {
+      height: var(--el-nav-height);
+      line-height: var(--el-nav-height);
+      padding: 0 16px;
+      margin-right: 4px;
+      font-size: 18px;
+      color: var(--el-text-color-primary);
+       // 添加以下样式去除点击时的蓝色背景
+      &:focus{
+        background-color: transparent !important;
       }
-   }
+      &.is-active {
+        color: var(--el-color-primary) !important;
+        border-bottom: 3px solid var(--el-color-primary);
+        font-weight: bold;
+        background: transparent!important;
+      }
+      
+      // 平板适配样式
+      @media screen and (max-width: 820px) {
+        padding: 0 10px;
+        font-size: 16px;
+      }
+    }
+    
+    // 报警菜单项特殊处理
+    :deep(.alarm-menu-item) {
+      min-width: auto;
+      overflow: visible;
+      white-space: nowrap;
+      
+      .menu-text {
+        display: inline-block;
+      }
+    }
+  }
+  
   .right-panel {
     display: flex;
     align-items: center;
@@ -146,6 +171,23 @@ const handleTabClick = () => {
       &:hover {
         color: var(--el-color-primary);
       }
+    }
+    
+    // 平板适配样式
+    @media screen and (max-width: 820px) {
+      gap: 8px;
+    }
+  }
+}
+
+// 添加全局媒体查询，处理平板尺寸
+@media screen and (max-width: 820px) {
+  .vab-nav {
+    padding: 0 10px;
+    
+    .user-info img {
+      width: 40px;
+      margin-right: 8px;
     }
   }
 }
