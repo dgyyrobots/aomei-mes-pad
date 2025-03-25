@@ -20,24 +20,17 @@
       </el-tabs>
       <vab-breadcrumb v-else class="hidden-xs-only hidden-md-and-down" />
     </div> -->
-    <el-col
-      :span="3"
-      style="
-        font-size: 36px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;white-space: nowrap;
-      "
-    >
-      <img :src="user?.avatar" style="width: 50px" alt="" />
-      {{ user?.nickname }}
+    <el-col :span="2" class="user-info">
+      <img :src="user?.avatar" alt="" />
     </el-col>
-    <el-col :span="18" class="left">
-      <router-link to="/production">生产</router-link>
-      <router-link to="/report">报工</router-link>
-      <router-link to="/quality">质检</router-link>
-      <router-link to="/equipment">设备</router-link>
-      <router-link to="/quotationRecord">报警记录</router-link>
+    <el-col :span="16" class="left">
+      <el-menu mode="horizontal" :router="true" class="nav-menu">
+        <el-menu-item index="/production">生产</el-menu-item>
+        <el-menu-item index="/report">报工</el-menu-item>
+        <el-menu-item index="/quality">质检</el-menu-item>
+        <el-menu-item index="/equipment">设备</el-menu-item>
+        <el-menu-item index="/quotationRecord">报警记录</el-menu-item>
+      </el-menu>
     </el-col>
     <div class="right-panel">
       <Message></Message>
@@ -94,138 +87,95 @@ const handleTabClick = () => {
 };
 </script>
 
-<style lang="scss">
-.vab-layout-comprehensive {
-  .comprehensive-tabs {
-    width: calc(100vw - var(--el-left-menu-width) - 675px) !important;
-  }
-}
-</style>
 <style lang="scss" scoped>
-.left {
-  justify-content: center;
-  display: flex;
-  height: 100%;
-  align-items: center;
-  a {
-    white-space: nowrap;
-    padding: 0 20px;
-    color: #000;
-    margin-right: 50px;
-    font-size: 18px;
-  }
-  .router-link-active {
-    border-radius: 3px;
-    // background-color: #3f91fd;
-    color: #3f91fd !important;
-    position: relative;
-    display: block;
-    &::before {
-      content: "";
-      width: 100%;
-      display: block;
-      border-bottom: 3px solid #409eff; /* 这里设置边框的样式，比如黑色实线，粗细为 1px */
-      position: absolute;
-      bottom: -90%;
-      left: 0;
-    }
-  }
-
-  font-size: 14px;
-}
 .vab-nav {
   position: relative;
   display: flex;
   justify-content: space-between;
   height: var(--el-nav-height);
-  padding-right: var(--el-padding);
-  padding-left: var(--el-padding);
-  overflow: hidden;
-  user-select: none;
+  padding: 0 var(--el-padding);
   background: var(--el-color-white);
   border-bottom: 1px solid var(--el-border-color);
 
-  .left-panel {
+  .user-info {
     display: flex;
     align-items: center;
-    justify-items: center;
-    height: var(--el-nav-height);
+    font-size: 1.2rem;
+    font-weight: bold;
+    white-space: nowrap;
 
-    :deep() {
-      .fold-unfold {
-        margin-right: var(--el-margin);
-      }
+    img {
+      width: 46px;
+      margin-right: 12px;
+      border-radius: 50%;
+    }
+  }
 
-      .el-tabs {
-        width: 100%;
-        margin-left: 0;
+  .left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 
-        .el-tabs__header {
-          margin: 0;
-
-          > .el-tabs__nav-wrap {
-            display: flex;
-            align-items: center;
-
-            .el-icon-arrow-left,
-            .el-icon-arrow-right {
-              font-weight: 600;
-              color: var(--el-color-grey);
-            }
-          }
+    .nav-menu {
+      border: none;
+      background: transparent;
+      
+      :deep(.el-menu-item) {
+        height: var(--el-nav-height);
+        line-height: var(--el-nav-height);
+        padding: 0 20px;
+        margin-right: 30px;
+        font-size: 18px;
+        color: var(--el-text-color-primary);
+        
+        &:hover {
+          color: var(--el-color-primary);
         }
-
-        .el-tabs__item {
-          > div {
-            display: flex;
-            align-items: center;
-
-            i {
-              margin-right: 3px;
-            }
-          }
+        
+        &.is-active {
+          color: var(--el-color-primary) !important;
+          border-bottom: 3px solid var(--el-color-primary);
+          font-weight: bold;
+          background: transparent!important;
         }
-      }
-
-      .el-tabs__nav-wrap::after {
-        display: none;
       }
     }
   }
 
   .right-panel {
     display: flex;
-    align-content: center;
     align-items: center;
-    justify-content: flex-end;
-    height: var(--el-nav-height);
-    transition: var(--el-transition);
+    gap: 16px;
+    position: relative;
+    z-index: 2; 
 
-    :deep() {
-      [class*="ri-"] {
-        margin-left: var(--el-margin);
-        color: var(--el-color-grey);
-        cursor: pointer;
-      }
+    :deep([class*="ri-"]) {
+      font-size: 20px;
+      color: var(--el-text-color-regular);
+      cursor: pointer;
+      transition: color 0.3s;
 
-      button {
-        [class*="ri-"] {
-          margin-left: 0;
-          color: var(--el-color-white);
-          cursor: pointer;
-        }
+      &:hover {
+        color: var(--el-color-primary);
       }
     }
   }
 
+  @media (max-width: 768px) {
+    padding: 0 10px;
+
+    .nav-menu :deep(.el-menu-item) {
+      padding: 0 10px;
+      margin-right: 15px;
+      font-size: 16px;
+    }
+  }
+
   @media (max-width: 450px) {
-    .right-panel {
-      :deep() {
-        .el-badge,
-        .ri-refresh-line {
-          display: none;
-        }
-      }
+    .right-panel :deep(.el-badge),
+    .right-panel :deep(.ri-refresh-line) {
+      display: none;
     }
   }
 }
