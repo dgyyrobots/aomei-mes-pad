@@ -5,7 +5,7 @@
       <el-button  @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
     </div>
     <!-- 列表 -->
-  
+    <ContentWrap>
       <el-table v-loading="loading" :data="list">
         <el-table-column label="编号" align="center" prop="id" />
         <el-table-column label="用户类型" align="center" prop="userType">
@@ -76,7 +76,7 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
       />
- 
+    </ContentWrap>
   
     <!-- 表单弹窗：详情 -->
     <NotifyMessageDetail ref="detailRef" />
@@ -96,7 +96,7 @@
   const list = ref([]) // 列表的数据
   const queryParams = reactive({
     pageNo: 1,
-    pageSize: 20,
+    pageSize: 10,
     userType: undefined,
     userId: undefined,
     templateCode: undefined,
@@ -149,12 +149,10 @@
     justify-content: flex-start;
     align-items: center;
     .top {
-      width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
-      margin-bottom: 14px;
     }
   }
 </style>
