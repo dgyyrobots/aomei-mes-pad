@@ -236,17 +236,13 @@ const selectionChange=(v:any)=>{
       :deep(.el-form-item) {
         margin-bottom: 0;
         margin-right: 30px; // 更大的表单项间距
-        
-        .el-form-item__label {
-          font-size: 16px; // 更大的标签字体
-        }
-        
+
         .el-input {
           width: 280px; // 更宽的输入框
           
           .el-input__inner {
             height: 44px; // 更高的输入框
-            font-size: 16px; // 更大的输入框字体
+  
           }
         }
       }
