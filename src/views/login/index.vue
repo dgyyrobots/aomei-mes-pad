@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div v-show="theme.showLanguage || theme.showColorPicker || theme.showDark" class="login-right-tools">
-      <vab-language v-show="theme.showLanguage" />
+      <!-- <vab-language v-show="theme.showLanguage" />  暂时隐藏,功能缺失-->
       <vab-color-picker v-show="theme.showColorPicker" />
       <vab-dark v-show="theme.showDark" />
     </div>

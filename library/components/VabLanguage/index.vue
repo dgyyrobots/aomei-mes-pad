@@ -1,5 +1,5 @@
-<template>
-  <el-dropdown class="vab-language" @command="handleCommand">
+<template> 
+  <el-dropdown class="vab-language" @click="handleCommand" trigger="click">
     <vab-icon icon="translate-2" />
     <template #dropdown>
       <el-dropdown-menu>

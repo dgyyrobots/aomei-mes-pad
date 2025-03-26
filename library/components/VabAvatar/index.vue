@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown @command="handleCommand" @visible-change="handleVisibleChange">
+  <el-dropdown @command="handleCommand" @click="handleVisibleChange" trigger="click">
     <span class="avatar-dropdown">
       <el-avatar class="user-avatar" :src="avatar" />
       <div class="username">

@@ -33,3 +33,16 @@
     border-left-color: var(--el-color-primary);
   }
 }
+
+// 在文件末尾添加
+:root {
+
+  --el-font-size-base: 14px;
+  --el-font-size-medium: 16px;
+}
+
+// 确保Element组件使用这些变量
+.el-button,
+.el-input__inner {
+  font-size: var(--el-font-size-medium);
+}

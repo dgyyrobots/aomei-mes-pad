@@ -60,7 +60,7 @@ export const useAppStore = defineStore('app', {
       hamburger: true, // 折叠图标
       screenfull: true, // 全屏图标
       search: true, // 搜索图标
-      size: true, // 尺寸图标
+      size: true, // 尺寸
       locale: true, // 多语言图标
       message: true, // 消息图标
       tagsView: true, // 标签页
@@ -192,7 +192,7 @@ export const useAppStore = defineStore('app', {
       this.systemLogo = tenant.systemLogo
       this.systemIcon = tenant.icon
       const settingsStore = useSettingsStore()
-      document.querySelector('link[rel=icon]').href=tenant.icon
+      document.querySelector('link[rel=icon]').href = tenant.icon
       settingsStore.setTitle(tenant.name)
     },
     setBreadcrumb(breadcrumb: boolean) {
@@ -267,6 +267,7 @@ export const useAppStore = defineStore('app', {
       wsCache.set(CACHE_KEY.IS_DARK, this.isDark)
     },
     setCurrentSize(currentSize: ElementPlusSize) {
+      console.log(currentSize, 'currentSize')
       this.currentSize = currentSize
       wsCache.set('currentSize', this.currentSize)
     },
