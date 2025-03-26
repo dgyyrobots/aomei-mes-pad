@@ -16,7 +16,7 @@
       <div class="task-list-container" v-if="dataList.length">
         <el-row :gutter="16">
           <el-col 
-            :span="12"
+            :span="6"
             v-for="item in dataList" 
             :key="item.id"
             @click="getDetail(item.id)"
@@ -405,12 +405,12 @@ const colorTo1 = ref<string>('var(--el-color-white)')
 const style2 = {
   background: `linear-gradient(to right,${colorFrom2.value}, ${colorTo2.value}) no-repeat`,
   border: 0,
-  height: '220.19px',
+
 }
 const style1 = {
   background: `linear-gradient(to right,${colorFrom1.value}, ${colorTo1.value}) no-repeat`,
   border: 0,
-  height: '220.19px',
+
 }
 </script>
 <!-- eslint-disable linebreak-style -->
@@ -423,19 +423,22 @@ const style1 = {
   overflow-y: auto;
   
   .el-row {
-    margin: -8px;
+    margin: -6px; 
   }
   
   .el-col {
-    padding: 8px;
+    padding: 6px;
   }
 }
 
 .task-card {
   cursor: pointer;
   transition: all 0.3s;
-  height: 290px;
+  margin-bottom: 0;
+  // height: 240px;
+
   
+
   &.is-selected {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -531,7 +534,7 @@ const style1 = {
   }
   
   .task-card {
-    height: 240px;
+    // height: 290px;
     
     &__header {
       .material-info {
@@ -566,7 +569,6 @@ const style1 = {
   .left {
     max-height: calc(100vh);
     overflow-y: scroll;
-    padding-top: 20px;
     // width: 500px;
     min-width: 500px;
     margin-right: 20px;
@@ -776,6 +778,9 @@ const style1 = {
 
   .el-tag {
     margin-right: 5px;
+  }
+  .vab-data-empty {
+    min-height: 220px !important;
   }
 
   .el-card__body {
