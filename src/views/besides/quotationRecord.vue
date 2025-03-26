@@ -6,7 +6,7 @@
     </div>
   <ContentWrap>
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list"   :height="tableHeight">
         <el-table-column label="编号" align="center" prop="id" />
         <el-table-column label="用户类型" align="center" prop="userType">
           <template #default="scope">
@@ -87,12 +87,14 @@
   import { dateFormatter } from '@/utils/formatTime'
   import * as NotifyMessageApi from '@/api/system/notify/message'
   import NotifyMessageDetail from './NotifyMessageDetail.vue'
-  
+
   defineOptions({ name: 'SystemNotifyMessage' })
   
   const loading = ref(true) // 列表的加载中
   const total = ref(0) // 列表的总页数
   const list = ref([]) // 列表的数据
+  const windowHeight = ref(window.innerHeight)
+  const tableHeight = computed(() => windowHeight.value - 260)
   const queryParams = reactive({
     pageNo: 1,
     pageSize: 10,
