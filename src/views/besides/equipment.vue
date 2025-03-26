@@ -85,9 +85,12 @@ import { Download, Plus, Search } from '@element-plus/icons-vue'
 //   import { getList } from '../../../api/iotManagement'
 import imageUrl from '/@/assets/task_image/task.png'
 
+import { useMessage } from '/@/hooks/web/useMessage'
 defineOptions({
   name: 'IotManagement',
 })
+
+const { success } = useMessage()
 
 const list = ref<any>([])
 const listLoading = ref<boolean>(true)
@@ -133,17 +136,17 @@ const queryData = () => {
   fetchData()
 }
 const handlePlay = (status: any) => {
-  if (status) $baseMessage('模拟停用成功', 'success', 'hey')
-  else $baseMessage('模拟开启成功', 'success', 'hey')
+  if (status) success('模拟停用成功')
+  else success('模拟开启成功')
 }
 const handleDelete = () => {
-  $baseMessage('模拟删除成功', 'success', 'hey')
+  success('模拟删除成功')
 }
 const handleAdd = () => {
-  $baseMessage('模拟添加成功', 'success', 'hey')
+  success('模拟添加成功')
 }
 const handleExport = () => {
-  $baseMessage('模拟导出成功', 'success', 'hey')
+  success('模拟导出成功')
 }
 onBeforeMount(() => {
   fetchData()
