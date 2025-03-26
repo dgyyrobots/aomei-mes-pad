@@ -13,7 +13,7 @@
      <!-- 在此处加头部右上角内容 -->
      <vab-color-picker v-show="theme.showColorPicker" />
      <vab-dark v-show="theme.showDark" />
-     <vab-font-size />
+     <vab-font-size style="marginLeft:16px" />
     <vab-avatar />
   </div>
 </template>

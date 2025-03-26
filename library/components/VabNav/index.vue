@@ -33,7 +33,7 @@
       </el-menu-item>
     </el-menu>
     <div class="right-panel">
-      <Message></Message>
+      <!-- <Message></Message>  我的站内信,暂时隐藏-->
       <vab-right-tools />
     </div>
   </div>
