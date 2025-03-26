@@ -40,21 +40,21 @@
           class="data-table"
           :max-height="tableHeight"
         >
-          <el-table-column type="selection" width="38" />
-          <el-table-column align="center" label="序号" width="65">
+          <el-table-column type="selection" width="50" />
+          <el-table-column align="center" label="序号" width="80">
             <template #default="{ $index }">
               {{ $index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="工单号" min-width="120" prop="workorderCode" show-overflow-tooltip />
-          <el-table-column align="center" label="标题" min-width="120" prop="workorderName" show-overflow-tooltip />
-          <el-table-column align="center" label="产品名称" min-width="120" prop="productName" show-overflow-tooltip />
-          <el-table-column align="center" label="工单状态" min-width="90">
+          <el-table-column align="center" label="工单号" prop="workorderCode" show-overflow-tooltip />
+          <el-table-column align="center" label="标题"  prop="workorderName" show-overflow-tooltip />
+          <el-table-column align="center" label="产品名称"  prop="productName" show-overflow-tooltip />
+          <el-table-column align="center" label="工单状态" >
             <template #default="scope">
               <dict-tag :type="'mes_order_status'" :value="scope.row.status" />
             </template>
           </el-table-column>
-          <el-table-column align="center" label="操作" width="80" fixed="right">
+          <el-table-column align="center" label="操作"  fixed="right">
             <template #default="{ row }">
               <el-button text type="danger" @click="handleDelete(row)">删除</el-button>
             </template>
@@ -94,7 +94,8 @@ defineOptions({
 const windowWidth = ref(window.innerWidth)
 const windowHeight = ref(window.innerHeight)
 const isMenuCollapsed = ref(windowWidth.value <= 820)
-const tableHeight = computed(() => windowHeight.value - 380)
+
+const tableHeight = computed(() => windowHeight.value - 280)
 const { success } = useMessage()
 // 监听窗口大小变化
 const handleResize = () => {
@@ -188,96 +189,130 @@ const selectionChange=(v:any)=>{
 
 <style lang="scss" scoped>
 .report-container {
-  display: flex;
+
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
 
+}
+
+.menu-list {
+  width: 100%;
+  height: 64px;
+  
+  :deep(.el-menu-item) {
+    height: 64px;
+    line-height: 64px;
+    font-size: 18px;
+    
+    .el-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
   }
+}
+  
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 30px;
+  background-color: #f5f7fa;
 
-  .menu-list {
-    width: 100%;
+  .query-form-wrapper {
+    margin-bottom: 30px;
+    border-radius: 8px; 
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06); 
+    
+    .query-form {
+      padding: 24px;
+    }
+    
+    .form-inline {
+      display: flex;
+      flex-wrap: wrap;
+      
+      :deep(.el-form-item) {
+        margin-bottom: 0;
+        margin-right: 30px; // 更大的表单项间距
+        
+        .el-form-item__label {
+          font-size: 16px; // 更大的标签字体
+        }
+        
+        .el-input {
+          width: 280px; // 更宽的输入框
+          
+          .el-input__inner {
+            height: 44px; // 更高的输入框
+            font-size: 16px; // 更大的输入框字体
+          }
+        }
+      }
+      
+      :deep(.el-button) {
+        height: 44px;
+        padding: 0 24px;
+        font-size: 16px; 
+      }
+    }
   }
   
-  .content-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  // 表格样式优化
+  :deep(.data-table) {
+    border-radius: 8px;
     overflow: hidden;
-    padding: 16px;
-    background-color: #f5f7fa;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
     
-    .query-form-wrapper {
-      margin-bottom: 16px;
-      background-color: #fff;
-      border-radius: 4px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-      
-      .query-form {
-        padding: 16px;
-      }
-      
-      .form-inline {
-        display: flex;
-        flex-wrap: wrap;
-        
-        :deep(.el-form-item) {
-          margin-bottom: 0;
-        }
-      }
+    .el-table__header th {
+      padding: 16px 0;
+      font-size: 16px;
+      font-weight: 600;
     }
     
-
+    .el-table__body td {
+      padding: 14px 0;
+      font-size: 16px;
+    }
     
-    .pagination-wrapper {
-      padding: 8px 0;
-      background-color: #fff;
-      border-radius: 4px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-      padding-bottom: 16px;
+    .el-button {
+      font-size: 15px;
+      padding: 8px 16px;
     }
   }
-
-
-// 平板适配样式
-@media screen and (max-width: 820px) {
-  .report-container {
-    .content-area {
-      padding: 8px;
+  
+  .pagination-wrapper {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    
+    :deep(.el-pagination) {
+      justify-content: flex-end;
+      font-size: 16px;
       
-      .query-form-wrapper {
-        .query-form {
-          padding: 12px;
-        }
-        
-        .form-inline {
-          :deep(.el-form-item) {
-            margin-right: 8px;
-          }
-          
-          :deep(.el-input) {
-            width: 140px;
-          }
-        }
+      .el-pagination__sizes {
+        margin-right: 20px;
       }
       
-      .table-wrapper {
-        .data-table {
-          :deep(.el-table__header) th {
-            padding: 8px 0;
-            font-size: 14px;
-          }
-          
-          :deep(.el-table__body) td {
-            padding: 8px;
-            font-size: 14px;
-          }
-        }
+      .el-pagination__jump {
+        margin-left: 20px;
+      }
+      
+      .btn-prev, .btn-next {
+        padding: 0 15px;
+      }
+      
+      .el-pager li {
+        min-width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
       }
     }
   }
 }
+
+// 移除平板适配样式
 </style>

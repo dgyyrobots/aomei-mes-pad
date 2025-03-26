@@ -418,8 +418,8 @@ const style1 = {
 <style lang="scss" scoped>
 
 .task-list-container {
-  padding: 16px;
-  height: 40vh;
+  padding:0 12px 12px 12px;
+  height: 36vh;
   overflow-y: auto;
   
   .el-row {
@@ -526,7 +526,7 @@ const style1 = {
 // 适配平板
 @media screen and (max-width: 820px) {
   .task-list-container {
-    padding: 12px;
+    padding:12px;
     
     .el-col {
       width: 100%;
