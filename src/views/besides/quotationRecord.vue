@@ -2,6 +2,10 @@
 
   <div class="content">
     <div class="top">
+      <el-breadcrumb separator="/">
+      <el-breadcrumb-item >报警</el-breadcrumb-item>
+      <el-breadcrumb-item>报警记录</el-breadcrumb-item>
+     </el-breadcrumb>
       <el-button  @click="resetQuery" type="primary"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
     </div>
   <ContentWrap>
@@ -156,7 +160,7 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
   }
