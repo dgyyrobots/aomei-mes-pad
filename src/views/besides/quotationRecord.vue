@@ -4,8 +4,9 @@
     <div class="top">
       <el-button  @click="resetQuery" type="primary"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
     </div>
+  <ContentWrap>
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="list" border>
+    <el-table v-loading="loading" :data="list">
         <el-table-column label="编号" align="center" prop="id" />
         <el-table-column label="用户类型" align="center" prop="userType">
           <template #default="scope">
@@ -75,6 +76,7 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
       />
+    </ContentWrap>
     <!-- 表单弹窗：详情 -->
     <NotifyMessageDetail ref="detailRef" />
   </div>  
@@ -139,21 +141,42 @@
   })
   </script>
   <style lang="scss" scoped>
-  .content {
-    padding: 14px;
+.content {
+  padding: 14px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  
+  .top {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+    flex-direction: row;
+    justify-content: flex-end;
     align-items: center;
-    background: #fff;
-    min-height: calc(100vh - 100px);
-    .top {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      align-items: center;
-      margin-bottom: 12px;
+    margin-bottom: 12px;
+  }
+  
+  // 添加ContentWrap样式控制
+  :deep(.el-card) {
+    width: 100%;
+    overflow: hidden;
+    
+    .el-card__body {
+      overflow-x: auto;
     }
   }
+  
+  // 控制表格宽度和滚动
+  :deep(.el-table) {
+    width: 100%;
+    
+    // 表格内容过多时显示横向滚动条
+    .el-table__body-wrapper {
+      overflow-x: auto;
+    }
+  }
+}
 </style>
