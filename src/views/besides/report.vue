@@ -30,7 +30,7 @@
       </div>
 
       <!-- 表格区域 -->
-      <div class="table-wrapper">
+    
         <el-table 
           ref="tableRef" 
           v-loading="listLoading" 
@@ -63,7 +63,7 @@
             <el-empty class="vab-data-empty" description="暂无数据" />
           </template>
         </el-table>
-      </div>
+
       
       <!-- 分页区域 -->
       <div class="pagination-wrapper">
@@ -85,7 +85,7 @@ import { Delete, Search, Plus, Document } from '@element-plus/icons-vue'
 import type { TableInstance } from 'element-plus'
 import { deleteWorkorder, getWorkorderPage } from '/@/api/workOrder'
 import { computed, ref, reactive, onBeforeMount, onMounted, onUnmounted } from 'vue'
-
+import { useMessage } from '/@/hooks/web/useMessage'
 defineOptions({
   name: 'WorkOrder',
 })
@@ -94,8 +94,8 @@ defineOptions({
 const windowWidth = ref(window.innerWidth)
 const windowHeight = ref(window.innerHeight)
 const isMenuCollapsed = ref(windowWidth.value <= 820)
-const tableHeight = computed(() => windowHeight.value - 280)
-
+const tableHeight = computed(() => windowHeight.value - 380)
+const { success } = useMessage()
 // 监听窗口大小变化
 const handleResize = () => {
   windowWidth.value = window.innerWidth
@@ -173,7 +173,7 @@ const handleDelete = async (row: any) => {
     })
     const { msg }: any = await deleteWorkorder(row.id)
     await fetchData()
-    $baseMessage(msg, 'success', 'hey')
+    success(msg)
   } 
 }
 
@@ -230,18 +230,7 @@ const selectionChange=(v:any)=>{
       }
     }
     
-    .table-wrapper {
-      flex: 1;
-      overflow: hidden;
-      background-color: #fff;
-      border-radius: 4px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-      
-      .data-table {
-        width: 100%;
-        height: 100%;
-      }
-    }
+
     
     .pagination-wrapper {
       padding: 8px 0;
