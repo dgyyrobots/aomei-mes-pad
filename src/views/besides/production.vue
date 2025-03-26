@@ -30,9 +30,10 @@
               <div class="task-card__header">
                 <div :class="['status-line', item.status === 'FINISHED' ? 'is-finished' : '']"></div>
                 <div class="material-info">
-                  <div class="label">产出物料</div>
-                  <div class="value">{{ item.itemName }}-{{ item.itemCode }}</div>
-                </div>
+                <div class="label">产出物料</div>
+                <div class="value">{{ item.itemName }}</div>
+                <div class="value code">{{ item.itemCode }}</div>
+              </div>
               </div>
               
               <el-progress 
@@ -433,7 +434,7 @@ const style1 = {
 .task-card {
   cursor: pointer;
   transition: all 0.3s;
-  height: 280px;
+  height: 290px;
   
   &.is-selected {
     transform: translateY(-2px);
@@ -458,47 +459,65 @@ const style1 = {
     }
     
     .material-info {
-      flex: 1;
-      .label {
-        font-size: 14px;
-        color: var(--el-text-color-secondary);
-        margin-bottom: 4px;
-      }
-      .value {
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--el-text-color-primary);
-      }
+  flex: 1;
+  width: 100%;
+  overflow: hidden;
+  
+  .label {
+    font-size: 14px;
+    color: var(--el-text-color-secondary);
+    margin-bottom: 4px;
+  }
+  .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    
+    &.code {
+      font-size: 14px;
+      font-weight: normal;
+      margin-top: 2px;
     }
+  }
+}
   }
   
   .task-progress {
-    margin: 16px 0;
+    margin:0px 0px 8px 0;
   }
   
   .task-info {
-    .info-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
+  .info-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px; // 减小项目间距
+    
+    .label {
+      min-width: 70px; // 固定标签宽度
+      width: auto;     // 允许自适应
+      color: var(--el-text-color-secondary);
+      font-size: 14px;
+      margin-right: 8px; // 添加右侧间距
+    }
+    
+    .value {
+      flex: 1;
+      color: var(--el-text-color-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       
-      .label {
-        width: 80px;
-        color: var(--el-text-color-secondary);
-        font-size: 14px;
-      }
-      
-      .value {
-        flex: 1;
-        color: var(--el-text-color-primary);
-        
-        &.highlight {
-          color: var(--el-color-primary);
-          font-weight: 600;
-        }
+      &.highlight {
+        color: var(--el-color-primary);
+        font-weight: 600;
       }
     }
   }
+}
 }
 
 // 适配平板
