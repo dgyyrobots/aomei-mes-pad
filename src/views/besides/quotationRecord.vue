@@ -2,11 +2,10 @@
 
   <div class="content">
     <div class="top">
-      <el-button  @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
+      <el-button  @click="resetQuery" type="primary"><Icon icon="ep:refresh" class="mr-5px" /> 刷新</el-button>
     </div>
     <!-- 列表 -->
-    <ContentWrap>
-      <el-table v-loading="loading" :data="list">
+    <el-table v-loading="loading" :data="list" border>
         <el-table-column label="编号" align="center" prop="id" />
         <el-table-column label="用户类型" align="center" prop="userType">
           <template #default="scope">
@@ -76,8 +75,6 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
       />
-    </ContentWrap>
-  
     <!-- 表单弹窗：详情 -->
     <NotifyMessageDetail ref="detailRef" />
   </div>  
@@ -148,11 +145,15 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    background: #fff;
+    min-height: calc(100vh - 100px);
     .top {
+      width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
       align-items: center;
+      margin-bottom: 12px;
     }
   }
 </style>
