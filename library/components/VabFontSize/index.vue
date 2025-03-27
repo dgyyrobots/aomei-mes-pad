@@ -56,12 +56,12 @@
 
   
   // 新增字体相关变量设置
-  const fontSizeMap = {
-  'large': { base: '16px', medium: '18px' },
-  'default': { base: '14px', medium: '16px' },
-  'small': { base: '12px', medium: '14px' },
-  'mini': { base: '10px', medium: '12px' }
-}
+    const fontSizeMap: Record<string, { base: string; medium: string }> = {
+      'large': { base: '18px', medium: '20px' },    // 增大字体
+      'default': { base: '16px', medium: '18px' },  // 默认字体
+      'small': { base: '14px', medium: '16px' },    // 小字体
+      'mini': { base: '12px', medium: '14px' }      // 迷你字体
+    }
 
   const sizeConfig = fontSizeMap[sizeVal] || fontSizeMap.default
   root.style.setProperty('--el-font-size-base', sizeConfig.base)
@@ -69,6 +69,7 @@
   
   // 更新store中的尺寸设置
   appStore.setCurrentSize(sizeVal as ElementPlusSize)
+  ElMessage.success('设置成功')
 
 }
   

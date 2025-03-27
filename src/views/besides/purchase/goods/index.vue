@@ -72,8 +72,8 @@
         </el-table-column>
         <el-table-column  width="150" fixed="right"  label="操作" align="center" class-name="small-padding fixed-width">
           <template #default="scope">
-            <el-button :size="currentSize" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['purchase:goods:update']">修改</el-button>
-            <el-button :size="currentSize" type="text" @click="handleDelete(scope.row)" v-hasPermi="['purchase:goods:delete']">删除</el-button>
+            <el-button :size="currentSize" type="text" @click.stop="handleUpdate(scope.row)" v-hasPermi="['purchase:goods:update']">修改</el-button>
+            <el-button :size="currentSize" type="text" @click.stop="handleDelete(scope.row)" v-hasPermi="['purchase:goods:delete']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -520,16 +520,16 @@
     const id = row.id || selectedRows.value[0].id
 
     // 追加校验, 禁止修改已入库的单据
-    if (selectedRows.value[0].status === 2) {
+    if (row.status === 2) {
       ElMessage.error('该单据已入库，禁止修改！')
       return
     }
 
     try {
       const response = await listAllUnitmeasure()
-      unitOptions.value = response.data
+      unitOptions.value = response
       const goodsResponse = await getGoods(id)
-      Object.assign(form, goodsResponse.data)
+      Object.assign(form, goodsResponse)
       open.value = true
       title.value = '修改采购商品明细'
     } catch (error) {
@@ -1062,4 +1062,6 @@
   }
   
   </script>
-  
+<style lang="scss" scoped>
+
+</style>

@@ -1,6 +1,7 @@
 @import './var.css';
 @import 'element-plus/theme-chalk/dark/css-vars.css';
 
+
 .reset-margin [class*='el-icon'] + span {
   margin-left: 2px !important;
 }
@@ -37,8 +38,8 @@
 // 在文件末尾添加
 :root {
 
-  --el-font-size-base: 14px;
-  --el-font-size-medium: 16px;
+  --el-font-size-base: 16px;
+  --el-font-size-medium: 18px
 }
 
 // 确保Element组件使用这些变量

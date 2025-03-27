@@ -10,10 +10,10 @@
  @use './technology' as *;
  @use 'vsv-icon/dist/style.css' as *;
  @use './var' as *;
- 
+
  //vxeTable样式不需要可删除
- @use './vxeTableVar' as *;
- @use 'vxe-table/lib/style.css' as *;
+//  @use './vxeTableVar' as *;
+//  @use 'vxe-table/lib/style.css' as *;
 
 @mixin base-scrollbar {
   &::-webkit-scrollbar {
@@ -504,9 +504,9 @@ html {
         .el-form:not(.el-form--inline) {
           margin-right: 30px;
 
-          .el-form-item:last-child {
-            margin-bottom: 0;
-          }
+          // .el-form-item:last-child {
+          //   margin-bottom: 0;
+          // }
 
           .el-date-editor,
           .el-select {
@@ -856,4 +856,16 @@ html {
       }
     }
   }
+}
+// 在文件末尾添加
+:root {
+
+  --el-font-size-base: 16px;
+  --el-font-size-medium: 18px
+}
+
+// 确保Element组件使用这些变量
+.el-button,
+.el-input__inner {
+  font-size: var(--el-font-size-medium);
 }
