@@ -87,7 +87,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
       },
       {
         path: '/quality',
-        redirect:'/iqc',
+        redirect: '/iqc',
         component: () => import('/@/views/besides/quality.vue'),
         name: 'quality',
         meta: {
@@ -137,6 +137,34 @@ const remainingRouter: AppRouteRecordRaw[] = [
           // icon: 'home-2-line',
           // icon:'ep:home-filled'
         },
+      },
+      {
+        path: '/purchase',
+        component: () => import('/@/views/besides/purchase.vue'),
+        name: 'purchase',
+        meta: {
+          title: '采购',
+          // icon: 'home-2-line',
+          // icon:'ep:home-filled'
+        },
+        children: [
+          {
+            path: '/purchase/goods',
+            component: () => import('/@/views/besides/purchase/goods/index.vue'),
+            name: 'PurchaseGoods',
+            meta: {
+              title: '采购明细管理',
+            },
+          },
+          {
+            path: '/purchase/order',
+            component: () => import('/@/views/besides/purchase/order/index.vue'),
+            name: 'PurchaseOrder',
+            meta: {
+              title: '采购订单',
+            },
+          },
+        ]
       },
       // {
       //   path: 'dashboard',

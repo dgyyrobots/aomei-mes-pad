@@ -205,4 +205,10 @@ export enum DICT_TYPE {
   CRM_CUSTOMER_SOURCE = 'crm_customer_source',
   CRM_PRODUCT_STATUS = 'crm_product_status',
   CRM_PERMISSION_LEVEL = 'crm_permission_level', // CRM 数据权限的级
+
+
+
+  // ========== PURCHASE - purchase 采购模块 ==========
+  PURCHASE_STATUS = 'purchase_status',
+
 }

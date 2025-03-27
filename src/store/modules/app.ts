@@ -73,7 +73,7 @@ export const useAppStore = defineStore('app', {
 
       layout: wsCache.get(CACHE_KEY.LAYOUT) || 'classic', // layout布局
       isDark: wsCache.get(CACHE_KEY.IS_DARK) || false, // 是否是暗黑模式
-      currentSize: wsCache.get('default') || 'default', // 组件尺寸
+      currentSize: wsCache.get(CACHE_KEY.FONT_SIZE) || 'default', // 字体大小 && 组件尺寸
       theme: wsCache.get(CACHE_KEY.THEME) || {
         // 主题色
         elColorPrimary: '#409eff',
@@ -170,7 +170,7 @@ export const useAppStore = defineStore('app', {
       return this.isDark
     },
     getCurrentSize(): ElementPlusSize {
-      return this.currentSize
+      return wsCache.get(CACHE_KEY.FONT_SIZE) || this.currentSize
     },
     getSizeMap(): ElementPlusSize[] {
       return this.sizeMap
@@ -267,9 +267,9 @@ export const useAppStore = defineStore('app', {
       wsCache.set(CACHE_KEY.IS_DARK, this.isDark)
     },
     setCurrentSize(currentSize: ElementPlusSize) {
-      console.log(currentSize, 'currentSize')
+
       this.currentSize = currentSize
-      wsCache.set('currentSize', this.currentSize)
+      wsCache.set(CACHE_KEY.FONT_SIZE, this.currentSize)
     },
     setMobile(mobile: boolean) {
       this.mobile = mobile

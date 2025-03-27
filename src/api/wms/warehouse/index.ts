@@ -14,7 +14,7 @@ export interface WarehouseVO {
   attr3: number
   attr4: number
   sendState: string
-  sendCity: string 
+  sendCity: string
   sendDistrict: string
   sendStreet: string
   sendDetail: string
@@ -82,6 +82,9 @@ export const getStorageLocation = async (id: number) => {
 
 // 查询仓库树形
 export const getWarehouseList = async () => {
+  return await request.get({ url: `/wms/warehouse/getTreeList` })
+}
+export const getTreeList = async () => {
   return await request.get({ url: `/wms/warehouse/getTreeList` })
 }
 

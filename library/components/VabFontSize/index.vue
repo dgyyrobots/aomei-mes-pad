@@ -47,7 +47,7 @@
 
   
   // 计算当前尺寸
-  const size = computed(() => appStore.size || 'default') // 添加默认值防止undefined
+  const size = computed(() => appStore.currentSize || 'default') // 添加默认值防止undefined
   
   // 处理尺寸变更
   const handleSetSize = (sizeVal: string) => {

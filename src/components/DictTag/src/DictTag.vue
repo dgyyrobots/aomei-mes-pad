@@ -3,7 +3,7 @@ import { ElTag } from 'element-plus'
 import { defineComponent, PropType, ref } from 'vue'
 import { isHexColor } from '/@/utils/color'
 import { DictDataType, getDictOptions } from '/@/utils/dict'
-
+import { useAppStore } from '@/store/modules/app'
 export default defineComponent({
   name: 'DictTag',
   props: {
@@ -17,6 +17,8 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const appStore = useAppStore()
+    const currentSize = computed(() => appStore.currentSize==='mini'?  'small' : appStore.currentSize)
     const dictData = ref<DictDataType>()
     const getDictObj = (dictType: string, value: string) => {
       const dictOptions = getDictOptions(dictType)
@@ -45,7 +47,9 @@ export default defineComponent({
           type={dictData.value?.colorType}
           color={dictData.value?.cssClass && isHexColor(dictData.value?.cssClass) ? dictData.value?.cssClass : ''}
           disableTransitions={true}
+          size={currentSize.value}
         >
+         
           {dictData.value?.label}
         </ElTag>
       )

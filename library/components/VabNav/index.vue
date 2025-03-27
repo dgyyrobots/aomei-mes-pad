@@ -31,6 +31,7 @@
       <el-menu-item index="/quotationRecord" class="alarm-menu-item">
         <span class="menu-text">报警</span>
       </el-menu-item>
+      <el-menu-item index="/purchase">采购</el-menu-item>
     </el-menu>
     <div class="right-panel">
       <!-- <Message></Message>  我的站内信,暂时隐藏-->
