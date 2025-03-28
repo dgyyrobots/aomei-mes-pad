@@ -1,5 +1,5 @@
 <template>
-  <vab-app />
+  <vab-app></vab-app>
 </template>
 
 <script lang="ts" setup>

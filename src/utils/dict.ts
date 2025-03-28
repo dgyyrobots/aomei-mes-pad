@@ -211,4 +211,8 @@ export enum DICT_TYPE {
   // ========== PURCHASE - purchase 采购模块 ==========
   PURCHASE_STATUS = 'purchase_status',
 
+
+  // ========== MES - mes 模块 ==========
+  MES_WORKORDER_SOURCETYPE = 'mes_workorder_sourcetype',
+  MES_ALLOCATED_STATUS = 'wms_allocated_status'
 }

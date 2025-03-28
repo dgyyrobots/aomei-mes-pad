@@ -25,6 +25,7 @@
     </div>
     <el-menu mode="horizontal" :router="true" class="nav-menu">
       <el-menu-item index="/production">生产</el-menu-item>
+      <el-menu-item index="/allocation">调拨</el-menu-item>
       <el-menu-item index="/report">报工</el-menu-item>
       <el-menu-item index="/quality">质检</el-menu-item>
       <el-menu-item index="/equipment">设备</el-menu-item>

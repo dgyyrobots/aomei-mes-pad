@@ -166,6 +166,14 @@ const remainingRouter: AppRouteRecordRaw[] = [
           },
         ]
       },
+      {
+        path: '/allocation',
+        name: 'Allocation',
+        component: () => import('/@/views/besides/allocation.vue'),
+        meta: {
+          title: '生产调拨',
+        },
+      },
       // {
       //   path: 'dashboard',
       //   name: 'Dashboard',
