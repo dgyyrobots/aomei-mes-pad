@@ -53,40 +53,40 @@
         </el-button>
       </el-col>
     </el-row>
-
+    <ContentWrap>
     <!-- 列表 -->
-    <el-table v-loading="loading" :data="list" :size="currentSize" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="调拨单编号" align="center" prop="allocatedCode"/>
-      <el-table-column label="调拨单名称" align="center" prop="allocatedName"/>
-      <el-table-column label="生产工单" align="center" prop="workorderCode"/>
-      <el-table-column label="调拨日期" align="center" prop="allocatedDate" width="180">
-        <template #default="scope">
-          <span>{{ formatDate(scope.row.allocatedDate,'YYYY-MM-DD') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="单据状态" align="center" prop="status">
-        <template #default="scope">
-          <dict-tag :type="DICT_TYPE.MES_ALLOCATED_STATUS" :value="scope.row.status"/>
-        </template>
-      </el-table-column>
+      <el-table v-loading="loading" :data="list" :size="currentSize" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" align="center"/>
+        <el-table-column label="调拨单编号" align="center" prop="allocatedCode"/>
+        <el-table-column label="调拨单名称" align="center" prop="allocatedName"/>
+        <el-table-column label="生产工单" align="center" prop="workorderCode"/>
+        <el-table-column label="调拨日期" align="center" prop="allocatedDate" width="180">
+          <template #default="scope">
+            <span>{{ formatDate(scope.row.allocatedDate,'YYYY-MM-DD') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="单据状态" align="center" prop="status">
+          <template #default="scope">
+            <dict-tag :type="DICT_TYPE.MES_ALLOCATED_STATUS" :value="scope.row.status"/>
+          </template>
+        </el-table-column>
 
-      <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
-        <template #default="scope">
-          <el-button :size="currentSize" type="text"  v-if="scope.row.status != 'FINISHED'" @click="handleExecute(scope.row)" v-hasPermi="['wms:allocated-header:allocated']">执行领出</el-button>
-          <el-button :size="currentSize" type="text"  @click="handleUpdate(scope.row)"
-                     v-hasPermi="['wms:allocated-header:update']">修改
-          </el-button>
-          <el-button :size="currentSize" type="text"  @click="handleDelete(scope.row)"
-                     v-hasPermi="['wms:allocated-header:delete']">删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页组件 -->
-    <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize"
-                @pagination="getList"/>
-
+        <el-table-column label="操作" fixed="right" align="center" class-name="small-padding fixed-width">
+          <template #default="scope">
+            <el-button :size="currentSize" type="text"  v-if="scope.row.status != 'FINISHED'" @click="handleExecute(scope.row)" v-hasPermi="['wms:allocated-header:allocated']">执行领出</el-button>
+            <el-button :size="currentSize" type="text"  @click="handleUpdate(scope.row)"
+                      v-hasPermi="['wms:allocated-header:update']">修改
+            </el-button>
+            <el-button :size="currentSize" type="text"  @click="handleDelete(scope.row)"
+                      v-hasPermi="['wms:allocated-header:delete']">删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页组件 -->
+      <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize"
+                  @pagination="getList"/>
+    </ContentWrap>
     <!-- 对话框(添加 / 修改) -->
     <el-dialog :title="title" v-model="open" width="66%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :size="currentSize" :model="form" :rules="rules" >
@@ -1209,9 +1209,9 @@ defineExpose({
 });
 </script>
 <style lang="scss" scoped>
-.app-container {
-  padding: 20px;
-}
+// .app-container {
+//   padding: 20px;
+// }
 
 .mb8 {
   margin-bottom: 8px;
