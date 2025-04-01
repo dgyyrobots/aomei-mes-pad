@@ -153,11 +153,13 @@
             <el-col :span="8">
               <el-form-item label="采购单号" prop="poNo">
                 <el-input v-model="wareForm.poNo" placeholder="请输入采购单号" @blur="handleBlur" @input="handleInput"/>
+                <input ref="scannerInput" v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1;" autofocus />
                 <span>支持扫码枪扫描</span>
               </el-form-item>
             </el-col>
             <el-col :span="4">
-              <el-button type="primary" round @click="">摄像头</el-button>
+              <!-- <el-button type="primary" round @click="">摄像头</el-button> -->
+              <el-button type="primary" round @click="handResetPoNo">重置</el-button>
             </el-col>
   
             <el-col :span="12">
@@ -307,6 +309,9 @@
  
   const appStore = useAppStore()
   const currentSize = computed(() => appStore.currentSize==='mini'?  'small' : appStore.currentSize)
+
+  const scanData = ref(null)
+  const scannerInput= ref(null)
   // 响应式数据
   const loading = ref(true)
   const exportLoading = ref(false)
@@ -389,7 +394,10 @@
   const canSplit = computed(() => {
     return selectedRows.value.length > 0
   })
-  
+  const handResetPoNo = () => {
+    wareForm.poNo = ''
+    scanData.value = null
+  }
   // 方法定义
   const getList = async () => {
     loading.value = true
@@ -489,10 +497,46 @@
   onMounted(() => {
     getList()
     getWarehouseList()
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // 添加全局点击事件监听器
+    document.addEventListener('click', () => {
+      if (executeDialogVisible.value) {
+        refocusScanner();
+      }
+    });
+    nextTick(() => {
+      setTimeout(() => {
+        scannerInput.value && scannerInput.value.focus();
+      },1000);
+    });
   })
+
+  onUnmounted(() => {
+    remove_keydownlistener();
+  });
+
+const remove_keydownlistener = () => {
+  window.removeEventListener("keydown", handleKeyDown, false);
+};
   
   // 监听器
-  watch(() => wareForm.poNo, (newVal) => {
+  // watch(() => wareForm.poNo, (newVal) => {
+  //   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
+  //     console.log('输入内容包含完整的 "{" 和 "}"')
+  //     try {
+  //       const data = JSON.parse(newVal)
+  //       if (data && data.po_no) {
+  //         wareForm.poNo = data.po_no
+  //         handleBlur()
+  //       }
+  //     } catch (error) {
+  //       ElMessage.error('扫描结果不是有效的 JSON 字符串')
+  //     }
+  //   }
+  // })
+  watch(() => scanData.value, (newVal) => {
     if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
       console.log('输入内容包含完整的 "{" 和 "}"')
       try {
@@ -507,13 +551,38 @@
     }
   })
   
+
+  // 添加对话框显示状态的监听
+watch(() => wareOpen.value, (newVal) => {
+  if (newVal) {
+    // 对话框打开后，等待DOM渲染完成并设置焦点
+    nextTick(() => {
+      // 使用多个延时尝试获取焦点，增加成功率
+      setTimeout(() => {
+        if (scannerInput.value) {
+          scannerInput.value.focus();
+          console.log('设置焦点成功');
+        }
+      }, 300);
+    });
+  }
+});
+
+
+const handleKeyDown = (e) => {
+  const keyCode = e.keyCode;
+  if (keyCode === 13) {
+    console.log(e,'eeeeeeeeeeee')
+    scanData.value = e.target.value;
+  }
+};
+  
   // 新增按钮操作
   const handleAdd = () => {
     reset()
     open.value = true
     title.value = '添加采购商品明细'
   }
-  
   // 修改按钮操作
   const handleUpdate = async (row) => {
     reset()
