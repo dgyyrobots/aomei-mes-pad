@@ -306,7 +306,8 @@
         <el-row :gutter="10">
           <el-col :span="8">
             <el-form-item label="单据信息" prop="purchaseId">
-              <el-input  ref="scannerInput"  v-model="purchaseId" placeholder="请输入" autofocus/>
+              <el-input  readonly v-model="purchaseId" placeholder="请输入"/>
+              <input ref="scannerInput" v-model="scanData" placeholder="请输入" style="position: absolute; opacity: 0; width: 1; height: 1; z-index: -1;"  autofocus />
               <span>支持扫码枪扫描</span>
             </el-form-item>
           </el-col>
@@ -371,8 +372,9 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { formatDate } from '/@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { CACHE_KEY, useCache } from '/@/hooks/web/useCache'
-import { useAppStore } from '@/store/modules/app'
  import download from '~/library/plugins/download'
+ import { useAppStore } from '@/store/modules/app'
+
   const appStore = useAppStore()
   const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
 // 组件引用
@@ -508,6 +510,8 @@ const rules = reactive({
 
 const executeDialogVisible = ref(false);
 const scannerInput =ref(null)
+const scanData = ref(null)
+
 const executeFormData = reactive({});
 const purchaseId = ref(null);
 const videoWidth = ref(640);
@@ -561,9 +565,41 @@ onUnmounted(() => {
 });
 
 // 监听器
-watch(() => purchaseId.value, (newVal) => {
+// watch(() => purchaseId.value, (newVal) => {
+//   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
+//     console.log('输入内容包含完整的 "{" 和 "}"');
+//     let type = '';
+//     // 开始基于当前的内容追加产品入库
+
+//     // 替换中文引号为英文引号，并解析 JSON
+//     newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
+//     // 移除零宽度非换行空格字符
+//     newVal = newVal.replace(/\uFEFF/g, '');
+//     // 直接解析 JSON 字符串
+//     console.log(newVal,'newVal')
+//     const data = JSON.parse(newVal);
+//     // 检查是否包含 id 属性
+//     console.log(data,'dddddddd')
+//     if (data) {
+//       purchaseId.value = data.id;
+//       type = data.type;
+//     }
+//     handleBlur(type);
+//   }  else if(typeof(newVal)==='object' && newVal.id){
+//     let type = '';
+//     purchaseId.value = newVal.id;
+//     type = newVal.type;
+//     handleBlur(type);
+//   }
+//   else {
+//     console.log('输入内容不包含完整的 "{" 和 "}"');
+//   }
+// });
+
+watch(() => scanData.value, (newVal) => {
+
   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
-    console.log('输入内容包含完整的 "{" 和 "}"');
+
     let type = '';
     // 开始基于当前的内容追加产品入库
 
@@ -572,14 +608,15 @@ watch(() => purchaseId.value, (newVal) => {
     // 移除零宽度非换行空格字符
     newVal = newVal.replace(/\uFEFF/g, '');
     // 直接解析 JSON 字符串
-    console.log(newVal,'newVal')
+ 
     const data = JSON.parse(newVal);
     // 检查是否包含 id 属性
-    console.log(data,'dddddddd')
+
     if (data) {
       purchaseId.value = data.id;
       type = data.type;
     }
+
     handleBlur(type);
   }  else if(typeof(newVal)==='object' && newVal.id){
     let type = '';
@@ -614,12 +651,16 @@ const remove_keydownlistener = () => {
 
 const handleKeyDown = (e) => {
   const keyCode = e.keyCode;
+
   if (keyCode === 13) {
-    console.log(e,'eeeeeeeeeeee')
+
+    scanData.value = e.target.value;
+
   }
 };
 const handResetPurchaseId = () => {
   purchaseId.value = null;
+  scanData.value = null
   // purchaseId.value = '{"id":10,"type":"feedback"}'
 };
 
@@ -786,10 +827,9 @@ const submitForm = () => {
     }));
 
     // 修改的提交
-    console.log(form.value);
+
     if (form.value.id != null) {
-      console.log("修改参数: "+ form.value);
-      console.log(form.value);
+    
       updateAllocatedHeader(form.value).then(response => {
         ElMessage.success("修改成功");
         open.value = false;
@@ -799,7 +839,7 @@ const submitForm = () => {
       return;
     }
     form.value.bomList = allocatedList.value; // 追加选中的需要调拨的Bom信息
-    console.log(form.value);
+
     // 添加的提交
     createAllocatedHeader(form.value).then(response => {
       ElMessage.success("新增成功");
@@ -883,7 +923,7 @@ const handleAutoGenChange = (autoGenFlag) => {
 const handleFinsh = (row) => {
   reset();
   const allocatedId = row.id || ids.value;
-  console.log(allocatedId);
+
   loading.value = true;
   // 完成
   finshAllocatedHeader(allocatedId).then(response => {
@@ -933,7 +973,7 @@ const openExecuteDialog = (allocatedId) => {
 };
 
 const allocatedHandleAdd = () => {
-  if (!purchaseId.value || !purchaseId.value.includes('{') || !purchaseId.value.includes('}')) {
+  if (!purchaseId.value) {
     ElMessage.error('请扫描正确的单据信息!');
     return;
   }
@@ -971,44 +1011,44 @@ const handleBlur = (type) => {
     ElMessage.error('请输入或扫描单据信息!');
     return;
   }
-  if (isNaN(purchaseId.value)) {
-    if ((purchaseId.value.includes('{') || purchaseId.value.includes('[') || purchaseId.value.includes('}') || purchaseId.value.includes(']'))) {
-      purchaseId.value = purchaseId.value.trim();
-      // 清理文本框内容的多余空格，并格式化为标准 JSON 格式
-      purchaseId.value = purchaseId.value
-        // 去除字段名和字段值之间的多余空格
-        .replace(/\s*[:]\s*/g, ':')
-        .replace(/\s*,\s*/g, ',')
-        .replace(/\s*{\s*/g, '{')
-        .replace(/\s*}\s*/g, '}')
-        .replace(/\s*\[\s*/g, '[')
-        .replace(/\s*\]\s*/g, ']');
-      // 给键和字符串值加上双引号
-      let formattedData = purchaseId.value
-        // 给所有键名加双引号
-        .replace(/([a-zA-Z0-9_]+)(?=\s*[:])/g, '"$1"')
-        // 给字符串值加双引号，排除数字和其他非字符串类型的值
-        .replace(/(:\s*)([a-zA-Z\u4e00-\u9fa5_-]+)(?=\s*,|\s*\})/g, '$1"$2"');
-      // Step 2: 处理数字和标识符类型的字符串，如 AMCG86-241030001 和 20241106805-01，需给它们加上双引号
-      formattedData = formattedData.replace(/(:\s*)([A-Za-z0-9-]+)(?=\s*,|\s*\})/g, '$1"$2"');
-      try {
-        // Step 3: 使用 JSON.parse 转换为对象
-        const parsedData = JSON.parse(formattedData);
-        // Step 4: 使用 JSON.stringify 格式化为标准 JSON 字符串
-        const data = JSON.stringify(parsedData, null, 2);
-        const transedData = JSON.parse(data);
-        console.log(transedData);
-        // 检查是否包含 id 属性
-        if (transedData) {
-          // 更新 purchaseId
-          purchaseId.value = transedData.id;
-          finType = transedData.type;
-        }
-      } catch (error) {
-        ElMessage.error('扫描结果不是有效的 JSON 字符串');
-      }
-    }
-  }
+  // if (isNaN(purchaseId.value)) {
+  //   if ((purchaseId.value.includes('{') || purchaseId.value.includes('[') || purchaseId.value.includes('}') || purchaseId.value.includes(']'))) {
+  //     purchaseId.value = purchaseId.value.trim();
+  //     // 清理文本框内容的多余空格，并格式化为标准 JSON 格式
+  //     purchaseId.value = purchaseId.value
+  //       // 去除字段名和字段值之间的多余空格
+  //       .replace(/\s*[:]\s*/g, ':')
+  //       .replace(/\s*,\s*/g, ',')
+  //       .replace(/\s*{\s*/g, '{')
+  //       .replace(/\s*}\s*/g, '}')
+  //       .replace(/\s*\[\s*/g, '[')
+  //       .replace(/\s*\]\s*/g, ']');
+  //     // 给键和字符串值加上双引号
+  //     let formattedData = purchaseId.value
+  //       // 给所有键名加双引号
+  //       .replace(/([a-zA-Z0-9_]+)(?=\s*[:])/g, '"$1"')
+  //       // 给字符串值加双引号，排除数字和其他非字符串类型的值
+  //       .replace(/(:\s*)([a-zA-Z\u4e00-\u9fa5_-]+)(?=\s*,|\s*\})/g, '$1"$2"');
+  //     // Step 2: 处理数字和标识符类型的字符串，如 AMCG86-241030001 和 20241106805-01，需给它们加上双引号
+  //     formattedData = formattedData.replace(/(:\s*)([A-Za-z0-9-]+)(?=\s*,|\s*\})/g, '$1"$2"');
+  //     try {
+  //       // Step 3: 使用 JSON.parse 转换为对象
+  //       const parsedData = JSON.parse(formattedData);
+  //       // Step 4: 使用 JSON.stringify 格式化为标准 JSON 字符串
+  //       const data = JSON.stringify(parsedData, null, 2);
+  //       const transedData = JSON.parse(data);
+  //       console.log(transedData);
+  //       // 检查是否包含 id 属性
+  //       if (transedData) {
+  //         // 更新 purchaseId
+  //         purchaseId.value = transedData.id;
+  //         finType = transedData.type;
+  //       }
+  //     } catch (error) {
+  //       ElMessage.error('扫描结果不是有效的 JSON 字符串');
+  //     }
+  //   }
+  // }
   let obj = {
     'id': parseInt(purchaseId.value), // 转为数字this.purchaseId,
     'type': finType,
@@ -1017,14 +1057,14 @@ const handleBlur = (type) => {
     'locationId': warehouseInfo.value[1],
     'areaId': warehouseInfo.value[2]
   }
-  console.log(obj);
+
   loading.value = true;
   getStockInfoByPurchaseId(obj).then(response => {
     loading.value = false;
-    purchaseId.value = null;
+    // purchaseId.value = null;
     let obj = response;
     obj.quantityAllocated = obj.quantityOnhand
-    console.log("获取的库存信息： ", obj)
+
     //this.allocatedList.push(obj);
     const isItemCodeExists = allocatedList.value.some(item => item.itemCode === obj.itemCode && item.batchCode === obj.batchCode);
     // 如果物料Id不存在，则添加到this.allocatedList
@@ -1037,7 +1077,7 @@ const handleBlur = (type) => {
 };
 
 const executeAllocated = async () => {
-  console.log("将扫码的数据同步领料单身表");
+
   let obj = {
     "headerId": executeFormData.id,
     "bomList": allocatedList.value
@@ -1045,7 +1085,7 @@ const executeAllocated = async () => {
   loading.value = true;
   try {
     await updateAllocatedLine(obj);
-    console.log("追加完毕");
+  
     
     await execute(executeFormData.id);
     loading.value = false;

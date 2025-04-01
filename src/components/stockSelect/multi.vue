@@ -1,16 +1,16 @@
 <template>
-  <el-dialog title="物料选择" v-model="showFlag" :modal="false" width="90%" center>
-    <el-row :gutter="20">
+  <el-dialog title="物料选择" v-model="showFlag" :modal="false" width="92%" center>
+    <el-row :gutter="14">
       <el-col :span="4" :xs="24">
         <div class="head-container">
-          <el-input v-model="itemTypeName" placeholder="请输入分类名称" clearable size="small" :prefix-icon="Search" style="margin-bottom: 20px" />
+          <el-input v-model="itemTypeName" placeholder="请输入分类名称" clearable ::size="currentSize" :prefix-icon="Search" style="margin-bottom: 20px" />
         </div>
         <div class="head-container">
           <el-tree :data="itemTypeOptions" :props="defaultProps" :expand-on-click-node="false" :filter-node-method="filterNode" ref="treeRef" default-expand-all @node-click="handleNodeClick" />
         </div>
       </el-col>
       <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryFormRef" size="small" :inline="true" v-show="showSearch" label-width="100px">
+        <el-form :model="queryParams" ref="queryFormRef" ::size="currentSize" :inline="true" v-show="showSearch">
           <el-form-item label="产品物料编码" prop="itemCode">
             <el-input v-model="queryParams.itemCode" placeholder="请输入产品物料编码" clearable @keyup.enter="handleQuery" />
           </el-form-item>
@@ -35,8 +35,8 @@
             <el-date-picker clearable v-model="queryParams.expireDate" type="date" value-format="timestamp" placeholder="请选择库存有效期"> </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" :icon="Search" size="small" @click="handleQuery">搜索</el-button>
-            <el-button :icon="Refresh" size="small" @click="resetQuery">重置</el-button>
+            <el-button type="primary" :icon="Search" ::size="currentSize" @click="handleQuery">搜索</el-button>
+            <el-button :icon="Refresh" ::size="currentSize" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
 
@@ -44,7 +44,7 @@
           <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="wmstockList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :size="currentSize" :data="wmstockList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55" align="center" />
           <el-table-column label="产品物料编码" width="120px" align="center" prop="itemCode" />
           <el-table-column label="产品物料名称" width="150px" align="center" prop="itemName" :show-overflow-tooltip="true" />
@@ -71,8 +71,8 @@
     </el-row>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="confirmSelect">确 定</el-button>
-        <el-button @click="showFlag = false">取 消</el-button>
+        <el-button :size="currentSize" type="primary" @click="confirmSelect">确 定</el-button>
+        <el-button :size="currentSize" @click="showFlag = false">取 消</el-button>
       </div>
     </template>
   </el-dialog>
@@ -87,7 +87,10 @@ import { treeselect } from '@/api/mes/md/itemtype'
 import { getTreeList } from '@/api/mes/wm/warehouse'
 import Pagination from '@/components/Pagination/index.vue'
 import { formatDate } from '@/utils/formatTime'
-
+import { useAppStore } from '@/store/modules/app'
+ 
+ const appStore = useAppStore()
+ const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
 // 组件名称
 defineOptions({
   name: 'WmstockMultiSelect'
@@ -211,6 +214,23 @@ const confirmSelect = () => {
 const getWarehouseList = async () => {
   const response = await getTreeList()
   warehouseOptions.value = response
+  warehouseOptions.value.map(w => {
+      w.pId = w.id
+      w.pName = w.warehouseName
+          w.children.map(l => {
+            let lstr = JSON.stringify(l.children)
+              .replace(/locationId/g, 'lId')
+              .replace(/areaId/g, 'pId')
+              .replace(/areaName/g, 'pName');
+            l.children = JSON.parse(lstr);
+          });
+
+          let wstr = JSON.stringify(w.children)
+            .replace(/warehouseId/g, 'wId')
+            .replace(/locationId/g, 'pId')
+            .replace(/locationName/g, 'pName');
+          w.children = JSON.parse(wstr);
+        });
 }
 
 const handleWarehouseChanged = (obj: any[]) => {

@@ -153,7 +153,7 @@
             <el-col :span="8">
               <el-form-item label="采购单号" prop="poNo">
                 <el-input v-model="wareForm.poNo" placeholder="请输入采购单号" @blur="handleBlur" @input="handleInput"/>
-                <input ref="scannerInput" v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1;" autofocus />
+                <input ref="scannerInput" readonly v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1;" autofocus />
                 <span>支持扫码枪扫描</span>
               </el-form-item>
             </el-col>
@@ -548,7 +548,12 @@ const remove_keydownlistener = () => {
       } catch (error) {
         ElMessage.error('扫描结果不是有效的 JSON 字符串')
       }
-    }
+    }  else if(typeof(newVal)==='object' && newVal.po_no){
+      wareForm.poNo = newVal.po_no
+      handleBlur()
+      }  else {
+        console.log('输入内容不包含完整的 "{" 和 "}"');
+      }
   })
   
 
@@ -754,7 +759,7 @@ const handleKeyDown = (e) => {
 
       for (const queryId of selectedRows.value.map(row => row.id)) {
         const response = await getGoods(queryId)
-        const obj = response.data
+        const obj = response
         
         LODOP.NEWPAGE()
         LODOP.ADD_PRINT_RECT(8, 5, 150 * 3.71 - 10, 100 * 3.71 - 10, 0, 1)
@@ -833,7 +838,24 @@ const handleKeyDown = (e) => {
   const getWarehouseList = async () => {
     try {
       const response = await getTreeList()
-      warehouseOptions.value = response.data
+      warehouseOptions.value = response
+      warehouseOptions.value.map(w => {
+      w.pId = w.id
+      w.pName = w.warehouseName
+          w.children.map(l => {
+            let lstr = JSON.stringify(l.children)
+              .replace(/locationId/g, 'lId')
+              .replace(/areaId/g, 'pId')
+              .replace(/areaName/g, 'pName');
+            l.children = JSON.parse(lstr);
+          });
+
+          let wstr = JSON.stringify(w.children)
+            .replace(/warehouseId/g, 'wId')
+            .replace(/locationId/g, 'pId')
+            .replace(/locationName/g, 'pName');
+          w.children = JSON.parse(wstr);
+        });
     } catch (error) {
       console.error('获取仓库列表失败:', error)
     }
@@ -903,35 +925,35 @@ const handleKeyDown = (e) => {
       return
     }
 
-    if (wareForm.poNo && (wareForm.poNo.includes('{') || wareForm.poNo.includes('[') || wareForm.poNo.includes('}') || wareForm.poNo.includes(']')) && !wareForm.poNo.includes('"')) {
-      wareForm.poNo = wareForm.poNo.trim()
-      let formattedData = wareForm.poNo
-        .replace(/\s*[:]\s*/g, ':')
-        .replace(/\s*,\s*/g, ',')
-        .replace(/\s*{\s*/g, '{')
-        .replace(/\s*}\s*/g, '}')
-        .replace(/\s*\[\s*/g, '[')
-        .replace(/\s*\]\s*/g, ']')
-        .replace(/([a-zA-Z0-9_]+)(?=\s*[:])/g, '"$1"')
-        .replace(/(:\s*)([a-zA-Z\u4e00-\u9fa5_-]+)(?=\s*,|\s*\})/g, '$1"$2"')
-        .replace(/(:\s*)([A-Za-z0-9-]+)(?=\s*,|\s*\})/g, '$1"$2"')
+    // if (wareForm.poNo && (wareForm.poNo.includes('{') || wareForm.poNo.includes('[') || wareForm.poNo.includes('}') || wareForm.poNo.includes(']')) && !wareForm.poNo.includes('"')) {
+    //   wareForm.poNo = wareForm.poNo.trim()
+    //   let formattedData = wareForm.poNo
+    //     .replace(/\s*[:]\s*/g, ':')
+    //     .replace(/\s*,\s*/g, ',')
+    //     .replace(/\s*{\s*/g, '{')
+    //     .replace(/\s*}\s*/g, '}')
+    //     .replace(/\s*\[\s*/g, '[')
+    //     .replace(/\s*\]\s*/g, ']')
+    //     .replace(/([a-zA-Z0-9_]+)(?=\s*[:])/g, '"$1"')
+    //     .replace(/(:\s*)([a-zA-Z\u4e00-\u9fa5_-]+)(?=\s*,|\s*\})/g, '$1"$2"')
+    //     .replace(/(:\s*)([A-Za-z0-9-]+)(?=\s*,|\s*\})/g, '$1"$2"')
 
-      try {
-        const parsedData = JSON.parse(formattedData)
-        const data = JSON.stringify(parsedData, null, 2)
-        const transedData = JSON.parse(data)
-        if (transedData) {
-          wareForm.poNo = transedData.po_no
-        }
-      } catch (error) {
-        ElMessage.error('扫描结果不是有效的 JSON 字符串')
-      }
-    }
+    //   try {
+    //     const parsedData = JSON.parse(formattedData)
+    //     const data = JSON.stringify(parsedData, null, 2)
+    //     const transedData = JSON.parse(data)
+    //     if (transedData) {
+    //       wareForm.poNo = transedData.po_no
+    //     }
+    //   } catch (error) {
+    //     ElMessage.error('扫描结果不是有效的 JSON 字符串')
+    //   }
+    // }
 
     loading.value = true
     try {
       const response = await getAllGoods(wareForm)
-      wareList.value = response.data
+      wareList.value = response
     } finally {
       loading.value = false
     }
