@@ -23,15 +23,15 @@
     <div class="user-info">
       <img :src="user?.avatar" alt="" />
     </div>
-    <el-menu mode="horizontal" :router="true" class="nav-menu">
-      <el-menu-item index="/production">生产</el-menu-item>
+    <el-menu mode="horizontal" :default-active="activeIndex" :router="true" class="nav-menu">
+      <!-- <el-menu-item index="/production">生产</el-menu-item> -->
       <el-menu-item index="/allocation">调拨</el-menu-item>
-      <el-menu-item index="/report">报工</el-menu-item>
+      <!-- <el-menu-item index="/report">报工</el-menu-item>
       <el-menu-item index="/quality">质检</el-menu-item>
       <el-menu-item index="/equipment">设备</el-menu-item>
       <el-menu-item index="/quotationRecord" class="alarm-menu-item">
         <span class="menu-text">报警</span>
-      </el-menu-item>
+      </el-menu-item> -->
       <el-menu-item index="/purchase">采购</el-menu-item>
     </el-menu>
     <div class="right-panel">
@@ -52,6 +52,7 @@ import { isExternal } from "/@/utils/validate";
 // const settingsStore = useSettingsStore()
 // console.log(settingsStore)
 // const { theme, logo, title } = storeToRefs(settingsStore)
+import { useRouter, useRoute } from 'vue-router'; // 导入 
 import { CACHE_KEY, useCache } from "/@/hooks/web/useCache";
 const { wsCache } = useCache();
 const user = ref();
@@ -70,23 +71,49 @@ defineProps({
   },
 });
 
-const router = useRouter();
-const routesStore = useRoutesStore();
-const {
-  getTab: tab,
-  getTabMenu: tabMenu,
-  getRoutes: routes,
-} = storeToRefs(routesStore);
+const activeIndex = ref("/allocation");
+const route = useRoute();
 
-const handleTabClick = () => {
-  nextTick(() => {
-    if (isExternal(tabMenu.value.path)) {
-      window.open(tabMenu.value.path);
-      router.push("/redirect");
-    } else if (openFirstMenu)
-      router.push(getRedirect(tabMenu.value.path, tabMenu.value.children));
-  });
+
+
+const setActiveIndex = () => {
+  const path = route.path;
+  // 获取路径的第一级，例如 /allocation/xxx 会得到 /allocation
+  const firstLevelPath = '/' + path.split('/')[1];
+  
+  // 检查是否是我们的导航菜单项
+  const menuPaths = [ '/allocation', '/purchase'];
+  if (menuPaths.includes(firstLevelPath)) {
+    activeIndex.value = firstLevelPath;
+  } else {
+    // 如果不是菜单项，默认设置为默认的菜单项
+    activeIndex.value = '/allocation';
+  }
+  
+
 };
+
+onMounted(() => {
+  // 调用设置激活菜单的函数
+  setActiveIndex();
+});
+// const router = useRouter();
+// const routesStore = useRoutesStore();
+// const {
+//   getTab: tab,
+//   getTabMenu: tabMenu,
+//   getRoutes: routes,
+// } = storeToRefs(routesStore);
+
+// const handleTabClick = () => {
+//   nextTick(() => {
+//     if (isExternal(tabMenu.value.path)) {
+//       window.open(tabMenu.value.path);
+//       router.push("/redirect");
+//     } else if (openFirstMenu)
+//       router.push(getRedirect(tabMenu.value.path, tabMenu.value.children));
+//   });
+// };
 </script>
 
 <style lang="scss" scoped>
