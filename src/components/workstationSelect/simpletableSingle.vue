@@ -134,8 +134,8 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await listWorkstation(queryParams)
-    workstationList.value = response.data.list
-    total.value = response.data.total
+    workstationList.value = response.list
+    total.value = response.total
   } finally {
     loading.value = false
   }
@@ -143,12 +143,12 @@ const getList = async () => {
 
 const getWorkshops = async () => {
   const response = await listAllWorkshop()
-  workshopOptions.value = response.data
+  workshopOptions.value = response
 }
 
 const getProcess = async () => {
   const response = await listAllProcess()
-  processOptions.value = response.data
+  processOptions.value = response
 }
 
 const cancel = () => {

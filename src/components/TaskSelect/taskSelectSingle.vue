@@ -169,15 +169,15 @@ export default {
     getList() {
       this.loading = true;
       listProtask(this.queryParams).then(response => {
-        this.protaskList = response.data.list;
-        this.total = response.data.total;
+        this.protaskList = response.list;
+        this.total = response.total;
         this.loading = false;
       });
     },
     //查询工序信息
     getProcess() {
       listAllProcess().then(response => {
-        this.processOptions = response.data;
+        this.processOptions = response;
       });
     },
 

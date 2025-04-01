@@ -183,8 +183,8 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await listWmstock(queryParams)
-    wmstockList.value = response.data.list
-    total.value = response.data.total
+    wmstockList.value = response.list
+    total.value = response.total
   } finally {
     loading.value = false
   }
@@ -192,7 +192,7 @@ const getList = async () => {
 
 const getTreeselect = async () => {
   const response = await treeselect()
-  itemTypeOptions.value = response.data
+  itemTypeOptions.value = response
 }
 
 const filterNode = (value: string, data: any) => {

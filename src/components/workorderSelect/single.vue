@@ -119,8 +119,8 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await listWorkorder(queryParams)
-    workorderList.value = response.data.list
-    total.value = response.data.total
+    workorderList.value = response.list
+    total.value = response.total
   } finally {
     loading.value = false
   }

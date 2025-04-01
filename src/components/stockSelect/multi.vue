@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="物料选择" v-model="showFlag" :modal="false" width="80%" center>
+  <el-dialog title="物料选择" v-model="showFlag" :modal="false" width="90%" center>
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">
@@ -156,8 +156,8 @@ const getList = async () => {
   loading.value = true
   try {
     const response = await listWmstock(queryParams)
-    wmstockList.value = response.data.list
-    total.value = response.data.total
+    wmstockList.value = response.list
+    total.value = response.total
   } finally {
     loading.value = false
   }
@@ -165,7 +165,7 @@ const getList = async () => {
 
 const getTreeselect = async () => {
   const response = await treeselect()
-  itemTypeOptions.value = response.data
+  itemTypeOptions.value = response
 }
 
 const filterNode = (value: string, data: any) => {
@@ -210,7 +210,7 @@ const confirmSelect = () => {
 
 const getWarehouseList = async () => {
   const response = await getTreeList()
-  warehouseOptions.value = response.data
+  warehouseOptions.value = response
 }
 
 const handleWarehouseChanged = (obj: any[]) => {
