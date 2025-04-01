@@ -126,7 +126,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="收货单位" prop="receiveNum">
-                <el-select filterable clearable v-model="form.unitOfMeasure" width="100%" placeholder="请选择">
+                <el-select filterable clearable   @focus="$event.target.blur()"  v-model="form.unitOfMeasure" width="100%" placeholder="请选择">
                   <el-option
                     v-for="unit in unitOptions"
                     :key="unit.measureCode"
