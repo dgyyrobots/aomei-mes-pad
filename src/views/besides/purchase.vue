@@ -11,8 +11,7 @@
           </el-menu-item>
 
         </el-menu>
-      <div >
- 
+      <div  style="margin-top: 10px;">
         <router-view></router-view>
       </div>
     </div>
