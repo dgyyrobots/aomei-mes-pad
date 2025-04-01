@@ -53,7 +53,7 @@ const remainingRouter: AppRouteRecordRaw[] = [
   {
     path: '/',
     component: Layout,
-    redirect: '/production',
+    redirect: '/allocation',
     // index
     name: 'Home',
     meta: {
