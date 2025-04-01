@@ -372,7 +372,7 @@ import { formatDate } from '/@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { CACHE_KEY, useCache } from '/@/hooks/web/useCache'
 import { useAppStore } from '@/store/modules/app'
-
+ import download from '~/library/plugins/download'
   const appStore = useAppStore()
   const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
 // 组件引用
@@ -828,10 +828,9 @@ const handleExport = () => {
     exportLoading.value = true;
     return exportAllocatedHeaderExcel(params);
   }).then(response => {
-    // 这里需要替换为 Vue3 中的下载方法
-    // this.$download.excel(response, '调拨单头.xls');
     // 假设有一个全局的下载方法
-    window.$download.excel(response, '调拨单头.xls');
+    download.excel(response, '调拨单头.xls');
+    ElMessage.success('导出成功')
     exportLoading.value = false;
   }).catch(() => {});
 };

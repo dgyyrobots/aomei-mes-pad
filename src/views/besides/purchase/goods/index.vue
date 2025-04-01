@@ -306,7 +306,7 @@
   import { getTreeList } from '@/api/wms/warehouse'
   import { DICT_TYPE } from '@/utils/dict'
   import { useAppStore } from '@/store/modules/app'
- 
+ import download from '~/library/plugins/download'
   const appStore = useAppStore()
   const currentSize = computed(() => appStore.currentSize==='mini'?  'small' : appStore.currentSize)
 
@@ -502,7 +502,7 @@
 
     // 添加全局点击事件监听器
     document.addEventListener('click', () => {
-      if (executeDialogVisible.value) {
+      if (wareOpen.value) {
         refocusScanner();
       }
     });
@@ -650,7 +650,9 @@ const handleKeyDown = (e) => {
       exportLoading.value = true
       const response = await exportGoodsExcel(params)
       // 假设有一个下载工具函数
-      downloadExcel(response, '采购商品明细.xls')
+
+      download.excel(response, '采购商品明细.xls')
+      ElMessage.success('导出成功')
     } catch (error) {
       console.error('导出失败:', error)
     } finally {
