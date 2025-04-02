@@ -492,7 +492,14 @@
     formRef.value?.resetFields()
     wareFormRef.value?.resetFields()
   }
-  
+  const refocusScanner = () => {
+  if (wareOpen.value && scannerInput.value) {
+    nextTick(() => {
+      scannerInput.value.focus()
+      isFocused.value = true
+    })
+  }
+}
   // 生命周期钩子
   onMounted(() => {
     getList()
@@ -503,14 +510,12 @@
     // 添加全局点击事件监听器
     document.addEventListener('click', () => {
       if (wareOpen.value) {
-        refocusScanner();
+        refocusScanner()
       }
     });
     nextTick(() => {
-      setTimeout(() => {
-        scannerInput.value && scannerInput.value.focus();
-      },1000);
-    });
+    setTimeout(refocusScanner, 500)
+  })
   })
 
   onUnmounted(() => {
