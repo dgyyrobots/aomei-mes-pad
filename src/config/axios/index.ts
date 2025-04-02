@@ -14,7 +14,7 @@ export const tenantPromise = (() => {
   // let tenant = service.get(`/system/tenant/get-by-website?website=${website}`)
   let tenant = service.get(`/system/tenant/get-tenant-by-domain-name?domainName=${website}`)
   //tenant = tenant && tenant.id ? tenant : {id: 1, name: '惠智造', icon: icon, systemLogo: logo}
-  tenant = tenant && tenant.id ? tenant : {id: 158, name: '江苏澳美', icon: icon, systemLogo: logo}
+  tenant = tenant && tenant.id ? tenant : { id: 158, name: '江苏澳美', icon: icon, systemLogo: logo }
   console.log("获取的租户信息: ", tenant);
   setTenantId(tenant.id)
 
@@ -40,7 +40,9 @@ export default {
   request,
   get: async <T = any>(option: any) => {
     const res = await request({ method: 'GET', ...option })
-    return res.data as unknown as T
+    // return res.data as unknown as T
+    // 判断存在res.data则返回res.data，否则返回res
+    return (res && res.hasOwnProperty('data')) ? (res.data as unknown as T) : (res as unknown as T)
   },
   post: async <T = any>(option: any) => {
     const res = await request({ method: 'POST', ...option })

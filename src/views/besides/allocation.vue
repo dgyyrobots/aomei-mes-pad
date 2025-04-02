@@ -88,7 +88,7 @@
                   @pagination="getList"/>
     </ContentWrap>
     <!-- 对话框(添加 / 修改) -->
-    <el-dialog :title="title" v-model="open" width="66%" v-dialogDrag append-to-body>
+    <el-dialog :title="title" v-model="open" width="80%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :size="currentSize" :model="form" :rules="rules" >
         <el-row>
           <el-col :span="8">
