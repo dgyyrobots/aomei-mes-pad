@@ -654,6 +654,8 @@ const handleKeyDown = (e) => {
       await ElMessageBox.confirm('是否确认导出所有采购商品明细数据项?')
       exportLoading.value = true
       const response = await exportGoodsExcel(params)
+
+      console.log('response', response)
       // 假设有一个下载工具函数
 
       download.excel(response, '采购商品明细.xls')

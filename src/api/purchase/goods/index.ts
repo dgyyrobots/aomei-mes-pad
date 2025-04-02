@@ -91,7 +91,7 @@ export const getAllGoods = (params: GoodsPageReqVO) => {
 
 // 导出采购商品明细 Excel
 export const exportGoodsExcel = (params: GoodsPageReqVO) => {
-    return request.get({
+    return request.download({
         url: '/purchase/goods/export-excel',
         params,
         responseType: 'blob'

@@ -53,7 +53,7 @@ export const getOrderPage = (params: OrderPageReqVO) => {
 
 // 导出采购订单 Excel
 export const exportOrderExcel = (params: OrderPageReqVO) => {
-    return request.get({
+    return request.download({
         url: '/purchase/order/export-excel',
         params,
         responseType: 'blob'
