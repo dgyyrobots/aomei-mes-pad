@@ -30,7 +30,7 @@
     <!-- 操作工具栏 -->
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain :icon="Plus" :size="currentSize" @click="handleAdd"
+        <el-button type="primary"  :icon="Plus" :size="currentSize" @click="handleAdd"
                    v-hasPermi="['wms:allocated-header:create']">新增
         </el-button>
       </el-col>
@@ -181,7 +181,7 @@
           <el-table-column label="物料编码" align="center" prop="itemCode"/>
           <el-table-column label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column width="210" label="需求数量" align="center" prop="quantityAllocated"/>
-          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column width="80" label="单位" align="center" prop="unitOfMeasure"/>
         </el-table>
 
       </el-card>
@@ -203,7 +203,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column width="80" label="单位" align="center" prop="unitOfMeasure"/>
         </el-table>
 
       </el-card>
@@ -219,7 +219,7 @@
     </el-dialog>
 
     <!-- 执行出库对话框 -->
-    <el-dialog :title="'执行出库'" v-model="executeDialogVisible" width="92%" v-dialogDrag append-to-body>
+    <el-dialog :title="'执行出库'"  class="execute-dialog" v-model="executeDialogVisible" width="92%" v-dialogDrag append-to-body>
       <el-form :size="currentSize" ref="executeFormRef" :model="executeForm" label-width="100px">
 
         <el-row>
@@ -299,7 +299,7 @@
           <el-table-column label="物料编码" :show-overflow-tooltip="true" align="center" prop="itemCode"/>
           <el-table-column label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column  label="需求数量" align="center" prop="quantityAllocated"/>
-          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column width="80" label="单位" align="center" prop="unitOfMeasure"/>
         </el-table>
 
         <el-divider content-position="center">调拨信息</el-divider>
@@ -316,32 +316,32 @@
             <!-- <el-button type="primary" round @click="">摄像头</el-button> -->
             <el-button type="primary" round @click="handResetPurchaseId">重置</el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-button type="primary" plain :icon="Plus" :size="currentSize" @click="allocatedHandleAdd">新增</el-button>
+          <el-col :span="2.5">
+            <el-button type="primary" style="margin-right: 10px;" :icon="Plus" :size="currentSize" @click="allocatedHandleAdd">新增</el-button>
           </el-col>
 
-          <el-col :span="1.5">
-            <el-button type="primary" plain :icon="Plus" :size="currentSize" v-hasPermi="['wms:allocated-header:batchAdd']" @click="allocatedHandleBatchAdd">批量新增</el-button>
+          <el-col :span="2.5">
+            <el-button type="primary" style="margin-right: 10px;" :icon="Plus" :size="currentSize" v-hasPermi="['wms:allocated-header:batchAdd']" @click="allocatedHandleBatchAdd">批量新增</el-button>
           </el-col>
           <StockSelect ref="stockSelectRef" @onSelected="onStockSelected"></StockSelect>
 
-          <el-col :span="1.5">
+          <el-col :span="2.5">
             <el-button type="danger" plain :icon="Delete" :size="currentSize" :disabled="allocatedSingle" @click="allocatedHandleDelete">删除</el-button>
           </el-col>
         </el-row>
         <el-table :size="currentSize" v-loading="loading" :data="allocatedList" @selection-change="allocatedHandleSelectionChange">
           <el-table-column type="selection" width="55" align="center"/>
-          <el-table-column label="序号" width="65" align="center">
+          <el-table-column label="序号" width="55" align="center">
             <template #default="scope">
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
           <el-table-column  label="物料编码" :show-overflow-tooltip="true" align="center" prop="itemCode"/>
           <el-table-column  label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
-          <el-table-column  label="调拨数量"  align="center" prop="quantityAllocated"/>
-          <el-table-column width="80" label="单位" align="center" prop="unitOfMeasure"/>
-          <el-table-column label="批次号" :show-overflow-tooltip="true" align="center" prop="batchCode"/>
-          <el-table-column label="调拨标识" :show-overflow-tooltip="true" width="100"  align="center" prop="allocatedFlag"/>
+          <el-table-column  label="调拨数量" :show-overflow-tooltip="true"  align="center" prop="quantityAllocated"/>
+          <el-table-column width="70" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column label="批次号"  :show-overflow-tooltip="true" align="center" prop="batchCode"/>
+          <el-table-column label="调拨标识" :show-overflow-tooltip="true" width="90"  align="center" prop="allocatedFlag"/>
           <el-table-column label="仓库名称"  :show-overflow-tooltip="true" align="center" prop="warehouseName"/>
           <el-table-column label="库区名称" :show-overflow-tooltip="true" align="center" prop="locationName"/>
           <el-table-column label="库位名称"  :show-overflow-tooltip="true" align="center" prop="areaName"/>
@@ -1249,6 +1249,12 @@ defineExpose({
   executeAllocated,
 });
 </script>
+<style>
+/* 注意：移除 scoped 属性，使样式全局生效 */
+.execute-dialog .el-dialog__body {
+  padding: 12px 0 !important;
+}
+</style>
 <style lang="scss" scoped>
 // .app-container {
 //   padding: 20px;
