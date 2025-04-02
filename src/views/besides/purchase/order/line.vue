@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :size="currentSize"  :data="list" @selection-change="handleSelectionChange">
       <el-table-column label="单据编码" align="center" prop="id"/>
       <el-table-column :show-overflow-tooltip="true" label="采购单号" width="220" align="center" prop="poNo"/>
       <el-table-column :show-overflow-tooltip="true" label="商品编号" width="220" align="center" prop="goodsNumber"/>
@@ -27,7 +27,7 @@
     </el-table>
     <pagination size="currentSize" v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <el-dialog :title="title" v-model="open" width="65%" v-dialogDrag append-to-body>
+    <el-dialog :title="title" v-model="open" width="75%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :model="form" :rules="rules">
         <el-row :gutter="20">
           <el-col :span="12">
@@ -87,15 +87,15 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button :size="currentSize" type="primary" @click="submitForm">确 定</el-button>
+          <el-button :size="currentSize"  @click="cancel">取 消</el-button>
         </div>
       </template>
     </el-dialog>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup >
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import StockSelect from '@/components/stockSelect/single.vue'
@@ -103,7 +103,11 @@ import { updateGoods, deleteGoods, getGoods, getGoodsPage } from '@/api/purchase
 import { listAllUnitmeasure } from "@/api/md/unitmeasure"
 import { formatDate } from '/@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
-  
+import { useAppStore } from '@/store/modules/app'
+
+
+
+
 // 定义 props
 const props = defineProps({
   optType: {
@@ -127,7 +131,8 @@ const props = defineProps({
     default: null
   }
 })
-
+const appStore = useAppStore()
+const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
 // 响应式数据
 const loading = ref(true)
 const ids = ref([])

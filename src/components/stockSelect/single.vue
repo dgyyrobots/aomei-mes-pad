@@ -100,8 +100,7 @@ import { ElNotification } from 'element-plus'
 import { listWmstock } from '@/api/mes/wm/wmstock'
 import { treeselect } from '@/api/mes/md/itemtype'
 import { formatDate } from '@/utils/formatTime'
-import RightToolbar from '@/components/RightToolbar'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/Pagination/index.vue'
 
 // 组件名称
 defineOptions({

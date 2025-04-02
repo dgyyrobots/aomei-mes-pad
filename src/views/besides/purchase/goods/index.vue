@@ -140,8 +140,8 @@
         </el-form>
         <template #footer>
           <div class="dialog-footer">
-            <el-button type="primary" @click="submitForm">确 定</el-button>
-            <el-button @click="cancel">取 消</el-button>
+            <el-button :size="currentSize" type="primary" @click="submitForm">确 定</el-button>
+            <el-button :size="currentSize" @click="cancel">取 消</el-button>
           </div>
         </template>
       </el-dialog>
@@ -170,14 +170,14 @@
           </el-row>
   
           <!-- 设置el-table的高度 -->
-          <el-table v-loading="loading" :data="wareList" height="500">
+          <el-table v-loading="loading" :data="wareList" height="500" :size="currentSize">
             <el-table-column label="商品编号" align="center" prop="goodsNumber"/>
             <el-table-column label="商品名称" align="center" prop="goodsName"/>
             <el-table-column label="商品规格" align="center" prop="goodsSpecs"/>
             <el-table-column label="商品单位" align="center" prop="company"/>
             <el-table-column label="采购数量" align="center" prop="quantity"/>
             <el-table-column label="收货数量" align="center" prop="receiveNum"/>
-            <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+            <el-table-column label="创建时间" align="center" prop="createTime">
               <template #default="scope">
                 <span>{{ parseTime(scope.row.createTime) }}</span>
               </template>
@@ -195,8 +195,8 @@
         </div>
         <template #footer>
           <div class="dialog-footer">
-            <el-button type="primary" @click="submitWareForm">确 定</el-button>
-            <el-button @click="cancel">取 消</el-button>
+            <el-button :size="currentSize" type="primary" @click="submitWareForm">确 定</el-button>
+            <el-button :size="currentSize" @click="cancel">取 消</el-button>
           </div>
         </template>
       </el-dialog>
@@ -204,7 +204,7 @@
 
   
       <!-- 拆分弹出框 -->
-      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="50%" v-dialogDrag append-to-body>
+      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="75%" v-dialogDrag append-to-body>
         <el-form ref="splitFormRef" :model="splitForm" :size="currentSize">
   
           <el-row :gutter="20">
