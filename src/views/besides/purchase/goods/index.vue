@@ -204,7 +204,7 @@
 
   
       <!-- 拆分弹出框 -->
-      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="75%" v-dialogDrag append-to-body>
+      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="80%" v-dialogDrag append-to-body>
         <el-form ref="splitFormRef" :model="splitForm" :size="currentSize">
   
           <el-row :gutter="20">
@@ -272,7 +272,7 @@
       </el-dialog>
   
       <!-- 按条件拆分弹出框 -->
-      <el-dialog :title="'按条件拆分'" v-model="splitConditionDialogVisible" width="30%" v-dialogDrag append-to-body>
+      <el-dialog :title="'按条件拆分'" v-model="splitConditionDialogVisible" width="50%" v-dialogDrag append-to-body>
         <el-form ref="splitConditionFormRef" :model="splitConditionForm" :size="currentSize">
           <el-form-item label="拆分条数">
             <el-input v-model="splitConditionForm.splitCount" type="number" step="1" placeholder="请输入拆分条数"/>
