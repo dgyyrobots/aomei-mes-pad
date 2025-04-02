@@ -307,7 +307,7 @@
           <el-col :span="8">
             <el-form-item label="单据信息" prop="purchaseId">
               <el-input  readonly v-model="purchaseId" placeholder="请输入"/>
-              <input ref="scannerInput" v-model="scanData" placeholder="请输入" style="position: absolute; opacity: 0; width: 1; height: 1; z-index: -1;"  autofocus />
+              <input ref="scannerInput" v-model="scanData" placeholder="请输入" style="position: absolute; opacity: 0; width: 1; height: 1; z-index: -1; -webkit-user-select: none" inputmode="none" autofocus />
               <span>支持扫码枪扫描</span>
             </el-form-item>
           </el-col>
@@ -597,6 +597,7 @@ onUnmounted(() => {
 // });
 
 watch(() => scanData.value, (newVal) => {
+
 
   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
 
@@ -1069,6 +1070,7 @@ const handleBlur = (type) => {
     const isItemCodeExists = allocatedList.value.some(item => item.itemCode === obj.itemCode && item.batchCode === obj.batchCode);
     // 如果物料Id不存在，则添加到this.allocatedList
     if (!isItemCodeExists) {
+      ElMessage.success("新增成功");
       allocatedList.value.push(obj);
     } else {
       ElMessage.error(`物料唯一码已存在，请勿添加重复项。`);

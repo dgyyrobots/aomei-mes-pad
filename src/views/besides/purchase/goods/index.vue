@@ -153,7 +153,7 @@
             <el-col :span="8">
               <el-form-item label="采购单号" prop="poNo">
                 <el-input v-model="wareForm.poNo" placeholder="请输入采购单号" @blur="handleBlur" @input="handleInput"/>
-                <input ref="scannerInput" readonly v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1;" autofocus />
+                <input ref="scannerInput" v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1; -webkit-user-select: none;" inputmode="none" autofocus />
                 <span>支持扫码枪扫描</span>
               </el-form-item>
             </el-col>
