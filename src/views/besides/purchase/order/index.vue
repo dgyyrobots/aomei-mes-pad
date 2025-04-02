@@ -50,7 +50,7 @@
       @pagination="getList" />
 
     <!-- 对话框(添加 / 修改) -->
-    <el-dialog :title="title" v-model="open" width="65%" v-dialogDrag append-to-body>
+    <el-dialog :title="title" v-model="open" width="90%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :model="form" :rules="rules" :size="currentSize" >
         <el-row :gutter="20">
           <el-col :span="12">

@@ -176,12 +176,12 @@
       <el-divider content-position="center">物料信息</el-divider>
       <el-card shadow="always" class="box-card">
 
-        <el-table v-loading="bomLoadding" max-height="250" :data="bomList" @selection-change="handleBomSelectionChange">
-          <el-table-column type="selection" width="55" align="center"/>
-          <el-table-column width="210" label="物料编码" align="center" prop="itemCode"/>
-          <el-table-column width="210" label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
+        <el-table v-loading="bomLoadding" :size="currentSize" max-height="300" :data="bomList" @selection-change="handleBomSelectionChange">
+          <el-table-column type="selection" width="65" align="center"/>
+          <el-table-column label="物料编码" align="center" prop="itemCode"/>
+          <el-table-column label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column width="210" label="需求数量" align="center" prop="quantityAllocated"/>
-          <el-table-column width="190" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
         </el-table>
 
       </el-card>
@@ -189,9 +189,9 @@
       <el-divider content-position="center">调拨信息</el-divider>
       <el-card shadow="always" class="box-card">
   
-        <el-table v-loading="bomLoadding" max-height="250" :data="allocatedList" row-key="itemCode">
-          <el-table-column width="220" label="物料编码" align="center" prop="itemCode"/>
-          <el-table-column width="220" label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
+        <el-table v-loading="bomLoadding" :size="currentSize" max-height="300" :data="allocatedList" row-key="itemCode">
+          <el-table-column  label="物料编码" :show-overflow-tooltip="true" align="center" prop="itemCode"/>
+          <el-table-column  label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column width="220" label="调拨数量" align="center" prop="quantityAllocated">
 
             <template #default="scope">
@@ -203,7 +203,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column width="210" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
         </el-table>
 
       </el-card>
@@ -296,7 +296,7 @@
         <el-divider v-if="executeForm.bindWorkorder" content-position="center">BOM信息</el-divider>
     
         <el-table :size="currentSize" v-if="executeForm.bindWorkorder" v-loading="bomLoadding" max-height="200" :data="bomList" style="width: 100%">
-          <el-table-column label="物料编码" align="center" prop="itemCode"/>
+          <el-table-column label="物料编码" :show-overflow-tooltip="true" align="center" prop="itemCode"/>
           <el-table-column label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column  label="需求数量" align="center" prop="quantityAllocated"/>
           <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
@@ -336,15 +336,15 @@
               {{ scope.$index + 1 }}
             </template>
           </el-table-column>
-          <el-table-column  label="物料编码" align="center" prop="itemCode"/>
+          <el-table-column  label="物料编码" :show-overflow-tooltip="true" align="center" prop="itemCode"/>
           <el-table-column  label="物料名称" :show-overflow-tooltip="true" align="center" prop="itemName"/>
           <el-table-column  label="调拨数量"  align="center" prop="quantityAllocated"/>
-          <el-table-column width="100" label="单位" align="center" prop="unitOfMeasure"/>
-          <el-table-column label="批次号" align="center" prop="batchCode"/>
-          <el-table-column label="调拨标识"  align="center" prop="allocatedFlag"/>
-          <el-table-column label="仓库名称" align="center" prop="warehouseName"/>
-          <el-table-column label="库区名称" align="center" prop="locationName"/>
-          <el-table-column label="库位名称" align="center" prop="areaName"/>
+          <el-table-column width="80" label="单位" align="center" prop="unitOfMeasure"/>
+          <el-table-column label="批次号" :show-overflow-tooltip="true" align="center" prop="batchCode"/>
+          <el-table-column label="调拨标识" :show-overflow-tooltip="true" width="100"  align="center" prop="allocatedFlag"/>
+          <el-table-column label="仓库名称"  :show-overflow-tooltip="true" align="center" prop="warehouseName"/>
+          <el-table-column label="库区名称" :show-overflow-tooltip="true" align="center" prop="locationName"/>
+          <el-table-column label="库位名称"  :show-overflow-tooltip="true" align="center" prop="areaName"/>
         </el-table>
       </el-form>
       <template #footer>

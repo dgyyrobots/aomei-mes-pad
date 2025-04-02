@@ -19,16 +19,16 @@
           <dict-tag :type="DICT_TYPE.PURCHASE_STATUS" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" v-if="optType != 'view'" width="100px" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" v-if="optType != 'view'" width="100px" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button size="small" type="text"  @click="handleUpdate(scope.row)" v-if="optType != 'view'" v-hasPermi="['purchase:goods:update']">修改 </el-button>
+          <el-button :size="currentSize" type="text"  @click="handleUpdate(scope.row)" v-if="optType != 'view'" v-hasPermi="['purchase:goods:update']">修改 </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <pagination size="currentSize" v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize" @pagination="getList" />
+    <pagination :size="currentSize" v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <el-dialog :title="title" v-model="open" width="75%" v-dialogDrag append-to-body>
-      <el-form ref="formRef" :model="form" :rules="rules">
+    <el-dialog :title="title" v-model="open" width="80%" v-dialogDrag append-to-body>
+      <el-form :size="currentSize"  ref="formRef" :model="form" :rules="rules">
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="采购单号" prop="poNo">
