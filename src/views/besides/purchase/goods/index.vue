@@ -125,7 +125,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="收货单位" prop="receiveNum">
+              <el-form-item label="收货单位" >
                 <el-select filterable clearable   @focus="$event.target.blur()"  v-model="form.unitOfMeasure" width="100%" placeholder="请选择">
                   <el-option
                     v-for="unit in unitOptions"
@@ -608,6 +608,8 @@ const handleKeyDown = (e) => {
       const response = await listAllUnitmeasure()
       unitOptions.value = response
       const goodsResponse = await getGoods(id)
+      // 使用空值合并运算符简化条件判断
+      goodsResponse.unitOfMeasure = goodsResponse.unitOfMeasure || goodsResponse.company
       Object.assign(form, goodsResponse)
       open.value = true
       title.value = '修改采购商品明细'
