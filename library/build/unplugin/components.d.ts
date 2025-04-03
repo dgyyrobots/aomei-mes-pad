@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    '副本': typeof import('./../../../src/components/stockSelect/multi - 副本.vue')['default']
     ActiveUsersBar: typeof import('./../../../src/views/index/vabAutoComponents/ActiveUsersBar.vue')['default']
     AppLinkInput: typeof import('./../../../src/components/AppLinkInput/index.vue')['default']
     AppLinkSelectDialog: typeof import('./../../../src/components/AppLinkInput/AppLinkSelectDialog.vue')['default']
@@ -75,7 +74,6 @@ declare module 'vue' {
     MenuList: typeof import('./../../../src/components/DiyEditor/components/mobile/MenuList/index.vue')['default']
     MenuSwiper: typeof import('./../../../src/components/DiyEditor/components/mobile/MenuSwiper/index.vue')['default']
     Multi: typeof import('./../../../src/components/stockSelect/multi.vue')['default']
-    Multi_old_vue2: typeof import('./../../../src/components/stockSelect/multi_old_vue2.vue')['default']
     NavigationBar: typeof import('./../../../src/components/DiyEditor/components/mobile/NavigationBar/index.vue')['default']
     NoticeBar: typeof import('./../../../src/components/DiyEditor/components/mobile/NoticeBar/index.vue')['default']
     PageHeader: typeof import('./../../../src/views/index/vabAutoComponents/PageHeader.vue')['default']
@@ -106,7 +104,6 @@ declare module 'vue' {
     SignalAndMessage: typeof import('./../../../src/components/bpmnProcessDesigner/package/penal/signal-message/SignalAndMessage.vue')['default']
     SimpletableSingle: typeof import('./../../../src/components/workstationSelect/simpletableSingle.vue')['default']
     Single: typeof import('./../../../src/components/stockSelect/single.vue')['default']
-    SizeSelect: typeof import('./../../../src/components/SizeSelect/index.vue')['default']
     Sticky: typeof import('./../../../src/components/Sticky/src/Sticky.vue')['default']
     SummaryCard: typeof import('./../../../src/components/SummaryCard/index.vue')['default']
     Switch: typeof import('./../../../src/components/switch/src/switch.vue')['default']

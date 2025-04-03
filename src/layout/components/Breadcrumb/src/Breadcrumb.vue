@@ -89,7 +89,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss'  as *;
 $prefix-cls: #{$elNamespace}-breadcrumb;
 
 .#{$prefix-cls} {

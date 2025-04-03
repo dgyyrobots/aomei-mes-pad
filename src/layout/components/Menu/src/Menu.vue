@@ -122,7 +122,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss'  as *;
 $prefix-cls: #{$namespace}-menu;
 
 .is-active--after {
@@ -244,7 +244,7 @@ $prefix-cls: #{$namespace}-menu;
 </style>
 
 <style lang="scss">
-@import '../../../../styles/variables.scss';
+@use '../../../../styles/variables.scss'  as *;
 $prefix-cls: #{$namespace}-menu-popper;
 
 .is-active--after {
