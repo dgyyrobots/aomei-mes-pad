@@ -489,7 +489,7 @@ const queryParams = reactive({
   status: null,
   remark: null,
   createTime: [],
-  bindWorkorder: false, // 默认不绑定工单
+  bindWorkorder: null, // 默认不绑定工单
 });
 
 // 表单参数
