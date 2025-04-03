@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-03 10:14:51 
+ */
+import{_ as r}from"./index-CC7Ojm_e.js";import{r as e}from"./random-rNrZwFMI.js";import{d as l,f as m,cV as s,k as i,o as c,a as p}from"./index-BuFigy1A.js";const v=l({name:"DataScreenLeft2",__name:"DataScreenLeft2",setup(u){const a=m({grid:{left:"20px",right:"20px",bottom:"20px",top:"20px",containLabel:!0},tooltip:{trigger:"item"},series:{name:"人群画像",type:"pie",radius:["40%","80%"],itemStyle:{borderRadius:10,borderColor:"#01ffff",borderWidth:2,color:o=>["#385afe","#95de64","#ff7a45","#101e57","#2c3e50"][o.dataIndex]},label:{show:!0,color:"#fff"},data:[{value:e(200,500),name:"学生"},{value:e(200,500),name:"职场青年"},{value:e(200,500),name:"家庭主妇"},{value:e(200,500),name:"退休人员"},{value:e(200,500),name:"企业高管"}]}});return s(()=>{a.series.data=[{value:e(200,500),name:"学生"},{value:e(200,500),name:"职场青年"},{value:e(200,500),name:"家庭主妇"},{value:e(200,500),name:"退休人员"},{value:e(200,500),name:"企业高管"}]},1e3*5),(o,t)=>{const n=r;return c(),i(n,{option:p(a)},null,8,["option"])}}});export{v as _};
