@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-03 10:14:51 
- */
-import{V as a}from"./index-BuFigy1A.js";const r=async e=>await a.get({url:"/mes/pro/task/page",params:e}),s=async e=>await a.get({url:"/mes/pro/task/get?id="+e}),c=async e=>await a.put({url:"/mes/pro/task/change",data:e}),u=async e=>await a.post({url:"/mes/pro/feedback/create",data:e}),n=async e=>await a.get({url:"/mes/md-product-bom/page",params:e}),g=async e=>await a.get({url:"/mes/md-product-sop/page",params:e}),o=async e=>await a.get({url:"/wms/issue-header/page",params:e}),p=async e=>await a.get({url:"/wms/issue-header/issue-line/page",params:e}),d=async e=>await a.get({url:"/mes/pro/feedback/page",params:e}),i=async e=>await a.get({url:"/ipqc/page",params:e}),m=async e=>await a.get({url:"/ipqc/line/page",params:e}),w=async e=>await a.get({url:"/wms/product-produce/page",params:e}),l=async e=>await a.get({url:"/wms/product-produce/product-produce-line/page",params:e}),P=async e=>await a.get({url:"/mes/pro/workorder/get?id="+e});export{s as a,w as b,u as c,l as d,m as e,i as f,r as g,P as h,d as i,p as j,o as k,g as l,n as m,c as u};

@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-03 10:14:51 
- */
-import{d as r,g as c,c as n,o as l,j as o,m as d,i as t,t as s,A as u}from"./index-BuFigy1A.js";const _={class:"avue-card__body",style:{padding:"10px","background-color":"#fff","border-radius":"5px"}},m={class:"avue-card__avatar"},f=["src"],h={class:"avue-card__detail"},p={class:"avue-card__title",style:{"margin-bottom":"unset"}},v={class:"avue-card__info",style:{height:"unset"}},g=r({name:"WxMusic",__name:"main",props:{title:{required:!1,type:String},description:{required:!1,type:String},musicUrl:{required:!1,type:String},hqMusicUrl:{required:!1,type:String},thumbMediaUrl:{required:!0,type:String}},setup(e,{expose:a}){return a({musicUrl:e.musicUrl}),(x,U)=>{const i=c("el-link");return l(),n("div",null,[o(i,{href:e.hqMusicUrl?e.hqMusicUrl:e.musicUrl,target:"_blank",type:"success",underline:!1},{default:d(()=>[t("div",_,[t("div",m,[t("img",{alt:"",src:e.thumbMediaUrl},null,8,f)]),t("div",h,[t("div",p,s(e.title),1),t("div",v,s(e.description),1)])])]),_:1},8,["href"])])}}}),b=u(g,[["__scopeId","data-v-f0121a9c"]]);export{b as default};

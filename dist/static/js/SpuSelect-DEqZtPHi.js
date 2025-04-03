@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-03 10:14:51 
- */
-import{_ as o}from"./SpuSelect.vue_vue_type_script_setup_true_lang-lfw87Hup.js";import"./index-BuFigy1A.js";import"./ContentWrap.vue_vue_type_script_setup_true_lang-Dq4j5fFx.js";import"./index-p6ysJ0Rq.js";import"./tree-vSlcEeQq.js";import"./index-BruMDxc3.js";import"./SkuList.vue_vue_type_script_setup_true_lang-CVzwuTvq.js";import"./UploadImg-BnOMiRz9.js";import"./UploadImgs.vue_vue_type_script_setup_true_lang-CQlJZsVQ.js";import"./UploadFile.vue_vue_type_script_setup_true_lang-D1xGOU-L.js";import"./category-DBVuNfJR.js";import"./spu-Wk_UdoYF.js";export{o as default};
