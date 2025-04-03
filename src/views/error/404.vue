@@ -24,5 +24,5 @@ const btn = ref<string>('返回首页')
 </script>
 
 <style lang="scss">
-@import './scss/error';
+@use './scss/error' as *;
 </style>

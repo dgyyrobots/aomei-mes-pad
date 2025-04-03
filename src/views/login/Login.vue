@@ -68,7 +68,7 @@ const prefixCls = getPrefixCls('login')
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/variables.scss';
+@use '../../styles/variables.scss' as *;
 $prefix-cls: if(defined($namespace), #{$namespace}-login, #{default-value}-login);
 
 .#{$prefix-cls} {
