@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 14:15:15 
+ */
+import{d as c,c as o,o as s,i as r,q as a,j as n,K as d,t as p,w as h,F as y,n as u,Z as m,A as _}from"./index-D3eRVKjp.js";const g={class:"right"},b=c({name:"SearchBar",__name:"index",props:{property:{}},setup(f){return(e,v)=>{const t=d;return s(),o("div",{class:"search-bar",style:a({color:e.property.textColor})},[r("div",{class:"inner",style:a({height:`${e.property.height}px`,background:e.property.backgroundColor,borderRadius:`${e.property.borderRadius}px`})},[r("div",{class:"placeholder",style:a({justifyContent:e.property.placeholderPosition})},[n(t,{icon:"ep:search"}),r("span",null,p(e.property.placeholder||"搜索商品"),1)],4),r("div",g,[(s(!0),o(y,null,u(e.property.hotKeywords,(i,l)=>(s(),o("span",{key:l},p(i),1))),128)),h(n(t,{icon:"ant-design:scan-outlined"},null,512),[[m,e.property.showScan]])])],4)],4)}}}),w=_(b,[["__scopeId","data-v-306debb6"]]);export{w as default};

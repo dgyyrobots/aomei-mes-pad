@@ -4,7 +4,8 @@
 export const cliConfig: { [key: string]: string | number | boolean | Array<string> } = {
   // hash模式时在不确定二级目录名称的情况下建议使用""或"./"来代表相对路径
   // history模式默认使用"/"或"/二级目录/"，只有hash时base可以为空，如果您配置了history模式那么此项不可为空！
-  base: '/m/pad/',
+  // base: '/m/pad/',
+  base: './',
   // 生产环境构建文件的目录名
   outDir: 'dist',
   // 放置生成的静态资源 (js、css、img、fonts) 的目录。

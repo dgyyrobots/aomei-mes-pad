@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-08 13:49:10 
- */
-import{d as _,az as a,g as n,k as o,o as c,p as u,a as x,as as g,aG as C,m as t,i as s,l as h,t as l,j as k,K as v,U as w}from"./index-BW9ifGp0.js";const y={class:"flex items-center"},z={class:"text-16px font-700"},B={class:"max-w-200px"},V=_({name:"ContentWrap",__name:"ContentWrap",props:{title:a.string.def(""),message:a.string.def("")},setup(e){const{getPrefixCls:i}=g(),r=i("content-wrap");return(d,N)=>{const m=v,p=n("el-tooltip"),f=n("el-card");return c(),o(f,{class:u([x(r),"mb-15px"]),shadow:"never"},C({default:t(()=>[s("div",null,[w(d.$slots,"default")])]),_:2},[e.title?{name:"header",fn:t(()=>[s("div",y,[s("span",z,l(e.title),1),e.message?(c(),o(p,{key:0,effect:"dark",placement:"right"},{content:t(()=>[s("div",B,l(e.message),1)]),default:t(()=>[k(m,{class:"ml-5px",icon:"ep:question-filled",size:14})]),_:1})):h("",!0)])]),key:"0"}:void 0]),1032,["class"])}}});export{V as _};

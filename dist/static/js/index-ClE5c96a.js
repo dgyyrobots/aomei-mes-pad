@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 14:15:15 
+ */
+import{V as e}from"./index-D3eRVKjp.js";const t=async r=>await e.get({url:"/trade/order/page",params:r}),d=async r=>await e.get({url:"/trade/order/summary",params:r}),s=async r=>await e.get({url:`/trade/order/get-detail?id=${r}`}),u=async r=>await e.get({url:`/trade/order/get-express-track-list?id=${r}`}),c=async r=>await e.put({url:"/trade/order/delivery",data:r}),i=async r=>await e.put({url:"/trade/order/update-remark",data:r}),n=async r=>await e.put({url:"/trade/order/update-price",data:r}),p=async r=>await e.put({url:"/trade/order/update-address",data:r}),o=async r=>await e.put({url:`/trade/order/pick-up-by-id?id=${r}`}),y=async r=>await e.put({url:"/trade/order/pick-up-by-verify-code",params:{pickUpVerifyCode:r}}),g=async r=>await e.get({url:"/trade/order/get-by-pick-up-verify-code",params:{pickUpVerifyCode:r}});export{s as a,n as b,i as c,c as d,t as e,d as f,u as g,y as h,g as i,o as p,p as u};

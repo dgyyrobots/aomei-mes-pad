@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 14:15:15 
+ */
+import{d as m,H as d,u as h,O as _,b as g,g as n,c as f,o as x,j as s,i as e,m as a}from"./index-D3eRVKjp.js";const v={class:"content"},w={style:{"margin-top":"10px"}},C=m({__name:"purchase",setup(y){const r=d(),i=h(),p=_(()=>{const o=r.path;return o.startsWith("/purchase")?o:"/purchase/goods"});return g(()=>{r.path==="/purchase"&&i.push("/purchase/goods")}),(o,t)=>{const u=n("el-menu-item"),l=n("el-menu"),c=n("router-view");return x(),f("div",v,[s(l,{"default-active":p.value,router:"",mode:"horizontal",ellipsis:!1},{default:a(()=>[s(u,{index:"/purchase/goods"},{default:a(()=>t[0]||(t[0]=[e("img",{src:"",alt:"",style:{width:"20px",height:"20px","margin-left":"12px","margin-right":"12px"}},null,-1),e("span",null,"采购明细管理",-1)])),_:1}),s(u,{index:"/purchase/order"},{default:a(()=>t[1]||(t[1]=[e("img",{src:"",alt:"",style:{width:"20px",height:"20px","margin-left":"12px","margin-right":"12px"}},null,-1),e("span",null,"采购订单",-1)])),_:1})]),_:1},8,["default-active"]),e("div",w,[s(c)])])}}});export{C as default};
