@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-03 13:38:04 
- */
-import{V as p,d as m,az as e,r as o,b as u,g as f,h as v,w as g,o as y,k as b,m as c,j as k,Q as w,a as s,i as x}from"./index-FPuwcz_Y.js";import{j as B}from"./bpmn-embedded-CwQnkw3b.js";const I=async a=>await p.get({url:"/bpm/activity/list",params:a}),h=m({name:"BpmProcessInstanceBpmnViewer",__name:"ProcessInstanceBpmnViewer",props:{loading:e.bool,id:e.string,processInstance:e.any,tasks:e.array,bpmnXml:e.string},setup(a){const t=a,n=o({prefix:"flowable"}),i=o([]);return u(async()=>{t.id&&(i.value=await I({processInstanceId:t.id}))}),(V,r)=>{const l=f("el-card"),d=v("loading");return g((y(),b(l,{class:"box-card"},{header:c(()=>r[0]||(r[0]=[x("span",{class:"el-icon-picture-outline"},"流程图",-1)])),default:c(()=>[k(s(B),w({key:"designer","activity-data":s(i),prefix:s(n).prefix,"process-instance-data":a.processInstance,"task-data":a.tasks,value:a.bpmnXml},s(n)),null,16,["activity-data","prefix","process-instance-data","task-data","value"])]),_:1})),[[d,a.loading]])}}});export{h as _};

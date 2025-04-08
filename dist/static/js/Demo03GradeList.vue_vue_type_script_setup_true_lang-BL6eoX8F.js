@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-03 13:38:04 
- */
-import{_ as g}from"./ContentWrap.vue_vue_type_script_setup_true_lang-32ziCa0j.js";import{b as v}from"./index-C4i0bSO3.js";import{d as h,r as l,b as w,g as s,h as x,k as c,o as i,m as p,w as y,a as n,j as t,L as C}from"./index-FPuwcz_Y.js";const L=h({__name:"Demo03GradeList",props:{studentId:{}},setup(d){const m=d,a=l(!1),r=l([]),_=async()=>{a.value=!0;try{const o=await v(m.studentId);if(!o)return;r.value.push(o)}finally{a.value=!1}};return w(()=>{_()}),(o,D)=>{const e=s("el-table-column"),u=s("el-table"),f=g,b=x("loading");return i(),c(f,null,{default:p(()=>[y((i(),c(u,{data:n(r),"show-overflow-tooltip":!0,stripe:!0},{default:p(()=>[t(e,{align:"center",label:"编号",prop:"id"}),t(e,{align:"center",label:"名字",prop:"name"}),t(e,{align:"center",label:"班主任",prop:"teacher"}),t(e,{align:"center",formatter:n(C),label:"创建时间",prop:"createTime",width:"180px"},null,8,["formatter"])]),_:1},8,["data"])),[[b,n(a)]])]),_:1})}}});export{L as _};

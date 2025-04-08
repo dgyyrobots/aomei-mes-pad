@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 13:49:10 
+ */
+import{d as v,g as n,h as c,w as l,c as a,o as t,F as k,n as b,i as s,j as i,t as w,m as r,k as y,K as B,A as C}from"./index-BW9ifGp0.js";const x={class:"waterfall"},I=["href"],D=["src"],j={class:"item-name"},F=v({__name:"ImageTable",props:{list:{},loading:{type:Boolean}},emits:["delete"],setup(_,{emit:d}){const o=_,m=d;return(N,P)=>{const p=B,u=n("el-button"),f=n("el-row"),g=c("hasPermi"),h=c("loading");return l((t(),a("div",x,[(t(!0),a(k,null,b(o.list,e=>(t(),a("div",{key:e.id,class:"waterfall-item"},[s("a",{href:e.url,target:"_blank"},[s("img",{class:"material-img",src:e.url},null,8,D),s("div",j,w(e.name),1)],8,I),i(f,{justify:"center"},{default:r(()=>[l((t(),y(u,{circle:"",type:"danger",onClick:T=>m("delete",e.id)},{default:r(()=>[i(p,{icon:"ep:delete"})]),_:2},1032,["onClick"])),[[g,["mp:material:delete"]]])]),_:2},1024)]))),128))])),[[h,o.loading]])}}}),$=C(F,[["__scopeId","data-v-7ad3b19b"]]);export{$ as default};
