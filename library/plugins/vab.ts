@@ -12,31 +12,11 @@ export const isCheck = () => {
     import.meta.env['\u0056\u0049\u0054\u0045\u005f\u0041\u0050\u0050\u005f\u0053\u0045\u0043\u0052\u0045\u0054\u005f\u004b\u0045\u0059']
       .length < 50
   ) {
-    useIntervalFn(() => {
-      localStorage.clear()
-      location.reload()
-    }, 50)
-    ;(() => {
-      function block() {
-        useIntervalFn(() => {
-          ;(function () {
-            return false
-          })
-            ['constructor']('debugger')
-            ['call']()
-        }, 50)
-      }
-
-      try {
-        block()
-      } catch (err) {
-        console.log(err)
-      }
-    })()
+    // 移除反调试代码，保留基本检查逻辑
+    console.log('环境检查未通过')
     return false
   } else return true
 }
-
 export default {
   install: (app: App<Element>) => {
     /**
@@ -104,7 +84,7 @@ export default {
         callback: () => {
           if (callback) callback()
         },
-      }).then(() => {})
+      }).then(() => { })
     }
 
     /**
