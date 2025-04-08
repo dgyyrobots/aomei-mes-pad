@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-08 14:15:15 
- */
-import{_ as l}from"./ContentWrap.vue_vue_type_script_setup_true_lang-Dg75KKir.js";import{_ as n}from"./CustomerLimitConfigList.vue_vue_type_script_setup_true_lang-BwgexcIB.js";import{L as a}from"./CustomerLimitConfigForm.vue_vue_type_script_setup_true_lang-CEcX6LSN.js";import{d as s,g as _,k as c,o as i,m as e,j as t,a as m}from"./index-D3eRVKjp.js";import"./DictTag.vue_vue_type_script_lang-h3s-iN69.js";import"./color-B5phLuB-.js";import"./dict-CqgorI4d.js";import"./index-6pMG05oy.js";import"./tree-vSlcEeQq.js";import"./index-D-YMOJxy.js";const U=s({name:"CrmCustomerLimitConfig",__name:"index",setup(f){return(u,C)=>{const o=_("el-tab-pane"),p=_("el-tabs"),r=l;return i(),c(r,null,{default:e(()=>[t(p,null,{default:e(()=>[t(o,{label:"拥有客户数限制"},{default:e(()=>[t(n,{"conf-type":m(a).CUSTOMER_QUANTITY_LIMIT},null,8,["conf-type"])]),_:1}),t(o,{label:"锁定客户数限制"},{default:e(()=>[t(n,{"conf-type":m(a).CUSTOMER_LOCK_LIMIT},null,8,["conf-type"])]),_:1})]),_:1})]),_:1})}}});export{U as default};

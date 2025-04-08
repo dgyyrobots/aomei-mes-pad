@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 15:23:48 
+ */
+import{P as y,_}from"./index-B8Sj09ZX.js";import{g as v,u as w}from"./page-DNS9dmk-.js";import{d as P,r as o,u as b,ac as D,H as V,b as k,z as R,a as e,k as B,l as F,o as I}from"./index-C8VsLzxx.js";import"./vuedraggable.umd-CTq-SX-r.js";const L=P({name:"DiyPageDecorate",__name:"decorate",setup(S){const r=R(),t=o(!1),a=o(),s=o(),l=async u=>{t.value=!0;try{a.value=await v(u)}finally{t.value=!1}},m=async()=>{if(s){t.value=!0;try{await w(e(a)),r.success("保存成功")}finally{t.value=!1}}},p=()=>{a.value={id:void 0,templateId:void 0,name:"",remark:"",previewImageUrls:[],property:""},s.value?.resetFields()},{currentRoute:c}=b(),{delView:d}=D(),n=V();return k(()=>{if(p(),!n.params.id){r.warning("参数错误，页面编号不能为空！"),d(e(c));return}l(n.params.id)}),(u,i)=>{const f=_;return e(a)&&!e(t)?(I(),B(f,{key:0,modelValue:e(a).property,"onUpdate:modelValue":i[0]||(i[0]=g=>e(a).property=g),libs:e(y),"show-navigation-bar":!0,"show-page-config":!0,"show-tab-bar":!1,title:e(a).name,onSave:m},null,8,["modelValue","libs","title"])):F("",!0)}}});export{L as default};

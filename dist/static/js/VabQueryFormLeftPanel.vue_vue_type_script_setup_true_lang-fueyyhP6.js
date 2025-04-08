@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-08 14:15:15 
- */
-import{d as a,g as n,k as o,o as l,m as _,U as r,A as u,i as p}from"./index-D3eRVKjp.js";const m=a({name:"VabQueryForm",__name:"index",setup(e){return(s,c)=>{const t=n("el-row");return l(),o(t,{class:"vab-query-form",gutter:0},{default:_(()=>[r(s.$slots,"default",{},void 0,!0)]),_:3})}}}),x=u(m,[["__scopeId","data-v-19854710"]]),d={class:"right-panel"},g=a({__name:"VabQueryFormRightPanel",props:{span:{type:Number,default:10}},setup(e){return(s,c)=>{const t=n("el-col");return l(),o(t,{lg:e.span,md:24,sm:24,xl:e.span,xs:24},{default:_(()=>[p("div",d,[r(s.$slots,"default")])]),_:3},8,["lg","xl"])}}}),f={class:"left-panel"},h=a({__name:"VabQueryFormLeftPanel",props:{span:{type:Number,default:14}},setup(e){return(s,c)=>{const t=n("el-col");return l(),o(t,{lg:e.span,md:24,sm:24,xl:e.span,xs:24},{default:_(()=>[p("div",f,[r(s.$slots,"default")])]),_:3},8,["lg","xl"])}}});export{h as _,g as a,x as b};

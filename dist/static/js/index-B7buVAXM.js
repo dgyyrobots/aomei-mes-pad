@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-08 14:15:15 
- */
-import{P as v}from"./color-B5phLuB-.js";import{d as R,az as u,Y as s,r as d,g as m,k as g,o as k,Q as C,a as t,y as i,m as x,j as E,A as I}from"./index-D3eRVKjp.js";const P=R({name:"InputWithColor",__name:"index",props:{modelValue:u.string.def("").isRequired,color:u.string.def("").isRequired},emits:["update:modelValue","update:color"],setup(c,{emit:_}){const n=c;s(()=>n.modelValue,e=>{e!==t(o)&&(o.value=e)});const p=_,o=d(n.modelValue);s(()=>o.value,e=>{p("update:modelValue",e)});const l=d(n.color);return s(()=>l.value,e=>{p("update:color",e)}),(e,a)=>{const f=m("el-color-picker"),V=m("el-input");return k(),g(V,C({modelValue:t(o),"onUpdate:modelValue":a[1]||(a[1]=r=>i(o)?o.value=r:null)},e.$attrs),{append:x(()=>[E(f,{modelValue:t(l),"onUpdate:modelValue":a[0]||(a[0]=r=>i(l)?l.value=r:null),predefine:t(v)},null,8,["modelValue","predefine"])]),_:1},16,["modelValue"])}}}),y=I(P,[["__scopeId","data-v-b692a61f"]]);export{y as _};

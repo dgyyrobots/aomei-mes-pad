@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 15:23:48 
+ */
+import{d,az as e,O as u,aX as p,g as m,k as s,o as c,m as k,l,v as b,K as g,t as C,Q as I,a as _,A as x}from"./index-C8VsLzxx.js";const y=d({name:"XButton",__name:"XButton",props:{modelValue:e.bool.def(!1),loading:e.bool.def(!1),preIcon:e.string.def(""),postIcon:e.string.def(""),title:e.string.def(""),type:e.oneOf(["","primary","success","warning","danger","info"]).def(""),link:e.bool.def(!1),circle:e.bool.def(!1),round:e.bool.def(!1),plain:e.bool.def(!1),onClick:{type:Function,default:null}},setup(o){const i=o,r=u(()=>{const a=["title","preIcon","postIcon","onClick"],n={...p(),...i};for(const t in n)a.indexOf(t)!==-1&&delete n[t];return n});return(a,f)=>{const n=g,t=m("el-button");return c(),s(t,I(_(r),{onClick:o.onClick}),{default:k(()=>[o.preIcon?(c(),s(n,{key:0,class:"mr-1px",icon:o.preIcon},null,8,["icon"])):l("",!0),b(" "+C(o.title?o.title:"")+" ",1),o.postIcon?(c(),s(n,{key:1,class:"mr-1px",icon:o.postIcon},null,8,["icon"])):l("",!0)]),_:1},16,["onClick"])}}}),V=x(y,[["__scopeId","data-v-7b10b85e"]]);export{V as _};

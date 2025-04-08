@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-08 15:23:48 
+ */
+import{_ as o}from"./Form.vue_vue_type_script_setup_true_lang-B3KmEn8z.js";import"./index-C8VsLzxx.js";import"./index-BZuBzcZM.js";import"./TemplateSelect.vue_vue_type_script_setup_true_lang-BHhMaGp5.js";import"./DictTag.vue_vue_type_script_lang-lHf-rDoT.js";import"./color-B5phLuB-.js";import"./dict-_inVRzR5.js";import"./ContentWrap.vue_vue_type_script_setup_true_lang-DmvxiVVs.js";import"./index-Avo831YR.js";import"./TemplateForm.vue_vue_type_script_setup_true_lang-BYIH_DGp.js";import"./TemplateIndexForm.vue_vue_type_script_setup_true_lang-BwuBrshW.js";import"./TemplateList.vue_vue_type_script_setup_true_lang-PxEjemAs.js";import"./index-CkoVaypB.js";import"./qmsIndexForm.vue_vue_type_script_setup_true_lang-DXwFi2I1.js";import"./TemplateProductForm.vue_vue_type_script_setup_true_lang-DNDgMHm2.js";import"./TemplateIndexList.vue_vue_type_script_setup_true_lang-Cbhq3FWx.js";import"./TemplateProductList.vue_vue_type_script_setup_true_lang-COC8ov41.js";import"./SupplierSelect.vue_vue_type_script_setup_true_lang-B6Ihx_cJ.js";export{o as default};
