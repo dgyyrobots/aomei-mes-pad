@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-10 15:05:55 
- */
-import{V as a}from"./index-D3S9e4gi.js";const e=async t=>await a.get({url:"/bpm/task/todo-page",params:t}),r=async t=>await a.get({url:"/bpm/task/done-page",params:t}),n=async t=>await a.put({url:"/bpm/task/approve",data:t}),u=async t=>await a.put({url:"/bpm/task/reject",data:t}),c=async t=>await a.put({url:"/bpm/task/update-assignee",data:t}),i=async t=>await a.get({url:`/bpm/task/list-by-process-instance-id?processInstanceId=${t}`}),p=async t=>await a.get({url:"/bpm/task/get-return-list",params:t}),o=async t=>await a.put({url:"/bpm/task/return",data:t}),g=async t=>await a.put({url:"/bpm/task/delegate",data:t}),k=async t=>await a.put({url:"/bpm/task/create-sign",data:t}),l=async t=>await a.get({url:`/bpm/task/children-list?taskId=${t}`}),d=async t=>await a.delete({url:"/bpm/task/delete-sign",data:t});export{n as a,p as b,o as c,g as d,l as e,d as f,i as g,r as h,e as i,u as r,k as t,c as u};

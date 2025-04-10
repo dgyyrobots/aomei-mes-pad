@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-10 15:05:55 
- */
-import{V as t}from"./index-D3S9e4gi.js";const a=async e=>await t.post({url:"/mes/qms/oqc/startBpm",params:e}),r=async e=>await t.get({url:"/mes/qms/oqc/page",params:e}),n=async e=>await t.get({url:"/mes/qms/oqc/get?id="+e}),c=async e=>await t.post({url:"/mes/qms/oqc/create",data:e}),o=async e=>await t.put({url:"/mes/qms/oqc/update",data:e}),u=async e=>await t.delete({url:"/mes/qms/oqc/delete?id="+e}),i=async e=>await t.download({url:"/mes/qms/oqc/export-excel",params:e}),m=async e=>await t.get({url:"/mes/qms/oqc-line/page",params:e}),q=async e=>await t.post({url:"/mes/qms/oqc-line/create",data:e}),l=async e=>await t.put({url:"/mes/qms/oqc-line/update",data:e}),d=async e=>await t.delete({url:"/mes/qms/oqc-line/delete?id="+e}),p=async e=>await t.get({url:"/mes/qms/oqc-line/get?id="+e});export{i as a,n as b,c,m as d,d as e,p as f,r as g,q as h,l as i,u as o,a as s,o as u};
