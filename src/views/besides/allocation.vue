@@ -308,7 +308,7 @@
             <el-form-item label="单据信息" prop="purchaseId">
               <el-input  readonly v-model="purchaseId" placeholder="请输入"/>
               <input ref="scannerInput" v-model="scanData" placeholder="请输入" style="position: absolute; opacity: 0; width: 1; height: 1; z-index: -1; -webkit-user-select: none" inputmode="none" autofocus />
-              <span>支持扫码枪扫描</span>
+              <span>支持扫码枪扫描, 无法扫码时点击重置按钮</span>
             </el-form-item>
           </el-col>
 
@@ -596,39 +596,42 @@ onUnmounted(() => {
 //   }
 // });
 
-watch(() => scanData.value, (newVal) => {
+// watch(() => scanData.value, (newVal) => {
+
+//   console.log('scanData变化了', newVal);
+//   // 检查是否包含完整的 "{" 和 "}"
 
 
-  if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
+//   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
 
-    let type = '';
-    // 开始基于当前的内容追加产品入库
+//     let type = '';
+//     // 开始基于当前的内容追加产品入库
 
-    // 替换中文引号为英文引号，并解析 JSON
-    newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
-    // 移除零宽度非换行空格字符
-    newVal = newVal.replace(/\uFEFF/g, '');
-    // 直接解析 JSON 字符串
+//     // 替换中文引号为英文引号，并解析 JSON
+//     newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
+//     // 移除零宽度非换行空格字符
+//     newVal = newVal.replace(/\uFEFF/g, '');
+//     // 直接解析 JSON 字符串
  
-    const data = JSON.parse(newVal);
-    // 检查是否包含 id 属性
+//     const data = JSON.parse(newVal);
+//     // 检查是否包含 id 属性
 
-    if (data) {
-      purchaseId.value = data.id;
-      type = data.type;
-    }
+//     if (data) {
+//       purchaseId.value = data.id;
+//       type = data.type;
+//     }
 
-    handleBlur(type);
-  }  else if(typeof(newVal)==='object' && newVal.id){
-    let type = '';
-    purchaseId.value = newVal.id;
-    type = newVal.type;
-    handleBlur(type);
-  }
-  else {
-    console.log('输入内容不包含完整的 "{" 和 "}"');
-  }
-});
+//     handleBlur(type);
+//   }  else if(typeof(newVal)==='object' && newVal.id){
+//     let type = '';
+//     purchaseId.value = newVal.id;
+//     type = newVal.type;
+//     handleBlur(type);
+//   }
+//   else {
+//     console.log('输入内容不包含完整的 "{" 和 "}"');
+//   }
+// });
 
 // 添加对话框显示状态的监听
 watch(() => executeDialogVisible.value, (newVal) => {
@@ -653,21 +656,107 @@ const remove_keydownlistener = () => {
 const handleKeyDown = (e) => {
   const keyCode = e.keyCode;
 
+
   if (keyCode === 13) {
 
+
+
+    if(!e.target.value) return;
     scanData.value = e.target.value;
+    var newVal  =  scanData.value 
+
+    if (typeof newVal  === 'string' && newVal.includes('{') && newVal.includes('}')) {
+
+
+      let type = '';
+      // 开始基于当前的内容追加产品入库
+
+      // 替换中文引号为英文引号，并解析 JSON
+      newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
+      console.log(newVal,'newVal 111');
+      // 移除零宽度非换行空格字符
+      newVal = newVal.replace(/\uFEFF/g, '');
+
+    
+      newVal = parseFirstJsonStr( newVal );
+
+      // 直接解析 JSON 字符串
+
+      const data = JSON.parse(newVal);
+      // 检查是否包含 id 属性
+
+      if (data) {
+        purchaseId.value = data.id;
+        scanData.value  = null
+        type = data.type;
+        refocusScanner()
+      }
+
+      handleBlur(type);
+      }  else if(typeof(newVal)==='object' && newVal.id){
+      let type = '';
+      purchaseId.value = newVal.id;
+      type = newVal.type;
+      scanData.value  = null
+      refocusScanner()
+      handleBlur(type);
+      }
+      else {
+      console.log('输入内容不包含完整的 "{" 和 "}"');
+      }
 
   }
 };
 const handResetPurchaseId = () => {
   purchaseId.value = null;
   scanData.value = null
+  refocusScanner()
   // purchaseId.value = '{"id":10,"type":"feedback"}'
 };
+// 返回{"id":4324,"type":"purchase","po_no":"AMCG83-241122002"}{"id":11,"type":"feedback"} ,只需要第一个
+function parseFirstJsonStr(str) {
+    let braceCount = 0;
+    let inString = false;
+    let escape = false;
 
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+
+        if (escape) {
+            escape = false;
+            continue;
+        }
+
+        if (char === '\\') {
+            escape = true;
+            continue;
+        }
+
+        if (char === '"') {
+            inString = !inString;
+        }
+
+        if (!inString) {
+            if (char === '{') braceCount++;
+            else if (char === '}') {
+                braceCount--;
+                if (braceCount === 0) {
+                    const jsonStr = str.slice(0, i + 1);
+                    try {
+                        return jsonStr
+                    } catch (e) {
+                        throw new Error('Invalid JSON object');
+                    }
+                }
+            }
+        }
+    }
+
+    throw new Error('No valid JSON object found');
+}
 // 添加一个重新获取焦点的方法
 const refocusScanner = () => {
-  if (executeDialogVisible.value && scannerInput.value && !purchaseId.value) {
+  if (executeDialogVisible.value && scannerInput.value) {
     nextTick(() => {
       setTimeout(() => {
         scannerInput.value && scannerInput.value.focus();

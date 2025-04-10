@@ -154,7 +154,7 @@
               <el-form-item label="采购单号" prop="poNo">
                 <el-input v-model="wareForm.poNo" placeholder="请输入采购单号" @blur="handleBlur" @input="handleInput"/>
                 <input ref="scannerInput" v-model="scanData" placeholder="请输入"  style="position: absolute; opacity: 0; width: 0; height: 0; z-index: -1; -webkit-user-select: none;" inputmode="none" autofocus />
-                <span>支持扫码枪扫描</span>
+                <span>支持扫码枪扫描, 无法扫码时点击重置按钮</span>
               </el-form-item>
             </el-col>
             <el-col :span="4">
@@ -397,6 +397,7 @@
   const handResetPoNo = () => {
     wareForm.poNo = ''
     scanData.value = null
+    refocusScanner()
   }
   // 方法定义
   const getList = async () => {
@@ -541,25 +542,25 @@ const remove_keydownlistener = () => {
   //     }
   //   }
   // })
-  watch(() => scanData.value, (newVal) => {
-    if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
-      console.log('输入内容包含完整的 "{" 和 "}"')
-      try {
-        const data = JSON.parse(newVal)
-        if (data && data.po_no) {
-          wareForm.poNo = data.po_no
-          handleBlur()
-        }
-      } catch (error) {
-        ElMessage.error('扫描结果不是有效的 JSON 字符串')
-      }
-    }  else if(typeof(newVal)==='object' && newVal.po_no){
-      wareForm.poNo = newVal.po_no
-      handleBlur()
-      }  else {
-        console.log('输入内容不包含完整的 "{" 和 "}"');
-      }
-  })
+  // watch(() => scanData.value, (newVal) => {
+  //   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
+  //     console.log('输入内容包含完整的 "{" 和 "}"')
+  //     try {
+  //       const data = JSON.parse(newVal)
+  //       if (data && data.po_no) {
+  //         wareForm.poNo = data.po_no
+  //         handleBlur()
+  //       }
+  //     } catch (error) {
+  //       ElMessage.error('扫描结果不是有效的 JSON 字符串')
+  //     }
+  //   }  else if(typeof(newVal)==='object' && newVal.po_no){
+  //     wareForm.poNo = newVal.po_no
+  //     handleBlur()
+  //     }  else {
+  //       console.log('输入内容不包含完整的 "{" 和 "}"');
+  //     }
+  // })
   
 
   // 添加对话框显示状态的监听
@@ -580,13 +581,91 @@ watch(() => wareOpen.value, (newVal) => {
 
 
 const handleKeyDown = (e) => {
+  if(!e.target.value) return;
   const keyCode = e.keyCode;
   if (keyCode === 13) {
-    console.log(e,'eeeeeeeeeeee')
+
     scanData.value = e.target.value;
+    var newVal  =  scanData.value 
+
+    if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
+
+      // 开始基于当前的内容追加产品入库
+
+      // 替换中文引号为英文引号，并解析 JSON
+      newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
+      console.log(newVal,'newVal 111');
+      // 移除零宽度非换行空格字符
+      newVal = newVal.replace(/\uFEFF/g, '');
+
+    
+      newVal = parseFirstJsonStr( newVal );
+
+      // 直接解析 JSON 字符串
+
+      const data = JSON.parse(newVal);
+      try {
+        if (data && data.po_no) {
+          scanData.value  = null
+          wareForm.poNo = data.po_no
+          handleBlur()
+          refocusScanner()
+        }
+      } catch (error) {
+        ElMessage.error('扫描结果不是有效的 JSON 字符串')
+      }
+    }  else if(typeof(newVal)==='object' && newVal.po_no){
+      wareForm.poNo = newVal.po_no
+      scanData.value  = null
+      handleBlur()
+      refocusScanner()
+      }  else {
+        console.log('输入内容不包含完整的 "{" 和 "}"');
+      }
+
+
   }
 };
-  
+function parseFirstJsonStr(str) {
+    let braceCount = 0;
+    let inString = false;
+    let escape = false;
+
+    for (let i = 0; i < str.length; i++) {
+        const char = str[i];
+
+        if (escape) {
+            escape = false;
+            continue;
+        }
+
+        if (char === '\\') {
+            escape = true;
+            continue;
+        }
+
+        if (char === '"') {
+            inString = !inString;
+        }
+
+        if (!inString) {
+            if (char === '{') braceCount++;
+            else if (char === '}') {
+                braceCount--;
+                if (braceCount === 0) {
+                    const jsonStr = str.slice(0, i + 1);
+                    try {
+                        return jsonStr
+                    } catch (e) {
+                        throw new Error('Invalid JSON object');
+                    }
+                }
+            }
+        }
+    }
+
+    throw new Error('No valid JSON object found');
+}
   // 新增按钮操作
   const handleAdd = () => {
     reset()
