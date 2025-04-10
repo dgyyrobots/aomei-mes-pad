@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-08 15:23:48 
- */
-import{a as x}from"./index-DBWi6Wn8.js";import{d as b,O as g,r as L,b as k,g as a,k as r,o,m as c,c as y,F as B,n as N,i as S,j as w,v as C,t as M,a as m,y as h}from"./index-C8VsLzxx.js";const F={class:"flex items-center gap-x-8px"},z=b({name:"MemberLevelSelect",__name:"MemberLevelSelect",props:{modelValue:{type:Number,default:void 0}},emits:["update:modelValue"],setup(p,{emit:u}){const d=p,i=u,t=g({get(){return d.modelValue},set(l){i("update:modelValue",l)}}),s=L([]),_=async()=>{s.value=await x()};return k(()=>{_()}),(l,n)=>{const f=a("el-avatar"),v=a("el-option"),V=a("el-select");return o(),r(V,{modelValue:m(t),"onUpdate:modelValue":n[0]||(n[0]=e=>h(t)?t.value=e:null),class:"!w-240px",clearable:"",placeholder:"请选择用户等级"},{default:c(()=>[(o(!0),y(B,null,N(m(s),e=>(o(),r(v,{key:e.id,label:e.name,value:e.id},{default:c(()=>[S("span",F,[w(f,{size:"small",src:e.icon},null,8,["src"]),C(" "+M(e.name),1)])]),_:2},1032,["label","value"]))),128))]),_:1},8,["modelValue"])}}});export{z as _};

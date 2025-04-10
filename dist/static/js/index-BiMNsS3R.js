@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-10 15:05:55 
+ */
+import{V as s}from"./index-D3S9e4gi.js";const t=e=>s.post({url:"/purchase/goods/create",data:e}),r=e=>s.put({url:"/purchase/goods/update",data:e}),u=e=>s.delete({url:`/purchase/goods/delete?id=${e}`}),a=e=>s.get({url:`/purchase/goods/get?id=${e}`}),c=e=>s.get({url:"/purchase/goods/page",params:e}),d=e=>s.get({url:"/purchase/goods/allList",params:e}),p=e=>s.download({url:"/purchase/goods/export-excel",params:e,responseType:"blob"}),n=e=>s.put({url:"/purchase/goods/updateReceiveStatus",data:e}),g=e=>s.put({url:"/purchase/goods/batchUpdateReceiveStatus",data:{poNo:e}}),l=e=>s.post({url:"/purchase/goods/wareHousing",data:e}),h=e=>s.post({url:"/purchase/goods/getStockByPurchaseId",data:e}),i=e=>s.post({url:"/purchase/goods/splitGoods",data:e}),G=e=>s.get({url:`/purchase/goods/checkConfig?poNo=${e}`});export{c as a,a as b,G as c,u as d,p as e,t as f,d as g,i as h,n as i,g as j,h as k,l as s,r as u};
