@@ -576,6 +576,8 @@ watch(() => wareOpen.value, (newVal) => {
         }
       }, 300);
     });
+  }else {
+    wareForm.poNo = null
   }
 });
 

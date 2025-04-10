@@ -635,6 +635,7 @@ onUnmounted(() => {
 
 // 添加对话框显示状态的监听
 watch(() => executeDialogVisible.value, (newVal) => {
+
   if (newVal) {
     // 对话框打开后，等待DOM渲染完成并设置焦点
     nextTick(() => {
@@ -646,6 +647,8 @@ watch(() => executeDialogVisible.value, (newVal) => {
         }
       }, 300);
     });
+  }else {
+    purchaseId.value = null
   }
 });
 const remove_keydownlistener = () => {
