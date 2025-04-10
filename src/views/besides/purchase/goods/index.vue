@@ -932,20 +932,15 @@ function parseFirstJsonStr(str) {
       warehouseOptions.value.map(w => {
       w.pId = w.id
       w.pName = w.warehouseName
-          w.children.map(l => {
-            let lstr = JSON.stringify(l.children)
-              .replace(/locationId/g, 'lId')
-              .replace(/areaId/g, 'pId')
-              .replace(/areaName/g, 'pName');
-            l.children = JSON.parse(lstr);
-          });
-
-          let wstr = JSON.stringify(w.children)
-            .replace(/warehouseId/g, 'wId')
-            .replace(/locationId/g, 'pId')
-            .replace(/locationName/g, 'pName');
-          w.children = JSON.parse(wstr);
+      w.children.map(l => {
+        l.pId = l.id
+        l.pName = l.locationName
+        l.children.map(a => {
+          a.pId = a.id
+          a.pName = a.areaName
         });
+      });
+     });
     } catch (error) {
       console.error('获取仓库列表失败:', error)
     }
