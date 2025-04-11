@@ -333,7 +333,7 @@
           <StockSelect ref="stockSelectRef" @onSelected="onStockSelected"></StockSelect>
 
           <el-col :span="2.5">
-            <el-button type="danger" plain :icon="Delete" :size="currentSize" :disabled="allocatedSingle" @click="allocatedHandleDelete">删除</el-button>
+            <el-button type="danger"  :icon="Delete" :size="currentSize" :disabled="allocatedSingle" @click="allocatedHandleDelete">删除</el-button>
           </el-col>
         </el-row>
         <el-table :size="currentSize" v-loading="loading" :data="allocatedList" @selection-change="allocatedHandleSelectionChange">
