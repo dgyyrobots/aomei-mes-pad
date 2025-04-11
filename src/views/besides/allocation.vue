@@ -63,7 +63,7 @@
     <ContentWrap>
     <!-- 列表 -->
       <el-table v-loading="loading"  ref="multipleTableRef" :data="list" :size="currentSize"   @selection-change="handleSelectionChange"   @row-click="handleRowClick">
-        <el-table-column type="selection" width="55" align="center"/>
+        <el-table-column type="selection" width="55" align="center" v-if="!isExecuteDetail" />
         <el-table-column label="调拨单编号" align="center" prop="allocatedCode"/>
         <el-table-column label="调拨单名称" align="center" prop="allocatedName"/>
         <el-table-column label="生产工单" align="center" prop="workorderCode"/>
@@ -87,6 +87,7 @@
             <el-button :size="currentSize" type="text"  @click="handleDelete(scope.row)"
                       v-hasPermi="['wms:allocated-header:delete']">删除
             </el-button>
+            <el-button :size="currentSize" type="text"  @click="handleExecuteDetail(scope.row)" v-hasPermi="['wms:allocated-header:allocated']">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -226,7 +227,7 @@
     </el-dialog>
 
     <!-- 执行出库对话框 -->
-    <el-dialog :title="'执行出库'"  class="execute-dialog" v-model="executeDialogVisible" width="92%" v-dialogDrag append-to-body>
+    <el-dialog :title="isExecuteDetail?'详情':'执行出库'"  class="execute-dialog" v-model="executeDialogVisible" width="92%" v-dialogDrag append-to-body>
       <el-form :size="currentSize" ref="executeFormRef" :model="executeForm" label-width="100px">
 
         <el-row>
@@ -310,7 +311,8 @@
         </el-table>
 
         <el-divider content-position="center">调拨信息</el-divider>
-        <el-row :gutter="10">
+
+        <el-row :gutter="10" v-if="!isExecuteDetail">
           <el-col :span="8">
             <el-form-item label="单据信息" prop="purchaseId">
               <el-input  readonly v-model="purchaseId" placeholder="请输入"/>
@@ -337,7 +339,7 @@
           </el-col>
         </el-row>
         <el-table :size="currentSize" v-loading="loading" :data="allocatedList" @selection-change="allocatedHandleSelectionChange">
-          <el-table-column type="selection" width="55" align="center"/>
+          <el-table-column type="selection" width="55" align="center" v-if="!isExecuteDetail" />
           <el-table-column label="序号" width="55" align="center">
             <template #default="scope">
               {{ scope.$index + 1 }}
@@ -357,7 +359,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button :size="currentSize" @click="cancel">取 消</el-button>
-          <el-button :size="currentSize" type="primary" @click="executeAllocated">确 定</el-button>
+          <el-button :size="currentSize" v-if="!isExecuteDetail"  type="primary" @click="executeAllocated">确 定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -517,6 +519,9 @@ const rules = reactive({
 });
 
 const executeDialogVisible = ref(false);
+// 是不是执行出库的详情
+const isExecuteDetail = ref(false);
+
 const scannerInput =ref(null)
 const scanData = ref(null)
 
@@ -555,7 +560,7 @@ onMounted(() => {
 
   // 添加全局点击事件监听器
   document.addEventListener('click', () => {
-    if (executeDialogVisible.value) {
+    if (executeDialogVisible.value && scannerInput.value) {
       refocusScanner();
     }
   });
@@ -1059,10 +1064,15 @@ const handleBomSelectionChange = (selection) => {
 };
 
 const handleExecute = (row) => {
-  openExecuteDialog(row.id);
+  openExecuteDialog(row.id, false);
 };
 
-const openExecuteDialog = (allocatedId) => {
+const handleExecuteDetail = (row) => {
+  openExecuteDialog(row.id, true);
+};
+
+const openExecuteDialog = (allocatedId, isDetail) => {
+  // isExecuteDetail  是不是详情按钮
   executeFormData.id = allocatedId; // 传递需要执行出库的调拨单ID
   nextTick(() => {
     if (executeFormRef.value) {
@@ -1089,6 +1099,7 @@ const openExecuteDialog = (allocatedId) => {
   getAllocatedRecordByHeaderId(allocatedId).then(response => {
     allocatedList.value = response;
   });
+  isExecuteDetail.value =  isDetail;
   executeDialogVisible.value = true; // 控制弹出框显示
 };
 
