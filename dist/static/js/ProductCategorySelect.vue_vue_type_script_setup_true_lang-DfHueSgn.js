@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-11 15:04:23 
+ */
+import{d as c,az as d,dg as i,O as f,r as g,b as y,g as V,k as b,o as h,a as o,y as k}from"./index-lcC3l4R2.js";import{g as C}from"./category-C1vxv8tw.js";import{h as I,d as _}from"./tree-vSlcEeQq.js";const B=c({name:"ProductCategorySelect",__name:"ProductCategorySelect",props:{modelValue:i([Number,Array]),multiple:d.bool.def(!1),parentId:d.number.def(void 0)},emits:["update:modelValue"],setup(t,{emit:n}){const l=t,a=f({get:()=>l.modelValue,set:e=>{p("update:modelValue",e)}}),p=n,s=g([]);return y(async()=>{const e=await C({parentId:l.parentId});s.value=I(e,"id","parentId")}),(e,r)=>{const m=V("el-tree-select");return h(),b(m,{modelValue:o(a),"onUpdate:modelValue":r[0]||(r[0]=u=>k(a)?a.value=u:null),class:"w-1/1",data:o(s),multiple:t.multiple,"node-key":"id",placeholder:"请选择商品分类",props:o(_),"show-checkbox":t.multiple},null,8,["modelValue","data","multiple","props","show-checkbox"])}}});export{B as _};
