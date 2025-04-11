@@ -17,8 +17,15 @@
       </el-form-item>
 
       <el-form-item label="调拨日期" prop="allocatedDate">
-        <el-date-picker v-model="queryParams.allocatedDate" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
-                        range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']"/>
+          <el-date-picker
+          v-model="queryParams.allocatedDate"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          type="daterange"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          :default-time="[new Date('1 00:00:00'), new Date('1 23:59:59')]"
+          class="!w-240px"
+        />
       </el-form-item>
 
       <el-form-item>
@@ -110,7 +117,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="调拨日期" prop="allocatedDate">
-              <el-date-picker clearable v-model="form.allocatedDate" type="date" value-format="timestamp" placeholder="选择调拨日期"/>
+              <el-date-picker clearable v-model="form.allocatedDate" type="date"     @change="handAllocatedDateChangeForm" placeholder="选择调拨日期"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -238,7 +245,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="调拨日期" prop="allocatedDate">
-              <el-date-picker clearable v-model="executeForm.allocatedDate" disabled type="date" value-format="timestamp" placeholder="选择调拨日期"/>
+              <el-date-picker clearable v-model="executeForm.allocatedDate" disabled type="date"  @change="handAllocatedDateChangeExecuteForm" placeholder="选择调拨日期"/>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -651,6 +658,25 @@ watch(() => executeDialogVisible.value, (newVal) => {
     purchaseId.value = null
   }
 });
+
+
+const handAllocatedDateChangeForm = (value) => {
+  if (value) {
+   form.value.allocatedDate =  new Date(value).getTime()
+ } else if (value === null) {
+   form.value.allocatedDate =  null
+  }
+};
+
+const handAllocatedDateChangeExecuteForm = (value) => {
+  if (value) {
+   executeForm.value.allocatedDate =  new Date(value).getTime()
+ } else if (value === null) {
+   executeForm.value.allocatedDate =  null
+  }
+};
+
+
 const remove_keydownlistener = () => {
   window.removeEventListener("keydown", handleKeyDown, false);
 };
