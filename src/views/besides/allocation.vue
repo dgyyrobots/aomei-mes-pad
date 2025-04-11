@@ -62,7 +62,7 @@
     </el-row>
     <ContentWrap>
     <!-- 列表 -->
-      <el-table v-loading="loading" :data="list" :size="currentSize" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading"  ref="tableRef" :data="list" :size="currentSize"  @row-click="handleRowClick">
         <el-table-column type="selection" width="55" align="center"/>
         <el-table-column label="调拨单编号" align="center" prop="allocatedCode"/>
         <el-table-column label="调拨单名称" align="center" prop="allocatedName"/>
@@ -498,6 +498,7 @@ const queryParams = reactive({
   createTime: [],
   bindWorkorder: null, // 默认不绑定工单
 });
+const tableRef = ref(null);
 
 // 表单参数
 
@@ -742,6 +743,31 @@ const handResetPurchaseId = () => {
   refocusScanner()
   // purchaseId.value = '{"id":10,"type":"feedback"}'
 };
+
+const handleRowClick = (row, column, event) => {
+  if (column.label === '操作') return;
+ // 判断当前行ID是否在已选中的ids数组中
+ const index = ids.value.indexOf(row.id);
+  
+  if (index > -1) {
+    // 如果已经选中，则取消选中
+    tableRef.value.toggleRowSelection(row, false);
+    // 从ids数组中移除
+    ids.value.splice(index, 1);
+  } else {
+    // 如果未选中，则选中该行
+    tableRef.value.toggleRowSelection(row, true);
+    // 添加到ids数组
+    ids.value.push(row.id);
+  }
+
+  // 更新单行和多行选择状态
+  single.value = ids.value.length !== 1;
+  multiple.value = !ids.value.length;
+
+
+};
+
 // 返回{"id":4324,"type":"purchase","po_no":"AMCG83-241122002"}{"id":11,"type":"feedback"} ,只需要第一个
 function parseFirstJsonStr(str) {
     let braceCount = 0;
@@ -880,11 +906,7 @@ const resetQuery = () => {
   handleQuery();
 };
 
-const handleSelectionChange = (selection) => {
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length !== 1;
-  multiple.value = !selection.length;
-};
+
 
 const handleAdd = () => {
   reset();
@@ -1313,7 +1335,7 @@ defineExpose({
   exportLoading,
   handleQuery,
   resetQuery,
-  handleSelectionChange,
+
   handleAdd,
   handleUpdate,
   handleDelete,
