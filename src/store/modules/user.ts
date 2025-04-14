@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import store from '../index'
 import { getInfo, loginOut } from '/@/api/login'
 import { CACHE_KEY, useCache } from '/@/hooks/web/useCache'
-import { getAccessToken, removeToken } from '/@/utils/auth'
+import { getAccessToken, removeToken, getLoginForm } from '/@/utils/auth'
 
 const { wsCache } = useCache()
 
@@ -84,7 +84,18 @@ export const useUserStore = defineStore('user', {
     async loginOut() {
       await loginOut()
       removeToken()
-      wsCache.clear()
+
+      // 获取登录表单信息，检查是否勾选了"记住我"
+      const loginForm = getLoginForm()
+      if (!loginForm || !loginForm.rememberMe) {
+        // 如果没有登录表单信息或未勾选"记住我"，则清除所有缓存
+        wsCache.clear()
+      } else {
+        // 如果勾选了"记住我"，则只保留登录表单信息
+        const { clearExcept } = useCache()
+        clearExcept([CACHE_KEY.LOGIN_FORM])
+      }
+
       this.resetState()
     },
     resetState() {
