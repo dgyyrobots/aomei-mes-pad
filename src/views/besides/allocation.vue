@@ -438,7 +438,7 @@ const tableContainerRef = ref(null);
 const tableHeight = ref(500); // 默认高度
 
 const executeFormRef = ref(null)
-const woSelect = ref(null);
+const woSelectRef = ref(null);
 const taskSelect = ref(null);
 const stockSelectRef = ref(null);
 
@@ -535,9 +535,6 @@ const scanData = ref(null)
 
 const executeFormData = reactive({});
 const purchaseId = ref(null);
-const videoWidth = ref(640);
-const videoHeight = ref(480);
-const scanResult = ref(''); // 存储扫描结果
 
 // 计算属性
 const isEdit = computed(() => {
@@ -588,12 +585,7 @@ watch(() => executeDialogVisible.value, (newVal) => {
   if (newVal) {
     // 对话框打开后，等待DOM渲染完成并设置焦点
     nextTick(() => {
-      // 使用多个延时尝试获取焦点，增加成功率
-      setTimeout(() => {
-        if (scannerInput.value) {
-          scannerInput.value.focus();
-        }
-      }, 300);
+      refocusScanner()
     });
   }else {
     purchaseId.value = null
@@ -635,8 +627,6 @@ const handleKeyDown = (e) => {
 
   if (keyCode === 13) {
 
-
-
     if(!e.target.value) return;
     scanData.value = e.target.value;
     var newVal  =  scanData.value 
@@ -653,23 +643,23 @@ const handleKeyDown = (e) => {
       // 移除零宽度非换行空格字符
       newVal = newVal.replace(/\uFEFF/g, '');
 
-    
-      newVal = parseFirstJsonStr( newVal );
-
-      // 直接解析 JSON 字符串
-
-      const data = JSON.parse(newVal);
-      // 检查是否包含 id 属性
-
-      if (data) {
-        purchaseId.value = data.id;
-        scanData.value  = null
-        type = data.type;
-        refocusScanner()
-      }
-
-      handleBlur(type);
-      }  else if(typeof(newVal)==='object' && newVal.id){
+      try{
+        newVal = parseFirstJsonStr( newVal );
+        // 直接解析 JSON 字符串
+        const data = JSON.parse(newVal);
+        // 检查是否包含 id 属性
+        if (data) {
+          purchaseId.value = data.id;
+          scanData.value  = null
+          type = data.type;
+          refocusScanner()
+        }
+        handleBlur(type);
+      } catch (error) {
+        console.log('输入内容不包含完整的 "{" 和 "}"');
+      } 
+    }
+    else if(typeof(newVal)==='object' && newVal.id){
       let type = '';
       purchaseId.value = newVal.id;
       type = newVal.type;
@@ -711,7 +701,6 @@ const handResetPurchaseId = () => {
   purchaseId.value = null;
   scanData.value = null
   refocusScanner()
-  // purchaseId.value = '{"id":10,"type":"feedback"}'
 };
   
 const handleSelectionChange = (selection) => {
@@ -841,11 +830,49 @@ const reset = () => {
     remark: null,
     bomList: [],
   });
+
+    // 添加对 executeForm.value 的重置
+  Object.assign(executeForm.value, {
+    id: null,
+    allocatedCode: null,
+    allocatedName: null,
+    workstationId: null,
+    workstationCode: null,
+    workstationName: null,
+    workorderId: null,
+    workorderCode: null,
+    taskId: null,
+    taskCode: null,
+    clientId: null,
+    clientCode: null,
+    clientName: null,
+    clientNick: null,
+    warehouseId: null,
+    warehouseCode: null,
+    warehouseName: null,
+    locationId: null,
+    locationCode: null,
+    locationName: null,
+    areaId: null,
+    areaCode: null,
+    areaName: null,
+    allocatedDate: null,
+    status: 'PREPARE',
+    remark: null,
+    bindWorkorder: false,
+  });
+    // 重置 executeFormData
+  Object.keys(executeFormData).forEach(key => {
+    delete executeFormData[key];
+  });
   autoGenFlag.value = false;
   bomList.value = [];
   warehouseInfo.value = []; // 重置领料仓库信息
   if (formRef.value) {
     formRef.value.resetFields();
+  }
+  if (executeFormRef.value) {
+    executeFormRef.value.resetFields();
   }
 };
 
@@ -974,7 +1001,7 @@ const handleWarehouseChanged = (value) => {
 };
 
 const handleWorkorderSelect = () => {
-  woSelect.value.showFlag = true;
+  woSelectRef.value.showFlag = true;
 };
 
 const onWorkorderSelected = (row) => {
@@ -1098,7 +1125,12 @@ const handleBlur = (type) => {
   if(type){
     finType = type;
   }
-  if(warehouseInfo.value[0] === '' || warehouseInfo.value[1] === '' || warehouseInfo.value[2] === '') {
+  if(!warehouseInfo.value || 
+     !Array.isArray(warehouseInfo.value) || 
+     warehouseInfo.value.length < 3 || 
+     !warehouseInfo.value[0] || 
+     !warehouseInfo.value[1] || 
+     !warehouseInfo.value[2]) {
     ElMessage.error('请选择调拨仓库、库区、库位信息！');
     return;
   }
@@ -1106,46 +1138,16 @@ const handleBlur = (type) => {
     ElMessage.error('请输入或扫描单据信息!');
     return;
   }
-  // if (isNaN(purchaseId.value)) {
-  //   if ((purchaseId.value.includes('{') || purchaseId.value.includes('[') || purchaseId.value.includes('}') || purchaseId.value.includes(']'))) {
-  //     purchaseId.value = purchaseId.value.trim();
-  //     // 清理文本框内容的多余空格，并格式化为标准 JSON 格式
-  //     purchaseId.value = purchaseId.value
-  //       // 去除字段名和字段值之间的多余空格
-  //       .replace(/\s*[:]\s*/g, ':')
-  //       .replace(/\s*,\s*/g, ',')
-  //       .replace(/\s*{\s*/g, '{')
-  //       .replace(/\s*}\s*/g, '}')
-  //       .replace(/\s*\[\s*/g, '[')
-  //       .replace(/\s*\]\s*/g, ']');
-  //     // 给键和字符串值加上双引号
-  //     let formattedData = purchaseId.value
-  //       // 给所有键名加双引号
-  //       .replace(/([a-zA-Z0-9_]+)(?=\s*[:])/g, '"$1"')
-  //       // 给字符串值加双引号，排除数字和其他非字符串类型的值
-  //       .replace(/(:\s*)([a-zA-Z\u4e00-\u9fa5_-]+)(?=\s*,|\s*\})/g, '$1"$2"');
-  //     // Step 2: 处理数字和标识符类型的字符串，如 AMCG86-241030001 和 20241106805-01，需给它们加上双引号
-  //     formattedData = formattedData.replace(/(:\s*)([A-Za-z0-9-]+)(?=\s*,|\s*\})/g, '$1"$2"');
-  //     try {
-  //       // Step 3: 使用 JSON.parse 转换为对象
-  //       const parsedData = JSON.parse(formattedData);
-  //       // Step 4: 使用 JSON.stringify 格式化为标准 JSON 字符串
-  //       const data = JSON.stringify(parsedData, null, 2);
-  //       const transedData = JSON.parse(data);
-  //       console.log(transedData);
-  //       // 检查是否包含 id 属性
-  //       if (transedData) {
-  //         // 更新 purchaseId
-  //         purchaseId.value = transedData.id;
-  //         finType = transedData.type;
-  //       }
-  //     } catch (error) {
-  //       ElMessage.error('扫描结果不是有效的 JSON 字符串');
-  //     }
-  //   }
-  // }
+
+   // 优化 parseInt 处理，添加错误检查
+   const parsedId = parseInt(purchaseId.value);
+  if (isNaN(parsedId)) {
+    ElMessage.error('单据ID格式不正确，请重新输入或扫描!');
+    return;
+  }
+
   let obj = {
-    'id': parseInt(purchaseId.value), // 转为数字this.purchaseId,
+    'id': parsedId, // 使用已验证的数字
     'type': finType,
     'method': 'allocated',
     'warehouseId': warehouseInfo.value[0],
@@ -1266,11 +1268,11 @@ const handleBindWorkorderChange = (value) => {
   }
 };
 
-const handleIssue = (row) => {
+const handleIssue = () => {
   // 确认执行吗?
   ElMessageBox.confirm('确认生成领料单吗?').then(() => {
     loading.value = true;
-    const allocatedId = row.id || ids.value;
+    const allocatedId = ids.value;
     createIssue(allocatedId).then(() => {
       loading.value = false;
       getList();
