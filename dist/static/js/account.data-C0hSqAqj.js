@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-14 11:54:00 
+ */
+import{f as l,N as r,L as s}from"./index-BdmDrM2Y.js";import{r as e}from"./formRules-wW3jWK7m.js";import{D as t}from"./dict-Cm-9nniQ.js";import{u as i}from"./useCrudSchemas-CKDeb1Cb.js";const{t:a}=r(),c=l({mail:[{required:!0,message:a("profile.rules.mail"),trigger:"blur"},{type:"email",message:a("profile.rules.truemail"),trigger:["blur","change"]}],username:[e],password:[e],host:[e],port:[e],sslEnable:[e]}),o=l([{label:"邮箱",field:"mail",isSearch:!0},{label:"用户名",field:"username",isSearch:!0},{label:"密码",field:"password",isTable:!1},{label:"SMTP 服务器域名",field:"host"},{label:"SMTP 服务器端口",field:"port",form:{component:"InputNumber",value:465}},{label:"是否开启 SSL",field:"sslEnable",dictType:t.INFRA_BOOLEAN_STRING,dictClass:"boolean",form:{component:"Radio"}},{label:"创建时间",field:"createTime",isForm:!1,formatter:s,detail:{dateFormat:"YYYY-MM-DD HH:mm:ss"}},{label:"操作",field:"action",isForm:!1,isDetail:!1}]),{allSchemas:n}=i(o);export{n as a,c as r};
