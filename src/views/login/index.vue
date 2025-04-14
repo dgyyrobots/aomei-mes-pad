@@ -13,8 +13,8 @@
           <img :src="logo" :alt="title" >
         </div>
         <div class="title-tips">{{ translate('生产终端登录') }}</div>
-        <el-form-item prop="tenantname" class="!hidden">
-          <el-input v-model.trim="form.tenantName" v-focus clearable :placeholder="translate('请输入租户名称')" type="text">
+        <el-form-item prop="tenantName" class="!hidden">
+          <el-input v-model.trim="form.tenantName" clearable :placeholder="translate('请输入租户名称')" type="text">
             <template #prefix>
               <vab-icon icon="home-line" />
             </template>
@@ -77,14 +77,17 @@ import { Verify as vVerify } from '/@/components/Verifition'
 import { translate } from '/@/i18n'
 import { useSettingsStore } from '/@/store/modules/settings'
 import { useAppStore } from '/@/store/modules/app'
-import { getLoginForm, removeLoginForm, setLoginForm, setTenantId, setToken } from '/@/utils/auth.ts'
+import { getLoginForm, removeLoginForm, setLoginForm, setTenantId, setToken,removeToken } from '/@/utils/auth.ts'
 import { isPassword } from '/@/utils/validate'
+import { useUserStore } from '/@/store/modules/user'
+
 defineOptions({
   name: 'Login',
 })
 
 const route = useRoute()
 const router = useRouter()
+const userStore = useUserStore()
 const settingsStore = useSettingsStore()
 const appStore = useAppStore();
 const { theme } = storeToRefs(settingsStore)
@@ -226,6 +229,10 @@ watchEffect(() => {
 })
 
 onMounted(() => {
+  removeToken()
+  if (route.query.logout === 'true') {
+    userStore.loginOut()
+  }
   getCookie()
 })
 
