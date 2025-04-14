@@ -60,14 +60,14 @@
         </el-button>
       </el-col>
     </el-row>
-    <ContentWrap>
+    <div class="table-container"  ref="tableContainerRef" >
     <!-- 列表 -->
-      <el-table v-loading="loading"  ref="multipleTableRef" :data="list" :size="currentSize"   @selection-change="handleSelectionChange"   @row-click="handleRowClick">
+      <el-table v-loading="loading"  ref="multipleTableRef" :height="tableHeight" :data="list" :size="currentSize" class="touch-scroll-table" @selection-change="handleSelectionChange"   @row-click="handleRowClick">
         <el-table-column type="selection" width="55" align="center" v-if="!isExecuteDetail" />
         <el-table-column label="调拨单编号" align="center" prop="allocatedCode"/>
         <el-table-column label="调拨单名称" align="center" prop="allocatedName"/>
         <el-table-column label="生产工单" align="center" prop="workorderCode"/>
-        <el-table-column label="调拨日期" align="center" prop="allocatedDate" width="180">
+        <el-table-column label="调拨日期" align="center" prop="allocatedDate">
           <template #default="scope">
             <span>{{ formatDate(scope.row.allocatedDate,'YYYY-MM-DD') }}</span>
           </template>
@@ -93,8 +93,9 @@
       </el-table>
       <!-- 分页组件 -->
       <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize"
-                  @pagination="getList"/>
-    </ContentWrap>
+        @pagination="getList"/> 
+      </div>
+
     <!-- 对话框(添加 / 修改) -->
     <el-dialog :title="title" v-model="open" width="80%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :size="currentSize" :model="form" :rules="rules" >
@@ -381,14 +382,16 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { formatDate } from '/@/utils/formatTime'
 import { DICT_TYPE } from '@/utils/dict'
 import { CACHE_KEY, useCache } from '/@/hooks/web/useCache'
- import download from '~/library/plugins/download'
- import { useAppStore } from '@/store/modules/app'
+import download from '~/library/plugins/download'
+import { useAppStore } from '@/store/modules/app'
+import { useRoute } from 'vue-router'
 
-  const appStore = useAppStore()
-  const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
+const appStore = useAppStore()
+const currentSize = computed(() => appStore.currentSize === 'mini' ? 'small' : appStore.currentSize)
 // 组件引用
 const queryForm = ref(null);
 const formRef = ref(null)
+const route = useRoute();
 const form = ref({
   id: null,
   allocatedCode: null,
@@ -429,6 +432,11 @@ const executeForm = ref({
   workorderId: null,
   taskId: null
 });
+// 添加表格容器引用
+const tableContainerRef = ref(null);
+// 添加表格高度响应式变量
+const tableHeight = ref(500); // 默认高度
+
 const executeFormRef = ref(null)
 const woSelect = ref(null);
 const taskSelect = ref(null);
@@ -471,7 +479,7 @@ const open = ref(false);
 // 查询参数
 const queryParams = reactive({
   pageNo: 1,
-  pageSize: 10,
+  pageSize: 20,
   allocatedCode: null,
   allocatedName: null,
   workstationId: null,
@@ -536,20 +544,7 @@ const isEdit = computed(() => {
   return optType.value === 'edit';
 });
 
-const dynamicRules = computed(() => {
-  // 如果绑定了工单，则设置工单和任务单为必填
-  if (form.value.bindWorkorder) {
-    return {
-      workorderCode: [{ required: true, message: '请指定生产工单', trigger: 'blur' }],
-      taskCode: [{ required: true, message: '请指定生产任务', trigger: 'blur' }],
-    };
-  }
-  // 如果未绑定工单，则清空相关规则
-  return {
-    workorderCode: [],
-    taskCode: [],
-  };
-});
+
 
 // 生命周期钩子
 onMounted(() => {
@@ -559,92 +554,33 @@ onMounted(() => {
   window.addEventListener("keydown", handleKeyDown);
 
   // 添加全局点击事件监听器
-  document.addEventListener('click', () => {
-    if (executeDialogVisible.value && scannerInput.value) {
-      refocusScanner();
-    }
-  });
+  document.addEventListener('click', handleDocumentClick);
+
   nextTick(() => {
     setTimeout(() => {
       scannerInput.value && scannerInput.value.focus();
     },1000);
   });
-
+  // 添加窗口大小变化监听
+  window.addEventListener('resize', calculateTableHeight);
+  // 初始计算表格高度
+  calculateTableHeight();
 
 });
 
 onUnmounted(() => {
   remove_keydownlistener();
+    // 移除窗口大小变化监听
+  window.removeEventListener('resize', calculateTableHeight);
+});
+// 监听路由变化重新计算高度
+watch(() => route.path, () => {
+  nextTick(() => {
+    calculateTableHeight();
+  });
 });
 
-// 监听器
-// watch(() => purchaseId.value, (newVal) => {
-//   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
-//     console.log('输入内容包含完整的 "{" 和 "}"');
-//     let type = '';
-//     // 开始基于当前的内容追加产品入库
 
-//     // 替换中文引号为英文引号，并解析 JSON
-//     newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
-//     // 移除零宽度非换行空格字符
-//     newVal = newVal.replace(/\uFEFF/g, '');
-//     // 直接解析 JSON 字符串
-//     console.log(newVal,'newVal')
-//     const data = JSON.parse(newVal);
-//     // 检查是否包含 id 属性
-//     console.log(data,'dddddddd')
-//     if (data) {
-//       purchaseId.value = data.id;
-//       type = data.type;
-//     }
-//     handleBlur(type);
-//   }  else if(typeof(newVal)==='object' && newVal.id){
-//     let type = '';
-//     purchaseId.value = newVal.id;
-//     type = newVal.type;
-//     handleBlur(type);
-//   }
-//   else {
-//     console.log('输入内容不包含完整的 "{" 和 "}"');
-//   }
-// });
-
-// watch(() => scanData.value, (newVal) => {
-
-//   console.log('scanData变化了', newVal);
-//   // 检查是否包含完整的 "{" 和 "}"
-
-
-//   if (typeof newVal === 'string' && newVal.includes('{') && newVal.includes('}')) {
-
-//     let type = '';
-//     // 开始基于当前的内容追加产品入库
-
-//     // 替换中文引号为英文引号，并解析 JSON
-//     newVal = newVal.replace(/"/g, '"').replace(/"/g, '"').replace(/：/g, ':').replace(/，/g, ',');
-//     // 移除零宽度非换行空格字符
-//     newVal = newVal.replace(/\uFEFF/g, '');
-//     // 直接解析 JSON 字符串
- 
-//     const data = JSON.parse(newVal);
-//     // 检查是否包含 id 属性
-
-//     if (data) {
-//       purchaseId.value = data.id;
-//       type = data.type;
-//     }
-
-//     handleBlur(type);
-//   }  else if(typeof(newVal)==='object' && newVal.id){
-//     let type = '';
-//     purchaseId.value = newVal.id;
-//     type = newVal.type;
-//     handleBlur(type);
-//   }
-//   else {
-//     console.log('输入内容不包含完整的 "{" 和 "}"');
-//   }
-// });
 
 // 添加对话框显示状态的监听
 watch(() => executeDialogVisible.value, (newVal) => {
@@ -656,7 +592,6 @@ watch(() => executeDialogVisible.value, (newVal) => {
       setTimeout(() => {
         if (scannerInput.value) {
           scannerInput.value.focus();
-          console.log('设置焦点成功');
         }
       }, 300);
     });
@@ -685,9 +620,15 @@ const handAllocatedDateChangeExecuteForm = (value) => {
 
 const remove_keydownlistener = () => {
   window.removeEventListener("keydown", handleKeyDown, false);
+    // 移除点击事件监听器
+  document.removeEventListener('click', handleDocumentClick);
 };
 
-
+const handleDocumentClick = () => {
+  if (executeDialogVisible.value && scannerInput.value) {
+    refocusScanner();
+  }
+}
 const handleKeyDown = (e) => {
   const keyCode = e.keyCode;
 
@@ -741,6 +682,30 @@ const handleKeyDown = (e) => {
       }
 
   }
+};
+
+// 计算表格高度的方法
+const calculateTableHeight = () => {
+  nextTick(() => {
+    if (!tableContainerRef.value) return;
+    
+    // 获取视窗高度
+    const windowHeight = window.innerHeight;
+    // 获取表格容器到顶部的距离
+    const containerTop = tableContainerRef.value.getBoundingClientRect().top;
+
+
+    // 底部预留空间（分页等）
+    const bottomReserved = 100;
+    
+    // 计算表格可用高度
+    const availableHeight = windowHeight - containerTop - bottomReserved;
+
+
+    // 设置最小高度
+    tableHeight.value = Math.max(300, availableHeight);
+
+  });
 };
 const handResetPurchaseId = () => {
   purchaseId.value = null;
@@ -997,7 +962,6 @@ const handleExport = () => {
 };
 
 const handleWarehouseChanged = (value) => {
-  console.log(value,'value');
   if (value !== null) {
     form.value.warehouseId = value[0]; // 仓库
     form.value.locationId = value[1]; // 库区
@@ -1386,10 +1350,7 @@ defineExpose({
 }
 </style>
 <style lang="scss" scoped>
-// .app-container {
-//   padding: 20px;
-// }
-
+// 保留基础布局样式
 .mb8 {
   margin-bottom: 8px;
 }
@@ -1402,6 +1363,7 @@ defineExpose({
   text-align: right;
 }
 
+// 保留必要的深度选择器样式
 :deep(.el-form-item__label) {
   font-weight: bold;
 }
@@ -1430,36 +1392,20 @@ defineExpose({
   color: #303133;
 }
 
-:deep(.el-cascader) {
-  width: 100%;
-}
-
-:deep(.el-input-number) {
-  width: 100%;
-}
-
-:deep(.el-date-editor) {
-  width: 100%;
-}
-
+// 保留宽度相关样式
+:deep(.el-cascader),
+:deep(.el-input-number),
+:deep(.el-date-editor),
 :deep(.el-select) {
   width: 100%;
 }
 
-:deep(.el-switch) {
-  margin-left: 10px;
-}
-
-:deep(.el-button--text) {
-  padding: 0;
-  margin: 0 5px;
-}
-
-:deep(.el-table .cell) {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+// 保留表格样式
+// :deep(.el-table .cell) {
+//   white-space: nowrap;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+// }
 
 :deep(.el-table th) {
   background-color: #f5f7fa;
@@ -1471,98 +1417,4 @@ defineExpose({
   padding: 8px 0;
 }
 
-:deep(.el-form-item) {
-  margin-bottom: 18px;
-}
-
-:deep(.el-input__wrapper) {
-  box-shadow: 0 0 0 1px #dcdfe6 inset;
-}
-
-:deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #409eff inset;
-}
-
-:deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #409eff inset;
-}
-
-:deep(.el-button--primary) {
-  background-color: #409eff;
-  border-color: #409eff;
-}
-
-:deep(.el-button--primary:hover) {
-  background-color: #66b1ff;
-  border-color: #66b1ff;
-}
-
-:deep(.el-button--danger) {
-  background-color: #f56c6c;
-  border-color: #f56c6c;
-}
-
-:deep(.el-button--danger:hover) {
-  background-color: #f78989;
-  border-color: #f78989;
-}
-
-:deep(.el-message) {
-  min-width: 300px;
-}
-
-:deep(.el-message--success) {
-  background-color: #f0f9eb;
-  border-color: #e1f3d8;
-  color: #67c23a;
-}
-
-:deep(.el-message--warning) {
-  background-color: #fdf6ec;
-  border-color: #faecd8;
-  color: #e6a23c;
-}
-
-:deep(.el-message--error) {
-  background-color: #fef0f0;
-  border-color: #fde2e2;
-  color: #f56c6c;
-}
-
-:deep(.el-message--info) {
-  background-color: #f4f4f5;
-  border-color: #e9e9eb;
-  color: #909399;
-}
-
-// 添加针对小尺寸的样式调整
-:deep(.el-form--small .el-form-item__label),
-:deep(.el-form--small .el-form-item__content) {
-  line-height: 32px;
-}
-
-:deep(.el-input--small .el-input__wrapper) {
-  padding: 0 11px;
-}
-
-:deep(.el-input--small .el-input__inner) {
-  height: 32px;
-  line-height: 32px;
-}
-
-// 修复表格内输入框的样式
-:deep(.el-table .el-input__wrapper) {
-  padding: 0 8px;
-}
-
-// 确保表单项在小屏幕上也有合适的间距
-@media screen and (max-width: 768px) {
-  :deep(.el-form-item) {
-    margin-bottom: 12px;
-  }
-  
-  :deep(.el-form--inline .el-form-item) {
-    margin-right: 10px;
-  }
-}
 </style>
