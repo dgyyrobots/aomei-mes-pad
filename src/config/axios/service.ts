@@ -4,9 +4,9 @@ import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
 import qs from 'qs'
 import { config } from './config'
 import errorCode from './errorCode'
-import { getAccessToken, getRefreshToken, getTenantId, removeToken, setToken } from '/@/utils/auth'
+import { getAccessToken, getRefreshToken, getTenantId, removeToken, setToken, getLoginForm } from '/@/utils/auth'
 
-import { useCache } from '/@/hooks/web/useCache'
+import { CACHE_KEY, useCache } from '/@/hooks/web/useCache'
 import { resetRouter } from '/@/router'
 
 const tenantEnable = import.meta.env.VITE_APP_TENANT_ENABLE
@@ -100,7 +100,7 @@ service.interceptors.response.use(
     const { data } = response
     const config = response.config
     if (!data) {
-      // 返回“[HTTP]请求没有返回值”;
+      // 返回“[HTTP]请求没有返回值”；
       throw new Error()
     }
     const { t } = useI18n()
@@ -198,10 +198,19 @@ service.interceptors.response.use(
   }
 )
 
-const refreshToken = async () => {
-  axios.defaults.headers.common['tenant-id'] = getTenantId()
-  return await axios.post(`${base_url}/system/auth/refresh-token?refreshToken=${getRefreshToken()}`)
+/**
+ * 刷新访问令牌
+ * @returns 包含新令牌的响应
+ */
+const refreshToken = async (): Promise<AxiosResponse<any>> => {
+  axios.defaults.headers.common['tenant-id'] = getTenantId();
+  return await axios.post(`${base_url}/system/auth/refresh-token?refreshToken=${getRefreshToken()}`);
 }
+
+/**
+ * 处理未授权情况，提示用户重新登录
+ * @returns Promise rejection with timeout message
+ */
 const handleAuthorized = () => {
   const { t } = useI18n()
   if (!isRelogin.show) {
@@ -217,14 +226,37 @@ const handleAuthorized = () => {
       confirmButtonText: t('login.relogin'),
       type: 'warning',
     }).then(() => {
-      const { wsCache } = useCache()
-      resetRouter() // 重置静态路由表
-      wsCache.clear()
-      removeToken()
-      isRelogin.show = false
+      resetRouter(); // 重置静态路由表
+      
+      // 获取登录表单信息，检查是否勾选了"记住我"
+      const { wsCache } = useCache();
+      const loginForm = getLoginForm();
+      
+      // 定义需要保留的缓存键
+      const keysToPreserve = ['LOGINFORM'];
+      
+      // 定义需要清除的缓存键
+      const keysToRemove = [
+        CACHE_KEY.USER,
+        CACHE_KEY.ROLE_ROUTERS,
+        'ACCESS_TOKEN',
+        'REFRESH_TOKEN',
+        'TENANT_ID'
+      ];
+      
+      if (!loginForm || !loginForm.rememberMe) {
+        // 如果没有登录表单信息或未勾选"记住我"，则清除所有缓存
+        wsCache.clear();
+      } else {
+        // 如果勾选了"记住我"，则只清除特定的缓存项
+        keysToRemove.forEach(key => wsCache.delete(key));
+      }
+      
+      removeToken();
+      isRelogin.show = false;
       // 干掉token后再走一次路由让它过router.beforeEach的校验
-      window.location.href = window.location.href // eslint-disable-line no-self-assign
-    })
+      window.location.href = window.location.href; // eslint-disable-line no-self-assign
+    });
   }
   return Promise.reject(t('sys.api.timeoutMessage'))
 }
