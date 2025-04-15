@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 搜索工作栏 -->
-    <el-form :model="queryParams" ref="queryFormRef" :size="currentSize" :inline="true" v-show="showSearch" label-width="100px">
+    <el-form :model="queryParams" ref="queryForm" :size="currentSize" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="调拨单号" prop="allocatedCode">
         <el-input v-model="queryParams.allocatedCode" placeholder="请输入调拨单编号" clearable @keyup.enter="handleQuery"/>
       </el-form-item>
@@ -439,7 +439,7 @@ const tableHeight = ref(500); // 默认高度
 
 const executeFormRef = ref(null)
 const woSelectRef = ref(null);
-const taskSelect = ref(null);
+const taskSelectRef = ref(null);
 const stockSelectRef = ref(null);
 
 // 基础数据
@@ -1001,7 +1001,11 @@ const handleWarehouseChanged = (value) => {
 };
 
 const handleWorkorderSelect = () => {
-  woSelectRef.value.showFlag = true;
+  if (woSelectRef.value) {
+    woSelectRef.value.showFlag = true;
+  } else {
+    ElMessage.warning('工单选择组件未加载完成，请稍后再试');
+  }
 };
 
 const onWorkorderSelected = (row) => {
@@ -1104,8 +1108,12 @@ const allocatedHandleAdd = () => {
 };
 
 const allocatedHandleBatchAdd = () => {
-  stockSelectRef.value.showFlag = true;
-  stockSelectRef.value.getList();
+  if (stockSelectRef.value) {
+    stockSelectRef.value.showFlag = true;
+    stockSelectRef.value.getList();
+  } else {
+    ElMessage.warning('库存选择组件未加载完成，请稍后再试');
+  }
 };
 
 const allocatedHandleDelete = () => {
@@ -1212,8 +1220,12 @@ const handleQuantityChange = (row) => {
 };
 
 const handleTaskSelect = () => {
-  taskSelect.value.showFlag = true;
-  taskSelect.value.getList();
+  if (taskSelectRef.value) {
+    taskSelectRef.value.showFlag = true;
+    taskSelectRef.value.getList();
+  } else {
+    ElMessage.warning('任务选择组件未加载完成，请稍后再试');
+  }
 };
 
 const onTaskSelected = (row) => {
