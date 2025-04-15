@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-15 10:21:26 
+ */
+import{D as l}from"./dict-B2yk4gHf.js";import{f as e}from"./index-5TqN_QR1.js";const a=e([{label:"商品名称",field:"name"},{label:"关键字",field:"keyword"},{label:"商品简介",field:"introduction"},{label:"商品分类",field:"categoryId"},{label:"商品品牌",field:"brandId"},{label:"商品封面图",field:"picUrl"},{label:"商品轮播图",field:"sliderPicUrls"},{label:"商品视频",field:"videoUrl"},{label:"单位",field:"unit",dictType:l.PRODUCT_UNIT},{label:"规格类型",field:"specType"},{label:"分销类型",field:"subCommissionType"},{label:"物流模版",field:"deliveryTemplateId"},{label:"商品属性列表",field:"skus"}]),o=e([{label:"商品详情",field:"description"}]),f=e([{label:"商品排序",field:"sort"},{label:"赠送积分",field:"giveIntegral"},{label:"虚拟销量",field:"virtualSalesCount"},{label:"是否热卖推荐",field:"recommendHot"},{label:"是否优惠推荐",field:"recommendBenefit"},{label:"是否精品推荐",field:"recommendBest"},{label:"是否新品推荐",field:"recommendNew"},{label:"是否优品推荐",field:"recommendGood"},{label:"活动显示排序",field:"activityOrders"}]);export{a as b,o as d,f as o};

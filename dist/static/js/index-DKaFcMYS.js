@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-15 10:21:26 
+ */
+import{d as f,aA as n,O as m,r as h,g as w,k as _,l as b,a as p,o as C,Q as I,bK as g,j as x,bL as y}from"./index-5TqN_QR1.js";const k=f({name:"ImageViewer",__name:"ImageViewer",props:{urlList:{type:Array,default:()=>[]},zIndex:n.number.def(200),initialIndex:n.number.def(0),infinite:n.bool.def(!0),hideOnClickModal:n.bool.def(!1),appendToBody:n.bool.def(!1),show:n.bool.def(!1)},setup(s){const a=s,i=m(()=>{const o={...a};return delete o.show,o}),t=h(a.show),r=()=>{t.value=!1};return(o,d)=>{const l=w("el-image-viewer");return p(t)?(C(),_(l,I({key:0},p(i),{onClose:r}),null,16)):b("",!0)}}});let u=null;function V(s){if(!g)return;const{urlList:a,initialIndex:i=0,infinite:t=!0,hideOnClickModal:r=!1,appendToBody:o=!1,zIndex:d=2e3,show:l=!0}=s,e={},c=document.createElement("div");e.urlList=a,e.initialIndex=i,e.infinite=t,e.hideOnClickModal=r,e.appendToBody=o,e.zIndex=d,e.show=l,document.body.appendChild(c),u=x(k,e),y(u,c)}export{V as c};

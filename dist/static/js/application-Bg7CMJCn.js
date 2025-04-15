@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-15 10:10:14 
- */
-import{_}from"./index.vue_vue_type_script_setup_true_lang-DzYQXJpb.js";import{d as f,bv as u,B as C,g as h,c as l,o,k as v,a as b,j as i,m as k,v as w}from"./index-BdC40rFX.js";const y={class:"application-container"},B={key:0},g=f({name:"Application",__name:"application",setup(x){const c=u("$baseAlert"),p=!1,n=window.location.protocol==="https:";let t;const a=()=>{window.addEventListener("beforeinstallprompt",e=>{e.preventDefault(),t=e})};C(()=>{n&&a()});const m=()=>{t?(t.prompt(),t.userChoice.then(()=>{t=null,a()})):c("未获取到安装指令，请按下键盘Ctrl（Command） + Shift + R 强制刷新当前页面后重试",()=>{location.reload()})};return(e,s)=>{const r=_,d=h("el-button");return o(),l("div",y,[!b(p)&&n?(o(),l("div",B,[i(r,{title:"点击安装前需手动按下键盘Ctrl（Command） + Shift + R 强制刷新当前页面，如果无法安装，PC端请点击浏览器地址栏右侧安装按钮进行安装，手机端请点击添加到主屏幕进行安装，仅支持Edge、Chrome、Safari"}),i(d,{type:"primary",onClick:m},{default:k(()=>s[0]||(s[0]=[w("点击安装")])),_:1})])):(o(),v(r,{key:1,title:"开发环境或非https协议下暂不支持安装PWA应用",type:"warning"}))])}}});export{g as default};
