@@ -46,7 +46,7 @@ service.interceptors.request.use(
       }
     })
     if (getAccessToken() && !isToken) {
-      ;(config as Recordable).headers.Authorization = `Bearer ${getAccessToken()}` // 让每个请求携带自定义token
+      ; (config as Recordable).headers.Authorization = `Bearer ${getAccessToken()}` // 让每个请求携带自定义token
     }
     // 设置租户
     if (tenantEnable && tenantEnable === 'true') {
@@ -227,14 +227,14 @@ const handleAuthorized = () => {
       type: 'warning',
     }).then(() => {
       resetRouter(); // 重置静态路由表
-      
+
       // 获取登录表单信息，检查是否勾选了"记住我"
       const { wsCache } = useCache();
       const loginForm = getLoginForm();
-      
+
       // 定义需要保留的缓存键
       const keysToPreserve = ['LOGINFORM'];
-      
+
       // 定义需要清除的缓存键
       const keysToRemove = [
         CACHE_KEY.USER,
@@ -243,7 +243,7 @@ const handleAuthorized = () => {
         'REFRESH_TOKEN',
         'TENANT_ID'
       ];
-      
+
       if (!loginForm || !loginForm.rememberMe) {
         // 如果没有登录表单信息或未勾选"记住我"，则清除所有缓存
         wsCache.clear();
@@ -251,11 +251,13 @@ const handleAuthorized = () => {
         // 如果勾选了"记住我"，则只清除特定的缓存项
         keysToRemove.forEach(key => wsCache.delete(key));
       }
-      
+
       removeToken();
       isRelogin.show = false;
       // 干掉token后再走一次路由让它过router.beforeEach的校验
-      window.location.href = window.location.href; // eslint-disable-line no-self-assign
+      // window.location.href = window.location.href; // eslint-disable-line no-self-assign
+      // 修改为直接跳转到登录页面，这样更加清晰且避免了不必要的页面刷新：
+      window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
     });
   }
   return Promise.reject(t('sys.api.timeoutMessage'))
