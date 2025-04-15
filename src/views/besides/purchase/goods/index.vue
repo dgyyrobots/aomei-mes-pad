@@ -3,7 +3,7 @@
       <!-- 搜索工作栏 -->
       <el-form :model="queryParams" ref="queryFormRef" :size="currentSize" :inline="true" v-show="showSearch" >
   
-        <el-form-item label="采购单号" prop="goodsNumber">
+        <el-form-item label="采购单号" prop="poNo">
           <el-input v-model="queryParams.poNo" placeholder="请输入采购单号" clearable @keyup.enter="handleQuery"/>
         </el-form-item>
   
@@ -13,7 +13,9 @@
         <el-form-item label="商品名称" prop="goodsName">
           <el-input v-model="queryParams.goodsName" placeholder="请输入商品名称" clearable @keyup.enter.native="handleQuery"/>
         </el-form-item>
-  
+        <el-form-item label="供应商名称" prop="vendorName">
+        <el-input v-model="queryParams.vendorName" placeholder="请输入" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
         <el-form-item>
           <el-button type="primary" :icon="Search" @click="handleQuery">搜索</el-button>
           <el-button :icon="Refresh" @click="resetQuery">重置</el-button>
@@ -41,9 +43,11 @@
           <el-col :span="1.5">
             <el-button type="warning" plain :icon="Download" :size="currentSize" @click="handleExport" :loading="exportLoading" v-hasPermi="['purchase:goods:export']">导出</el-button>
           </el-col>
-
           <el-col :span="1.5">
-            <el-button type="primary" plain :icon="SuccessFilled" :size="currentSize" :disabled="single" @click="split" v-hasPermi="['purchase:goods:split']">拆分</el-button>
+             <el-button type="primary" plain :icon="Edit" :size="currentSize"  @click="receive" v-hasPermi="['purchase:goods:split']">收货</el-button>
+         </el-col>
+          <el-col :span="1.5">
+            <el-button type="primary" plain  :icon="SuccessFilled" :size="currentSize" :disabled="single" @click="split" v-hasPermi="['purchase:goods:split']">拆分</el-button>
           </el-col>
   
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -57,6 +61,8 @@
         <el-table-column label="商品编号" align="center" prop="goodsNumber"/>
         <el-table-column :show-overflow-tooltip="true" label="商品名称" align="center" prop="goodsName"/>
         <el-table-column :show-overflow-tooltip="true" label="商品规格" align="center" prop="goodsSpecs"/>
+        <el-table-column label="供应商编号" align="center" prop="vendorCode"/>
+        <el-table-column label="供应商名称" align="center" prop="vendorName"/>
         <el-table-column label="商品单位" align="center" prop="company"/>
         <el-table-column label="采购数量" align="center" prop="quantity"/>
         <el-table-column label="收货数量" align="center" prop="receiveNum"/>
@@ -174,6 +180,7 @@
             <el-table-column label="商品编号" align="center" prop="goodsNumber"/>
             <el-table-column label="商品名称" align="center" prop="goodsName"/>
             <el-table-column label="商品规格" align="center" prop="goodsSpecs"/>
+            <el-table-column label="供应商编号" align="center" prop="vendorCode"/>
             <el-table-column label="商品单位" align="center" prop="company"/>
             <el-table-column label="采购数量" align="center" prop="quantity"/>
             <el-table-column label="收货数量" align="center" prop="receiveNum"/>
@@ -297,8 +304,8 @@
   <script setup>
   import { ref, reactive, computed, onMounted, watch } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
-  import { Printer, Box, Download, SuccessFilled,Search,Refresh } from '@element-plus/icons-vue'
-  import { createGoods, updateGoods, deleteGoods, getGoods, getGoodsPage, getAllGoods, exportGoodsExcel, updateReceiveStatus, startWareHousing, splitGoods, getPurchaseBarCode, checkConfig, batchUpdateReceiveStatus } from '@/api/purchase/goods'
+  import { Printer, Box, Download, SuccessFilled,Search,Refresh,Edit } from '@element-plus/icons-vue'
+  import { createGoods, updateGoods, deleteGoods, getGoods, getGoodsPage, getAllGoods, exportGoodsExcel, updateReceiveStatus, startWareHousing, splitGoods, getPurchaseBarCode, checkConfig, batchUpdateReceiveStatus,receiving } from '@/api/purchase/goods'
 
   import '@/utils/CLodopfuncs2.js'
   import { formatDate } from '/@/utils/formatTime'
@@ -680,7 +687,7 @@ function parseFirstJsonStr(str) {
     const id = row.id || selectedRows.value[0].id
 
     // 追加校验, 禁止修改已入库的单据
-    if (row.status === 2) {
+    if (row.status != 0) {
       ElMessage.error('该单据已入库，禁止修改！')
       return
     }
@@ -689,8 +696,15 @@ function parseFirstJsonStr(str) {
       const response = await listAllUnitmeasure()
       unitOptions.value = response
       const goodsResponse = await getGoods(id)
+
       // 使用空值合并运算符简化条件判断
       goodsResponse.unitOfMeasure = goodsResponse.unitOfMeasure || goodsResponse.company
+
+      // 新增：自动填充收货数量和单位
+      if (!form.receiveNum) {
+          form.receiveNum = form.quantity; // 采购数量 -> 收货数量
+          form.unitOfMeasure = form.company; // 商品单位 -> 收货单位
+        }
       Object.assign(form, goodsResponse)
       open.value = true
       title.value = '修改采购商品明细'
@@ -707,7 +721,7 @@ function parseFirstJsonStr(str) {
       await formRef.value.validate()
       if (form.id != null) {
         await updateGoods(form)
-        ElMessage.success('修改成功')
+        ElMessage.success('收货成功')
       } else {
         await createGoods(form)
         ElMessage.success('新增成功')
@@ -840,6 +854,10 @@ function parseFirstJsonStr(str) {
         if (!selectedRows.value[i].unitOfMeasure) {
           ElMessage.error('请先确认第' + (i + 1) + '行的收货单位')
           return
+        }
+        if (selectedRows[i].status === 0) {
+          ElMessage.error('请先对第' + (i + 1) + '行的物料进行收货');
+          return;
         }
       }
 
@@ -1238,8 +1256,67 @@ function parseFirstJsonStr(str) {
     splitConditionForm.splitQuantity = ''
     splitConditionForm.splitCount = ''
   }
+
   
-  </script>
+  // 收货
+  const receive = () => {
+    if (selectedRows.value.length === 0) {
+      ElMessage.warning('请选择至少一项进行收货')
+      return
+    }
+    
+    for (let i = 0; i < selectedRows.value.length; i++) {
+      if (!selectedRows.value[i].receiveNum) {
+        ElMessage.warning(`请先填写第${i + 1}行收货数量!`)
+        return
+      }
+    }
+
+    // 先收货再拆分
+    // 允许用户跨采购单进行收货, 卡控仅允许选中相同的供应商信息
+    /* let poNo = selectedRows.value[0].poNo;
+    for (let i = 0; i < selectedRows.value.length; i++) {
+      if (selectedRows.value[i].poNo !== poNo) {
+        ElMessage.error('请选择相同的采购单进行收货');
+        return;
+      }
+    } */
+
+    // 调用后台收货接口
+    const obj = {
+      'list': selectedRows.value,
+    }
+
+    ElMessageBox.confirm('确定收货吗?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      loading.value = true
+      receiving(obj).then(response => {
+        if (response !== "success") {
+          ElMessage.error(`收货失败, 请联系系统管理员, 问题如下: ${response}`)
+          return
+        }
+        loading.value = false
+        getList()
+        index.value = 1
+        ElMessage.success('收货成功')
+      }).catch(error => {
+        console.error('收货操作失败:', error)
+        ElMessage.error('收货操作失败，请稍后重试')
+      }).finally(() => {
+        loading.value = false
+      })
+    }).catch(() => {
+      // 用户取消操作
+    })
+  }
+  
+  // ... 其他代码 ...
+</script>
+  
+
 <style lang="scss" scoped>
 
 </style>

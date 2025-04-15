@@ -132,3 +132,10 @@ export const getPurchaseBarCode = (id: number) => {
 export const checkConfig = (poNo: string) => {
     return request.get({ url: `/purchase/goods/checkConfig?poNo=${poNo}` })
 }
+
+// 开始收货
+
+export const receiving = (data: GoodsVO[]) => {
+    return request.post({ url: '/purchase/goods/receiving', data })
+}
+
