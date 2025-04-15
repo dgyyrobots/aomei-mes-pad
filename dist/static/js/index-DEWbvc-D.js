@@ -1,0 +1,5 @@
+/*!  build: Vue Shop Vite 
+     copyright: https://vue-admin-beautiful.com/shop-vite  
+     time: 2025-04-15 10:10:14 
+ */
+import{d as i,g as x,c as o,o as s,F as _,n as d,i as t,k as f,l as m,q as a,t as n,j as u,K as y,A as g}from"./index-BdC40rFX.js";const h={class:"min-h-42px flex flex-col"},k={class:"flex flex-1 flex-row items-center gap-8px"},v={class:"item-center flex flex-row justify-center gap-4px"},w=i({name:"MenuList",__name:"index",props:{property:{}},setup(C){return(r,B)=>{const l=x("el-image"),c=y;return s(),o("div",h,[(s(!0),o(_,null,d(r.property.list,(e,p)=>(s(),o("div",{key:p,class:"item h-42px flex flex-row items-center justify-between gap-4px p-x-12px"},[t("div",k,[e.iconUrl?(s(),f(l,{key:0,class:"h-16px w-16px",src:e.iconUrl},null,8,["src"])):m("",!0),t("span",{class:"text-16px",style:a({color:e.titleColor})},n(e.title),5)]),t("div",v,[t("span",{class:"text-12px",style:a({color:e.subtitleColor})},n(e.subtitle),5),u(c,{color:"#000",icon:"ep-arrow-right",size:16})])]))),128))])}}}),j=g(w,[["__scopeId","data-v-829da745"]]);export{j as default};

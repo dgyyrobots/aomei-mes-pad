@@ -1,5 +1,0 @@
-/*!  build: Vue Shop Vite 
-     copyright: https://vue-admin-beautiful.com/shop-vite  
-     time: 2025-04-14 11:54:00 
- */
-import{_ as g}from"./ContentWrap.vue_vue_type_script_setup_true_lang-CIA3YA7G.js";import{a as b}from"./index-BQEITy1E.js";import{d as v,r,b as w,g as s,h,k as l,o as c,m as i,w as C,a as o,j as t,L as x}from"./index-BdmDrM2Y.js";const I=v({__name:"Demo03CourseList",props:{studentId:{}},setup(p){const m=p,a=r(!1),n=r([]),_=async()=>{a.value=!0;try{n.value=await b(m.studentId)}finally{a.value=!1}};return w(()=>{_()}),(y,D)=>{const e=s("el-table-column"),u=s("el-table"),d=g,f=h("loading");return c(),l(d,null,{default:i(()=>[C((c(),l(u,{data:o(n),"show-overflow-tooltip":!0,stripe:!0},{default:i(()=>[t(e,{align:"center",label:"编号",prop:"id"}),t(e,{align:"center",label:"名字",prop:"name"}),t(e,{align:"center",label:"分数",prop:"score"}),t(e,{align:"center",formatter:o(x),label:"创建时间",prop:"createTime",width:"180px"},null,8,["formatter"])]),_:1},8,["data"])),[[f,o(a)]])]),_:1})}}});export{I as _};

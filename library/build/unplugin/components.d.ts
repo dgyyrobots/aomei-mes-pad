@@ -76,7 +76,6 @@ declare module 'vue' {
     Multi: typeof import('./../../../src/components/stockSelect/multi.vue')['default']
     NavigationBar: typeof import('./../../../src/components/DiyEditor/components/mobile/NavigationBar/index.vue')['default']
     NoticeBar: typeof import('./../../../src/components/DiyEditor/components/mobile/NoticeBar/index.vue')['default']
-    Old: typeof import('./../../../src/components/TaskSelect/old.vue')['default']
     PageHeader: typeof import('./../../../src/views/index/vabAutoComponents/PageHeader.vue')['default']
     Pagination: typeof import('./../../../src/components/Pagination/index.vue')['default']
     Pending: typeof import('./../../../src/views/index/vabAutoComponents/Pending.vue')['default']
