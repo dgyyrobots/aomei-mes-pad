@@ -27,7 +27,7 @@
     </el-table>
     <pagination :size="currentSize" v-show="total > 0" :total="total" v-model:page="queryParams.pageNo" v-model:limit="queryParams.pageSize" @pagination="getList" />
 
-    <el-dialog :title="title" v-model="open" width="80%" v-dialogDrag append-to-body>
+    <el-dialog :title="title" v-model="open" width="90%" v-dialogDrag append-to-body>
       <el-form :size="currentSize"  ref="formRef" :model="form" :rules="rules">
         <el-row :gutter="20">
           <el-col :span="12">

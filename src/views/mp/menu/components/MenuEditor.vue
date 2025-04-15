@@ -66,7 +66,7 @@
                 </el-col>
               </el-row>
             </div>
-            <el-dialog v-model="showNewsDialog" destroy-on-close title="选择图文" width="80%">
+            <el-dialog v-model="showNewsDialog" destroy-on-close title="选择图文" width="90%">
               <WxMaterialSelect :account-id="props.accountId" type="news" @select-material="selectMaterial" />
             </el-dialog>
           </el-row>

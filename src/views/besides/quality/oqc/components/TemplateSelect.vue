@@ -1,5 +1,5 @@
 <template>
-  <Dialog :title="dialogTitle" v-model="dialogVisible" width="80%">
+  <Dialog :title="dialogTitle" v-model="dialogVisible" width="90%">
     <ContentWrap>
       <!-- 搜索工作栏 -->
       <el-form class="-mb-15px" :model="queryParams" ref="queryFormRef" :inline="true" label-width="110px">

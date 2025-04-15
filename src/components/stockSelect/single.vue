@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="库存物资选择" v-model="showFlag" :modal="false" width="80%" center>
+  <el-dialog title="库存物资选择" v-model="showFlag" :modal="false" width="90%" center>
     <el-row :gutter="20">
       <el-col :span="4" :xs="24">
         <div class="head-container">

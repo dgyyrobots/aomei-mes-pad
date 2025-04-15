@@ -1,5 +1,5 @@
 <template>
-  <Dialog :title="dialogTitle" v-model="dialogVisible" width="80%">
+  <Dialog :title="dialogTitle" v-model="dialogVisible" width="90%">
     <el-descriptions title="检验单信息" :column="2" :size='size' border>
       <el-descriptions-item label="出货检验单编号" align="center">{{ formData.oqcCode }}</el-descriptions-item>
       <el-descriptions-item label="出货检验单名称" align="center">{{ formData.oqcName }}</el-descriptions-item>

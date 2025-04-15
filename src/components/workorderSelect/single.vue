@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="工单选择" v-model="showFlag" :modal="false" width="80%" center>
+  <el-dialog title="工单选择" v-model="showFlag" :modal="false" width="90%" center>
     <el-form :model="queryParams" ref="queryFormRef" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="工单编码" prop="workorderCode">
         <el-input v-model="queryParams.workorderCode" placeholder="请输入工单编码" clearable @keyup.enter="handleQuery" />

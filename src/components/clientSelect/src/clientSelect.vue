@@ -1,5 +1,5 @@
 <template>
-  <Dialog title="客户选择" v-model="Flag" v-model:visible="Flag" :modal="false" width="80%" center>
+  <Dialog title="客户选择" v-model="Flag" v-model:visible="Flag" :modal="false" width="90%" center>
     <el-form
 :model="state.ueryParams" ref="queryForm" size="small" :inline="true" v-show="state.showSearch"
       label-width="100px">

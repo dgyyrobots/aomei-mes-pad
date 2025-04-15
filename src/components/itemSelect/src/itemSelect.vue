@@ -1,5 +1,5 @@
 <template>
-  <Dialog title="物料产品选择" v-model="Flag" v-model:visible="Flag" :modal="false" width="80%" center>
+  <Dialog title="物料产品选择" v-model="Flag" v-model:visible="Flag" :modal="false" width="90%" center>
     <el-row :gutter="20">
       <!--分类数据-->
       <el-col :span="4" :xs="24">

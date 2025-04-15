@@ -29,7 +29,7 @@
     :before-close="onBeforeDialogClose"
     destroy-on-close
     :title="isCreating ? '新建图文' : '修改图文'"
-    width="80%"
+    width="90%"
   >
     <NewsForm v-model="newsList" v-loading="isSubmitting" :is-creating="isCreating" />
     <template #footer>

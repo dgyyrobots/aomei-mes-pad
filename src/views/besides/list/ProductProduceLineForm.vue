@@ -1,5 +1,5 @@
 <template>
-  <Dialog :title="dialogTitle" v-model="dialogVisible" width="80%">
+  <Dialog :title="dialogTitle" v-model="dialogVisible" width="90%">
     <el-form
     inline
       ref="formRef"

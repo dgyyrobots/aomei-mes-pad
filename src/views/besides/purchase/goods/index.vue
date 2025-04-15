@@ -211,7 +211,7 @@
 
   
       <!-- 拆分弹出框 -->
-      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="80%" v-dialogDrag append-to-body>
+      <el-dialog :title="'拆分详情'" v-model="splitDialogVisible" width="90%" v-dialogDrag append-to-body>
         <el-form ref="splitFormRef" :model="splitForm" :size="currentSize">
   
           <el-row :gutter="20">

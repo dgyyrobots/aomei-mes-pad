@@ -25,7 +25,7 @@
           </template>
         </el-upload>
       </div>
-      <el-dialog v-model="showImageDialog" append-to-body destroy-on-close title="选择图片" width="80%">
+      <el-dialog v-model="showImageDialog" append-to-body destroy-on-close title="选择图片" width="90%">
         <WxMaterialSelect :account-id="accountId!" type="image" @select-material="onMaterialSelected" />
       </el-dialog>
     </div>

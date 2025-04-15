@@ -138,7 +138,7 @@
       <!-- <div id="js-properties-panel" class="panel"></div> -->
       <!-- <div class="my-process-designer__canvas" ref="bpmn-canvas"></div> -->
     </div>
-    <Dialog v-model="previewModelVisible" max-height="600px" :scroll="true" title="预览" width="80%">
+    <Dialog v-model="previewModelVisible" max-height="600px" :scroll="true" title="预览" width="90%">
       <!-- append-to-body -->
       <div v-highlight>
         <code class="hljs">

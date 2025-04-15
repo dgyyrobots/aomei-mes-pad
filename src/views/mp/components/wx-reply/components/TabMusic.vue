@@ -29,7 +29,7 @@
             </el-row>
           </el-col>
         </el-row>
-        <el-dialog v-model="showDialog" append-to-body destroy-on-close title="选择图片" width="80%">
+        <el-dialog v-model="showDialog" append-to-body destroy-on-close title="选择图片" width="90%">
           <WxMaterialSelect :account-id="reply.accountId" type="image" @select-material="selectMaterial" />
         </el-dialog>
       </el-col>

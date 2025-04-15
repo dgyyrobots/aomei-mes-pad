@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="dialogVisible" align-center class="app-infra-codegen-preview-container" title="代码预览" width="80%">
+  <Dialog v-model="dialogVisible" align-center class="app-infra-codegen-preview-container" title="代码预览" width="90%">
     <div class="flex">
       <!-- 代码目录树 -->
       <el-card v-loading="loading" class="w-1/3" element-loading-text="生成文件目录中..." :gutter="12" shadow="hover">

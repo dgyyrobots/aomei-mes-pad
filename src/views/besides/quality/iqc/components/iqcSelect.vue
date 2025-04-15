@@ -4,7 +4,7 @@
     v-model="Flag"
     v-model:visible="Flag"
     :modal="false"
-    width="80%"
+    width="90%"
     center
   >
     <!-- 搜索工作栏 -->

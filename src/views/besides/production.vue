@@ -135,7 +135,7 @@
       :status="formData?.status"
       @action="but"
     />
-  <Dialog v-if="bg.open" v-model="bg.open" width="80%" title="生产报工">
+  <Dialog v-if="bg.open" v-model="bg.open" width="90%" title="生产报工">
     <el-form ref="form" :model="bg.form" :rules="rules">
       <el-form-item prop="quantityFeedback" label="报工总数量">
         <el-input-number v-model="bg.form.quantityFeedback" :max="formData.quantity - formData.quantityProduced" :min="1" />

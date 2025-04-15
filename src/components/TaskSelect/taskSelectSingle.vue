@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="生产任务选择" v-model="showFlag" :modal="false" width="80%" center>
+  <el-dialog title="生产任务选择" v-model="showFlag" :modal="false" width="90%" center>
     <el-form :model="queryParams" ref="queryFormRef" :size="currentSize" :inline="true" v-show="showSearch" label-width="100px">
       <el-row>
         <el-col :span="7">
